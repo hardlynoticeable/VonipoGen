@@ -136,8 +136,8 @@ export default function Equipment({ data, updateData }) {
             </header>
 
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-                {/* Left: Backpack & Database */}
-                <main className="xl:col-span-8 space-y-6 order-1">
+                {/* Full Width: Backpack, Equipped Arsenal, Currency, Treasure */}
+                <main className="xl:col-span-12 space-y-6">
                     {/* Starting Equipment Packs */}
                     <div className="glass-card p-5 border-emerald-500/20">
                         <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest mb-4">Starting Equipment Pack</h3>
@@ -301,6 +301,68 @@ export default function Equipment({ data, updateData }) {
                         )}
                     </div>
 
+                    {/* Equipped Items Summary (User Requested Position: Below Backpack, Above Currency) */}
+                    <div className="glass-card p-5 border-emerald-500/20 overflow-hidden">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800/50">
+                            <h3 className="text-sm font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
+                                <User size={14} /> Active Arsenal Overview
+                            </h3>
+                            <div className="flex gap-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                    <span className="text-[10px] font-bold text-emerald-400 uppercase">Equipped</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-teal-400 text-xs">★</span>
+                                    <span className="text-[10px] font-bold text-teal-400 uppercase">Attuned</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                            {equipmentSlots
+                                .map(slot => ({ ...slot, items: getEquippedInSlot(slot.id) }))
+                                .map(slot => {
+                                    const hasItems = slot.items.length > 0;
+                                    return (
+                                        <div key={slot.id} className={`p-3 rounded-xl border transition-all ${hasItems ? 'bg-emerald-900/10 border-emerald-500/30' : 'bg-black/20 border-gray-800/50 opacity-40'}`}>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <slot.icon size={12} className={hasItems ? 'text-emerald-400' : 'text-gray-600'} />
+                                                <p className="text-[9px] text-gray-500 uppercase font-black tracking-tighter">{slot.label}</p>
+                                            </div>
+                                            {hasItems ? (
+                                                <div className="space-y-1">
+                                                    {slot.items.map(item => (
+                                                        <p key={item.id} className="text-xs font-bold text-white leading-tight truncate">
+                                                            {item.name} {item.isAttuned && <span className="text-teal-400 text-[10px]">★</span>}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="text-[9px] text-gray-700 italic">Empty</p>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                        </div>
+
+                        {/* Proficiencies moved here to keep them grouped with the arsenal summary */}
+                        <div className="mt-6 pt-6 border-t border-gray-800/50 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p className="text-[10px] text-gray-500 uppercase font-black mb-3 tracking-widest">Armor Proficiencies</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {armorProfs.length > 0 ? armorProfs.map(p => <span key={p} className="text-[9px] font-bold bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded border border-emerald-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-[10px] text-gray-500 uppercase font-black mb-3 tracking-widest">Weapon Proficiencies</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {weaponProfs.length > 0 ? weaponProfs.map(p => <span key={p} className="text-[9px] font-bold bg-teal-900/30 text-teal-300 px-2 py-1 rounded border border-teal-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Currency Section */}
                     <div className="glass-card p-5 border-amber-500/20">
                         <h3 className="text-xs font-black text-amber-500 uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -346,73 +408,6 @@ export default function Equipment({ data, updateData }) {
                         </p>
                     </div>
                 </main>
-
-                {/* Right: Summary & Slots */}
-                <aside className="xl:col-span-4 space-y-6 order-2">
-                    <div className="glass-card p-5 border-emerald-500/20">
-                        <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <User size={14} /> Equipped Items
-                        </h3>
-                        <div className="space-y-3">
-                            {equipmentSlots
-                                .map(slot => ({ ...slot, items: getEquippedInSlot(slot.id) }))
-                                .filter(slot => slot.items.length > 0)
-                                .map(slot => {
-                                    return (
-                                        <div key={slot.id} className="flex items-center justify-between p-3 bg-black/40 rounded-lg border border-gray-800 group hover:border-emerald-500/30 transition-all">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-500 group-hover:text-emerald-400">
-                                                    <slot.icon size={16} />
-                                                </div>
-                                                <div>
-                                                    <p className="text-[10px] text-gray-500 uppercase font-bold leading-none">{slot.label}</p>
-                                                    {slot.items.map(item => (
-                                                        <p key={item.id} className="text-sm font-bold text-white leading-tight">
-                                                            {item.name} {item.isAttuned && <span className="text-teal-400">★</span>}
-                                                        </p>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            {inventory.filter(i => i.isEquipped && (i.equipped_slot === 'Wondrous' || inferEquippedSlot(i) === 'Wondrous')).length > 0 && (
-                                <div className="pt-2 border-t border-gray-800/50">
-                                    <p className="text-[10px] text-gray-500 uppercase font-bold mb-2">Other Accessories</p>
-                                    <div className="space-y-2">
-                                        {inventory.filter(i => i.isEquipped && (i.equipped_slot === 'Wondrous' || inferEquippedSlot(i) === 'Wondrous')).map(item => (
-                                            <div key={item.id} className="text-sm font-bold text-white leading-tight flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></div>
-                                                {item.name} {item.isAttuned && <span className="text-teal-400">★</span>}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                            {inventory.filter(i => i.isEquipped).length === 0 && (
-                                <p className="text-xs text-gray-700 italic py-4 text-center">No gear equipped</p>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="glass-card p-5 border-teal-500/20">
-                        <h3 className="text-xs font-black text-teal-500 uppercase tracking-widest mb-4">Proficiencies</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <p className="text-[10px] text-gray-500 uppercase font-bold mb-2">Armor</p>
-                                <div className="flex flex-wrap gap-1">
-                                    {armorProfs.length > 0 ? armorProfs.map(p => <span key={p} className="text-[10px] bg-emerald-900/30 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/20">{p}</span>) : <span className="text-gray-600 italic">None</span>}
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-[10px] text-gray-500 uppercase font-bold mb-2">Weapons</p>
-                                <div className="flex flex-wrap gap-1">
-                                    {weaponProfs.length > 0 ? weaponProfs.map(p => <span key={p} className="text-[10px] bg-teal-900/30 text-teal-300 px-2 py-0.5 rounded border border-teal-500/20">{p}</span>) : <span className="text-gray-600 italic">None</span>}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
             </div>
 
             {showDatabaseModal && createPortal(
