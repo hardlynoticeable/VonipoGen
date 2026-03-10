@@ -118,8 +118,7 @@ export default function TabaxiLore({ data, updateData }) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M2 12h20M5.45 5.45l13.1 13.1M18.55 5.45L5.45 18.55" /></svg>
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-emerald-300 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 4 4 1.5-1.5 2-4.5 2-4.5-1.5 2.5-3.5 3.5-3.5 3.5 0 1.5 1.5 2.5 1 4-.5 1.5-3 2.5-3 3 0 .5.5 1 1.5 1 1 0 1.5-.5 1.5-1.5s-.5-2-1-3c-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 4 4 1.5-1.5 2-4.5 2-4.5-1.5 2.5-3.5 3.5-3.5 3.5 0 1.5 1.5 2.5 1 4-.5 1.5-3 2.5-3 3 0 .5.5 1 1.5 1 2 0 3-1.5 3-3.5 0-1.5-.5-3-1-4.5s-1-4-1-4c0 1.5.5 3 1.5 4.5s2 3 2 4.5c0 3-1.5 5-4.5 5-2.5 0-4.5-1.5-4.5-4z" /><path d="M12 2c0 3.313-2.687 6-6 6s-6-2.687-6-6 2.687-6 6-6 6 2.687 6 6z" /><path d="M12 2c0 3.313 2.687 6 6 6s6-2.687 6-6-2.687-6-6-6-6 2.687-6 6z" /><path d="M12 22c0-3.313 2.687-6 6-6s6 2.687 6 6-2.687 6-6 6-6-2.687-6-6z" /><path d="M12 22c0-3.313-2.687-6-6-6s-6 2.687-6 6 2.687 6 6 6 6-2.687 6-6z" /></svg>
-                    Tabaxi Racial Traits
+                    Tabaxi Traits
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                     <div className="space-y-3">
