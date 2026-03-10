@@ -8,7 +8,7 @@ import { calculateStats } from './stats';
 export async function generateCharacterPDF(characterData) {
     try {
         const stats = calculateStats(characterData);
-        const { ac, saveBonus, profBonus, mods, nonProficientItems, hp, hitDie, passivePerception } = stats;
+        const { ac, saveBonus, profBonus, mods, nonProficientItems, maxHp, hitDie, passivePerception, knownSkills } = stats;
 
         // Fetch the blank PDF from the public/assets directory
         const url = '/assets/CharacterSheet.pdf';
@@ -96,8 +96,8 @@ export async function generateCharacterPDF(characterData) {
 
         // HP & Hit Dice
         if (charClass) {
-            setField('HPMax', hp.toString());
-            setField('HPCurrent', hp.toString());
+            setField('HPMax', maxHp.toString());
+            setField('HPCurrent', maxHp.toString());
             setField('HDTotal', `${characterData.level}d${hitDie}`);
             setField('HD', `d${hitDie}`);
         }
