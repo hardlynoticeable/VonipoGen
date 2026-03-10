@@ -35,7 +35,7 @@ export async function generateCharacterPDF(characterData) {
         setField('ProfBonus', `+${profBonus}`, 10);
         setField('Initiative', mods.dex >= 0 ? `+${mods.dex}` : mods.dex, 10);
         setField('AC', ac.toString(), 12);
-        setField('Speed', "30'", 10); // Penalty logic can be re-added if needed
+        setField('Speed', "30' / 30' (Climb)", 10);
         setField('Size', characterData.size || 'Medium', 10);
 
         // Character Lore & Personality
@@ -228,7 +228,11 @@ export async function generateCharacterPDF(characterData) {
 
         // Features and Traits
         const traitList = [
-            "Tabaxi Traits: Darkvision, Feline Agility, Cat's Claws, Cat's Talent"
+            "Tabaxi Traits:",
+            "• Darkvision (60 ft)",
+            "• Feline Agility (Double speed for a turn; recharge on 0 ft move)",
+            "• Cat's Claws (Climb 30 ft; Claws deal 1d6 + STR slashing)",
+            "• Cat's Talent (Proficiency: Perception, Stealth)"
         ];
 
         if (nonProficientItems?.length > 0) {

@@ -113,18 +113,35 @@ export default function TabaxiLore({ data, updateData }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                <div className="p-4 border border-emerald-900/50 rounded bg-emerald-900/10 hover:bg-emerald-900/20 transition-colors">
-                    <h4 className="font-bold text-emerald-400 mb-2">Feline Agility</h4>
-                    <p className="text-sm opacity-80">Double your speed for a turn in combat. Recharges when you move 0 ft on a turn.</p>
+            <div className="bg-emerald-900/10 border border-emerald-900/50 rounded-xl p-6 mt-8 relative overflow-hidden group hover:bg-emerald-900/20 transition-all duration-300">
+                <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none -translate-y-8 translate-x-8 group-hover:opacity-10 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M2 12h20M5.45 5.45l13.1 13.1M18.55 5.45L5.45 18.55" /></svg>
                 </div>
-                <div className="p-4 border border-emerald-900/50 rounded bg-emerald-900/10 hover:bg-emerald-900/20 transition-colors">
-                    <h4 className="font-bold text-emerald-400 mb-2">Cat's Claws</h4>
-                    <p className="text-sm opacity-80">Climb speed of 30 ft. Unarmed strikes deal 1d6 + STR slashing damage.</p>
-                </div>
-                <div className="p-4 border border-emerald-900/50 rounded bg-emerald-900/10 hover:bg-emerald-900/20 transition-colors">
-                    <h4 className="font-bold text-emerald-400 mb-2">Cat's Talent</h4>
-                    <p className="text-sm opacity-80">You have innate proficiency in the <span className="text-brand-400 font-semibold">Perception</span> and <span className="text-brand-400 font-semibold">Stealth</span> skills.</p>
+                <h3 className="text-xl font-bold mb-4 text-emerald-300 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 4 4 1.5-1.5 2-4.5 2-4.5-1.5 2.5-3.5 3.5-3.5 3.5 0 1.5 1.5 2.5 1 4-.5 1.5-3 2.5-3 3 0 .5.5 1 1.5 1 1 0 1.5-.5 1.5-1.5s-.5-2-1-3c-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 4 4 1.5-1.5 2-4.5 2-4.5-1.5 2.5-3.5 3.5-3.5 3.5 0 1.5 1.5 2.5 1 4-.5 1.5-3 2.5-3 3 0 .5.5 1 1.5 1 2 0 3-1.5 3-3.5 0-1.5-.5-3-1-4.5s-1-4-1-4c0 1.5.5 3 1.5 4.5s2 3 2 4.5c0 3-1.5 5-4.5 5-2.5 0-4.5-1.5-4.5-4z" /><path d="M12 2c0 3.313-2.687 6-6 6s-6-2.687-6-6 2.687-6 6-6 6 2.687 6 6z" /><path d="M12 2c0 3.313 2.687 6 6 6s6-2.687 6-6-2.687-6-6-6-6 2.687-6 6z" /><path d="M12 22c0-3.313 2.687-6 6-6s6 2.687 6 6-2.687 6-6 6-6-2.687-6-6z" /><path d="M12 22c0-3.313-2.687-6-6-6s-6 2.687-6 6 2.687 6 6 6 6-2.687 6-6z" /></svg>
+                    Tabaxi Racial Traits
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                    <div className="space-y-3">
+                        <p className="text-sm"><span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] mr-2">Creature Type:</span> <span className="text-gray-200">Humanoid</span></p>
+                        <p className="text-sm"><span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] mr-2">Size:</span> <span className="text-gray-200">Medium or Small (You choose)</span></p>
+                        <p className="text-sm"><span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] mr-2">Speed:</span> <span className="text-gray-200">30 ft, Climbing Speed 30 ft</span></p>
+                        <p className="text-sm"><span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] mr-2">Darkvision:</span> <span className="text-gray-200">60 ft</span></p>
+                    </div>
+                    <div className="space-y-3">
+                        <div className="text-sm">
+                            <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] block mb-1">Cat's Claws</span>
+                            <span className="text-gray-200 leading-relaxed italic">Your unarmed strikes deal 1d6 + STR slashing damage.</span>
+                        </div>
+                        <div className="text-sm">
+                            <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] block mb-1">Cat's Talent</span>
+                            <span className="text-gray-200 leading-relaxed italic">You have proficiency in Perception and Stealth.</span>
+                        </div>
+                        <div className="text-sm">
+                            <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] block mb-1">Feline Agility</span>
+                            <span className="text-gray-200 leading-relaxed italic">Double your speed for a turn; recharges on a 0 ft move.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
