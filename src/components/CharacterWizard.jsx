@@ -27,6 +27,8 @@ export default function CharacterWizard() {
         selectedCantrips: [],
         selectedSpells: { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] },
         inventory: [],
+        money: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
+        treasure: '',
         personalityTraits: '',
         ideals: '',
         bonds: '',

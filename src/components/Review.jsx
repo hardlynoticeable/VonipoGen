@@ -108,6 +108,33 @@ export default function Review({ data }) {
                         </ul>
                     </div>
 
+                    <div>
+                        <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Currency</p>
+                        <div className="flex gap-2 flex-wrap">
+                            {[
+                                { id: 'cp', label: 'CP', color: 'text-orange-400' },
+                                { id: 'sp', label: 'SP', color: 'text-gray-300' },
+                                { id: 'ep', label: 'EP', color: 'text-blue-300' },
+                                { id: 'gp', label: 'GP', color: 'text-yellow-400' },
+                                { id: 'pp', label: 'PP', color: 'text-teal-300' }
+                            ].map(coin => (
+                                <div key={coin.id} className="bg-black/40 px-3 py-1 rounded border border-gray-800 flex items-center gap-2">
+                                    <span className={`text-[10px] font-black ${coin.color} uppercase`}>{coin.label}</span>
+                                    <span className="text-sm font-bold text-white">{data.money?.[coin.id] || 0}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {data.treasure && (
+                        <div>
+                            <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Recorded Treasure</p>
+                            <div className="bg-black/40 p-3 rounded border border-amber-500/20">
+                                <p className="text-xs text-gray-400 italic font-medium whitespace-pre-wrap">{data.treasure}</p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Base Class Features */}
                     {CLASSES[data.class]?.features && (
                         <div>
@@ -161,6 +188,36 @@ export default function Review({ data }) {
                             </ul>
                         </div>
                     )}
+                    {/* Lore & Background */}
+                    <div className="pt-4 border-t border-gray-700/50">
+                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
+                        <div className="space-y-3">
+                            {data.personalityTraits && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
+                                </div>
+                            )}
+                            {data.ideals && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
+                                </div>
+                            )}
+                            {data.bonds && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
+                                </div>
+                            )}
+                            {data.flaws && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 

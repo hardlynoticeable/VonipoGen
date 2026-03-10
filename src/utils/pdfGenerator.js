@@ -39,11 +39,39 @@ export async function generateCharacterPDF(characterData) {
         setField('Size', characterData.size || 'Medium', 10);
 
         // Character Lore & Personality
-        setField('PersonalityTraits', characterData.personalityTraits, 9);
-        setField('Ideals', characterData.ideals, 9);
-        setField('Bonds', characterData.bonds, 9);
-        setField('Flaws', characterData.flaws, 9);
-        setField('Backstory', characterData.backstory, 9);
+        const setLoreField = (names, value, size = 8) => {
+            names.forEach(name => {
+                try {
+                    const field = form.getTextField(name);
+                    field.setText(value || '');
+                    if (size) field.setFontSize(size);
+                } catch (e) {
+                    // Fallback to generic getField if getTextField fails
+                    try {
+                        const field = form.getField(name);
+                        if (field.setText) {
+                            field.setText(value || '');
+                            if (field.setFontSize) field.setFontSize(size);
+                        }
+                    } catch (err) { }
+                }
+            });
+        };
+
+        setLoreField(['PersonalityTraits ', 'PersonalityTraits'], characterData.personalityTraits, 8);
+        setLoreField(['Ideals'], characterData.ideals, 8);
+        setLoreField(['Bonds'], characterData.bonds, 8);
+        setLoreField(['Flaws'], characterData.flaws, 8);
+        setLoreField(['ShortRest', 'Backstory'], characterData.backstory, 8);
+
+        // Currency
+        if (characterData.money) {
+            setField('CP', characterData.money.cp?.toString() || '0', 10);
+            setField('SP', characterData.money.sp?.toString() || '0', 10);
+            setField('EP', characterData.money.ep?.toString() || '0', 10);
+            setField('GP', characterData.money.gp?.toString() || '0', 10);
+            setField('PP', characterData.money.pp?.toString() || '0', 10);
+        }
 
         // Physical Characteristics
         setField('Age', characterData.age, 10);
@@ -196,6 +224,7 @@ export async function generateCharacterPDF(characterData) {
 
         const inventoryText = inventoryList.join('\n');
         setField('Treasure', inventoryText, 8);
+        setField('Equipment', characterData.treasure || '', 8);
 
         // Features and Traits
         const traitList = [

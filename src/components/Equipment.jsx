@@ -334,6 +334,51 @@ export default function Equipment({ data, updateData }) {
                             ))
                         )}
                     </div>
+
+                    {/* Currency Section */}
+                    <div className="glass-card p-5 border-amber-500/20">
+                        <h3 className="text-xs font-black text-amber-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            Currency & Funds
+                        </h3>
+                        <div className="grid grid-cols-5 gap-3">
+                            {[
+                                { id: 'cp', label: 'CP', color: 'text-orange-400', border: 'border-orange-500/20' },
+                                { id: 'sp', label: 'SP', color: 'text-gray-300', border: 'border-gray-400/20' },
+                                { id: 'ep', label: 'EP', color: 'text-blue-300', border: 'border-blue-500/20' },
+                                { id: 'gp', label: 'GP', color: 'text-yellow-400', border: 'border-yellow-500/20' },
+                                { id: 'pp', label: 'PP', color: 'text-teal-300', border: 'border-teal-500/20' }
+                            ].map(coin => (
+                                <div key={coin.id} className={`bg-black/40 p-3 rounded-xl border ${coin.border} flex flex-col items-center`}>
+                                    <label className={`text-[10px] font-black ${coin.color} mb-1 uppercase tracking-tighter`}>{coin.label}</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={data.money?.[coin.id] ?? 0}
+                                        onChange={(e) => {
+                                            const newMoney = { ...(data.money || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 }), [coin.id]: parseInt(e.target.value) || 0 };
+                                            updateData({ money: newMoney });
+                                        }}
+                                        className="w-full bg-transparent text-center text-white font-bold focus:outline-none text-lg"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Manual Treasure Section */}
+                    <div className="glass-card p-5 border-amber-500/10">
+                        <label className="block text-xs font-black text-amber-500/70 uppercase tracking-widest mb-3">Manually Recorded Treasure</label>
+                        <textarea
+                            value={data.treasure || ''}
+                            onChange={(e) => updateData({ treasure: e.target.value })}
+                            rows="4"
+                            placeholder="Gems, art objects, rare artifacts, and other non-standard gear..."
+                            className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-amber-500/40 focus:outline-none text-gray-300 transition-all resize-none"
+                        />
+                        <p className="text-[10px] text-gray-500 mt-2 italic">
+                            This text will be mapped to the formal "Equipment" or "Treasure" section of your PDF character sheet.
+                        </p>
+                    </div>
                 </main>
             </div>
 

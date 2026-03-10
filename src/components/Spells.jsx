@@ -140,7 +140,7 @@ export default function Spells({ data, updateData }) {
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();
-                                                    setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "No description available." });
+                                                    setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "Description for this spell is not available in the SRD database. Please consult your sourcebooks." });
                                                 }}
                                                 className="ml-2 text-emerald-500 hover:text-emerald-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
                                                 title="Spell Description"
@@ -225,7 +225,7 @@ export default function Spells({ data, updateData }) {
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 e.stopPropagation();
-                                                                setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "No description available." });
+                                                                setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "Description for this spell is not available in the SRD database. Please consult your sourcebooks." });
                                                             }}
                                                             className="ml-2 text-emerald-500 hover:text-emerald-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
                                                             title="Spell Description"

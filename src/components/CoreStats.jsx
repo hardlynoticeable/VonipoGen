@@ -108,23 +108,30 @@ export default function CoreStats({ data, updateData }) {
         ];
         const hairLengths = ['Short-haired', 'Medium-haired', 'Long-haired', 'Tufted'];
 
-        // Height: 5'0" to 6'10" (Tabaxi are tall/lanky)
-        const totalInches = 60 + Math.floor(Math.random() * 22);
-        const feet = Math.floor(totalInches / 12);
-        const inches = totalInches % 12;
+        // Age: 18 to 80
+        const age = 18 + Math.floor(Math.random() * 63);
 
-        // Weight: 100 to 220 lb
-        const weight = 100 + Math.floor(Math.random() * 120);
-
-        // Age: 18 to 60
-        const age = 18 + Math.floor(Math.random() * 42);
+        let heightStr, weightStr;
+        if (data.size === 'Small') {
+            // Height: 2'0" to 4'0" (24-48 inches)
+            const totalInches = 24 + Math.floor(Math.random() * 25);
+            heightStr = `${Math.floor(totalInches / 12)}'${totalInches % 12}"`;
+            // Weight: 30 to 60 lbs
+            weightStr = `${30 + Math.floor(Math.random() * 31)} lb`;
+        } else {
+            // Height: 5'0" to 7'0" (60-84 inches)
+            const totalInches = 60 + Math.floor(Math.random() * 25);
+            heightStr = `${Math.floor(totalInches / 12)}'${totalInches % 12}"`;
+            // Weight: 100 to 250 lbs
+            weightStr = `${100 + Math.floor(Math.random() * 151)} lb`;
+        }
 
         updateData({
             eyes: eyeColors[Math.floor(Math.random() * eyeColors.length)],
             skin: skinPatterns[Math.floor(Math.random() * skinPatterns.length)],
             hair: hairLengths[Math.floor(Math.random() * hairLengths.length)],
-            height: `${feet}'${inches}"`,
-            weight: `${weight} lb`,
+            height: heightStr,
+            weight: weightStr,
             age: age.toString()
         });
     };
@@ -290,43 +297,51 @@ export default function CoreStats({ data, updateData }) {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="block text-xs font-medium text-gray-500 uppercase">Age</label>
+                                <label className="block text-xs font-medium text-gray-400 uppercase">
+                                    Age <span className="text-[10px] text-gray-500 lowercase ml-1">(18 to 80 years)</span>
+                                </label>
                                 <input
                                     type="text"
                                     value={data.age || ''}
                                     onChange={(e) => updateData({ age: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder="Years"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-xs font-medium text-gray-500 uppercase">Weight</label>
+                                <label className="block text-xs font-medium text-gray-400 uppercase">
+                                    Weight <span className="text-[10px] text-gray-500 lowercase ml-1">
+                                        {data.size === 'Small' ? '(30 - 60 lbs)' : '(100 - 250 lbs)'}
+                                    </span>
+                                </label>
                                 <input
                                     type="text"
                                     value={data.weight || ''}
                                     onChange={(e) => updateData({ weight: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder="150 lb"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-xs font-medium text-gray-500 uppercase">Height</label>
+                                <label className="block text-xs font-medium text-gray-400 uppercase">
+                                    Height <span className="text-[10px] text-gray-500 lowercase ml-1">
+                                        {data.size === 'Small' ? '(2 - 4 feet)' : '(5 - 7 feet)'}
+                                    </span>
+                                </label>
                                 <input
                                     type="text"
                                     value={data.height || ''}
                                     onChange={(e) => updateData({ height: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder='6&apos;0"'
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-xs font-medium text-gray-500 uppercase">Eyes</label>
+                                <label className="block text-xs font-medium text-gray-500 uppercase">
+                                    Eyes <span className="text-[10px] text-gray-500 lowercase ml-1">(shape and color)</span>
+                                </label>
                                 <input
                                     type="text"
                                     value={data.eyes || ''}
                                     onChange={(e) => updateData({ eyes: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder="Color"
                                 />
                             </div>
                         </div>
@@ -339,7 +354,6 @@ export default function CoreStats({ data, updateData }) {
                                     value={data.skin || ''}
                                     onChange={(e) => updateData({ skin: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder="e.g. Leopard spots"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -349,7 +363,6 @@ export default function CoreStats({ data, updateData }) {
                                     value={data.hair || ''}
                                     onChange={(e) => updateData({ hair: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"
-                                    placeholder="e.g. Short-haired"
                                 />
                             </div>
                         </div>
