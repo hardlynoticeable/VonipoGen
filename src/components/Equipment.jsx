@@ -13,7 +13,7 @@ export default function Equipment({ data, updateData }) {
     const attunedCount = inventory.filter(i => i.isAttuned).length;
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('magicItems');
+    const [selectedCategory, setSelectedCategory] = useState('weapons');
     const [showDatabaseModal, setShowDatabaseModal] = useState(false);
     const [addedItemId, setAddedItemId] = useState(null);
 
@@ -449,8 +449,8 @@ export default function Equipment({ data, updateData }) {
                                     onChange={e => setSelectedCategory(e.target.value)}
                                     className="bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none"
                                 >
-                                    <option value="magicItems">Magic Items</option>
                                     <option value="weapons">Weapons</option>
+                                    <option value="magicItems">Magic Items</option>
                                     <option value="armor">Armor</option>
                                     <option value="gear">Adventuring Gear</option>
                                 </select>
