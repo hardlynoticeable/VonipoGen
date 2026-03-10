@@ -113,13 +113,13 @@ export default function TabaxiLore({ data, updateData }) {
                 </div>
             </div>
 
-            <div className="bg-emerald-900/10 border border-emerald-900/50 rounded-xl p-6 mt-8 relative overflow-hidden group hover:bg-emerald-900/20 transition-all duration-300">
+            <h3 className="text-xl font-bold mb-4 text-emerald-300">
+                Tabaxi Traits
+            </h3>
+            <div className="bg-emerald-900/10 border border-emerald-900/50 rounded-xl p-6 relative overflow-hidden group hover:bg-emerald-900/20 transition-all duration-300">
                 <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none -translate-y-8 translate-x-8 group-hover:opacity-10 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M2 12h20M5.45 5.45l13.1 13.1M18.55 5.45L5.45 18.55" /></svg>
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-emerald-300 flex items-center gap-2">
-                    Tabaxi Traits
-                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                     <div className="space-y-3">
                         <p className="text-sm"><span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px] mr-2">Creature Type:</span> <span className="text-gray-200">Humanoid</span></p>
