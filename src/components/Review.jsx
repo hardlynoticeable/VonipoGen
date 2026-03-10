@@ -92,13 +92,10 @@ export default function Review({ data }) {
                             })}
                         </div>
                     </div>
-                </div>
 
-                {/* Right Column: Stats & Traits */}
-                <div className="space-y-4 relative z-10 pl-0 md:pl-6 md:border-l border-gray-700">
-
-                    <div>
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mt-4 mb-2">Tabaxi Traits</p>
+                    {/* Tabaxi Traits */}
+                    <div className="pt-4 border-t border-gray-700/50">
+                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-2">Tabaxi Traits</p>
                         <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
                             <li><span className="text-emerald-300 font-bold">Speed:</span> 30ft Walking, 30ft Climbing</li>
                             <li><span className="text-emerald-300 font-bold">Darkvision:</span> 60ft</li>
@@ -109,33 +106,40 @@ export default function Review({ data }) {
                         </ul>
                     </div>
 
-                    <div>
-                        <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Currency</p>
-                        <div className="flex gap-2 flex-wrap">
-                            {[
-                                { id: 'cp', label: 'CP', color: 'text-orange-400' },
-                                { id: 'sp', label: 'SP', color: 'text-gray-300' },
-                                { id: 'ep', label: 'EP', color: 'text-blue-300' },
-                                { id: 'gp', label: 'GP', color: 'text-yellow-400' },
-                                { id: 'pp', label: 'PP', color: 'text-teal-300' }
-                            ].map(coin => (
-                                <div key={coin.id} className="bg-black/40 px-3 py-1 rounded border border-gray-800 flex items-center gap-2">
-                                    <span className={`text-[10px] font-black ${coin.color} uppercase`}>{coin.label}</span>
-                                    <span className="text-sm font-bold text-white">{data.money?.[coin.id] || 0}</span>
+                    {/* Lore & Background */}
+                    <div className="pt-4 border-t border-gray-700/50">
+                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
+                        <div className="space-y-3">
+                            {data.personalityTraits && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
                                 </div>
-                            ))}
+                            )}
+                            {data.ideals && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
+                                </div>
+                            )}
+                            {data.bonds && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
+                                </div>
+                            )}
+                            {data.flaws && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
+                                </div>
+                            )}
                         </div>
                     </div>
+                </div>
 
-                    {data.treasure && (
-                        <div>
-                            <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Recorded Treasure</p>
-                            <div className="bg-black/40 p-3 rounded border border-amber-500/20">
-                                <p className="text-xs text-gray-400 italic font-medium whitespace-pre-wrap">{data.treasure}</p>
-                            </div>
-                        </div>
-                    )}
-
+                {/* Right Column: Stats & Traits */}
+                <div className="space-y-4 relative z-10 pl-0 md:pl-6 md:border-l border-gray-700">
                     {/* Base Class Features */}
                     {CLASSES[data.class]?.features && (
                         <div>
@@ -189,35 +193,86 @@ export default function Review({ data }) {
                             </ul>
                         </div>
                     )}
-                    {/* Lore & Background */}
-                    <div className="pt-4 border-t border-gray-700/50">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
-                        <div className="space-y-3">
-                            {data.personalityTraits && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
-                                </div>
-                            )}
-                            {data.ideals && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
-                                </div>
-                            )}
-                            {data.bonds && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
-                                </div>
-                            )}
-                            {data.flaws && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
-                                </div>
-                            )}
+
+                    {/* Spells */}
+                    {(data.cantrips?.length > 0 || data.spells?.length > 0) && (
+                        <div className="pt-4 border-t border-gray-700/50">
+                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-2">
+                                Spells
+                            </p>
+                            <div className="space-y-3">
+                                {data.cantrips?.length > 0 && (
+                                    <div>
+                                        <p className="text-[10px] text-emerald-300/60 uppercase font-black mb-1">Cantrips</p>
+                                        <p className="text-xs text-gray-300 italic">{data.cantrips.join(', ')}</p>
+                                    </div>
+                                )}
+                                {data.spells?.length > 0 && (
+                                    <div>
+                                        <p className="text-[10px] text-emerald-300/60 uppercase font-black mb-1">Leveled Spells</p>
+                                        <p className="text-xs text-gray-300 italic">{data.spells.join(', ')}</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Bottom Section: Gear & Inventory */}
+            <div className="bg-black/20 border border-emerald-900/30 rounded-lg p-6 relative overflow-hidden">
+                <h3 className="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z" /><path d="m3.1 8.44 8.27 4.69c.4.22.9.22 1.3 0l8.24-4.69" /><path d="M12 13v9" /><path d="M4.3 17a3 3 0 0 0 2.1 5.1h11.2A3 3 0 0 0 19.7 17l-7.7-4.3Z" /></svg>
+                    Gear & Inventory
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Currency & Treasure */}
+                    <div className="space-y-4">
+                        <p className="text-sm font-bold text-amber-500 uppercase tracking-wider">Currency</p>
+                        <div className="flex gap-2 flex-wrap">
+                            {[
+                                { id: 'cp', label: 'CP', color: 'text-orange-400' },
+                                { id: 'sp', label: 'SP', color: 'text-gray-300' },
+                                { id: 'ep', label: 'EP', color: 'text-blue-300' },
+                                { id: 'gp', label: 'GP', color: 'text-yellow-400' },
+                                { id: 'pp', label: 'PP', color: 'text-teal-300' }
+                            ].map(coin => (
+                                <div key={coin.id} className="bg-black/40 px-3 py-1 rounded border border-gray-800 flex items-center gap-2">
+                                    <span className={`text-[10px] font-black ${coin.color} uppercase`}>{coin.label}</span>
+                                    <span className="text-sm font-bold text-white">{data.money?.[coin.id] || 0}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {data.treasure && (
+                            <div className="mt-4">
+                                <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Recorded Treasure</p>
+                                <div className="bg-black/40 p-3 rounded border border-amber-500/20">
+                                    <p className="text-xs text-gray-400 italic font-medium whitespace-pre-wrap">{data.treasure}</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Backpack Items */}
+                    <div className="md:col-span-2 space-y-4">
+                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Backpack Contents</p>
+                        {data.backpack?.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {data.backpack.map((item, idx) => (
+                                    <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center gap-2">
+                                        <span className="text-emerald-500/50">•</span>
+                                        <div className="flex flex-col">
+                                            <span className="font-bold text-emerald-100">{item.name}</span>
+                                            <span className="text-[10px] text-gray-500">{item.type}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-xs text-gray-500 italic">No items in backpack.</p>
+                        )}
                     </div>
                 </div>
             </div>
