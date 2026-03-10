@@ -114,6 +114,8 @@ export function calculateStats(characterData) {
 
     // Base AC calculation
     let ac = 10 + dexMod;
+    let acNote = "Base Unarmored";
+
     if (armorItem) {
         const baseAcMatch = (armorItem.AC || '').match(/^(\d+)/);
         const baseAc = baseAcMatch ? parseInt(baseAcMatch[1], 10) : 10;
@@ -123,20 +125,33 @@ export function calculateStats(characterData) {
         else if (type.includes('medium')) ac = baseAc + Math.min(dexMod, 2);
         else if (type.includes('heavy')) ac = baseAc;
         else ac = baseAc + dexMod; // fallback
+        acNote = armorItem.name || armorItem.Item;
     } else {
         // Unarmored Defense features
-        if (characterData.class === 'Monk') ac = 10 + dexMod + wisMod;
-        else if (characterData.class === 'Barbarian') ac = 10 + dexMod + conMod;
-        else if (characterData.class === 'Sorcerer' && characterData.subclass === 'Draconic Bloodline') ac = 13 + dexMod;
+        if (characterData.class === 'Monk') {
+            ac = 10 + dexMod + wisMod;
+            acNote = "Unarmored Defense (Monk)";
+        } else if (characterData.class === 'Barbarian') {
+            ac = 10 + dexMod + conMod;
+            acNote = "Unarmored Defense (Barbarian)";
+        } else if (characterData.class === 'Sorcerer' && characterData.subclass === 'Draconic Bloodline') {
+            ac = 13 + dexMod;
+            acNote = "Draconic Resilience";
+        }
     }
 
     if (shieldItem) {
         ac += 2;
+        acNote += " + Shield";
     }
 
     // Artificer Infusions (static check for now per existing logic)
     if (characterData.class === 'Artificer' && level >= 2) {
-        if (characterData.infusionDefense) ac += (level >= 10 ? 2 : 1);
+        if (characterData.infusionDefense) {
+            const infBonus = (level >= 10 ? 2 : 1);
+            ac += infBonus;
+            acNote += ` + Infusion (+${infBonus})`;
+        }
     }
 
     // Speed Calculation
@@ -160,6 +175,7 @@ export function calculateStats(characterData) {
 
     return {
         ac,
+        acNote,
         speed,
         climbSpeed,
         saveBonus,

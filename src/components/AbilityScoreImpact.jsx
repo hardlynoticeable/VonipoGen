@@ -6,17 +6,17 @@ export default function AbilityScoreImpact({ data }) {
     if (!data.class) return null;
 
     const stats = calculateStats(data);
-    const { hp, ac, speed, climbSpeed, passivePerception, mods, profBonus } = {
+    const allKnownSkills = new Set([
+        ...(data.tabaxiSkills || []),
+        ...(data.selectedClassSkills || []),
+        ...(data.backgroundSkills || [])
+    ]);
+
+    const { hp, ac, acNote, passivePerception, mods, profBonus } = {
         ...stats,
         // Calculate HP here as it is highly level/con dependent and we want immediate feedback
         hp: (CLASSES[data.class].hitDie + (Math.floor(CLASSES[data.class].hitDie / 2) + 1) * (Number(data.level) - 1) + (stats.mods.con * Number(data.level))),
-        passivePerception: 10 + stats.mods.wis + (
-            new Set([
-                ...(data.tabaxiSkills || []),
-                ...(data.selectedClassSkills || []),
-                ...(data.backgroundSkills || [])
-            ]).has('Perception') ? stats.profBonus : 0
-        )
+        passivePerception: 10 + stats.mods.wis + (allKnownSkills.has('Perception') ? stats.profBonus : 0)
     };
 
     const level = Number(data.level) || 1;
@@ -54,17 +54,6 @@ export default function AbilityScoreImpact({ data }) {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Passive Perc.</p>
                     <p className="text-3xl font-bold text-white">{passivePerception}</p>
                     <p className="text-[10px] text-gray-500 mt-1">10 + Wis Mod + Prof</p>
-                </div>
-                <div className="bg-gray-900 border border-emerald-500/30 rounded p-4 text-center relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-8 h-8 opacity-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 14 4-4-4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></svg>
-                    </div>
-                    <p className="text-xs font-bold text-emerald-400 uppercase tracking-wide mb-1">Speed</p>
-                    <div className="flex justify-center items-baseline gap-2">
-                        <p className="text-3xl font-bold text-white">{speed}</p>
-                        <span className="text-xs font-bold text-gray-500 uppercase">ft</span>
-                    </div>
-                    <p className="text-[10px] text-emerald-500/70 mt-1 font-bold">Climb: {climbSpeed} ft</p>
                 </div>
             </div>
 
