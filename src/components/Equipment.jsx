@@ -273,36 +273,30 @@ export default function Equipment({ data, updateData }) {
                                                 {(() => {
                                                     const slot = item.equipped_slot || inferEquippedSlot(item);
                                                     let detailText = item.rarity || (item.Cost ? item.Cost : 'Standard');
-                                                    let isPreview = false;
 
-                                                    if (!item.isEquipped) {
-                                                        if (slot === 'Weapon' && (item.Damage || item.damage)) {
-                                                            const isProf = weaponProfs.some(p => item.type?.includes(p)) || item.type === 'Any' || item.name === "Cat's Claws";
-                                                            const isFinesse = (item.Properties || item.properties || '').toLowerCase().includes('finesse');
-                                                            const mod = (isFinesse && stats.mods.dex > stats.mods.str) ? stats.mods.dex : stats.mods.str;
-                                                            const atk = mod + (isProf ? stats.profBonus : 0) + (Number(item.attack_bonus) || 0);
-                                                            const dmg = mod + (Number(item.damage_bonus) || 0);
-                                                            detailText = `${atk >= 0 ? '+' : ''}${atk} to hit | ${item.Damage || item.damage}${dmg >= 0 ? '+' : ''}${dmg} dmg`;
-                                                            isPreview = true;
-                                                        } else if (slot === 'Armor') {
-                                                            const baseAcMatch = (item.AC || '').match(/^(\d+)/);
-                                                            const baseAc = baseAcMatch ? parseInt(baseAcMatch[1], 10) : 10;
-                                                            const type = (item.Type || item.type || '').toLowerCase();
-                                                            let previewAc = baseAc;
-                                                            if (type.includes('light')) previewAc += stats.mods.dex;
-                                                            else if (type.includes('medium')) previewAc += Math.min(stats.mods.dex, 2);
-                                                            const shieldEquipped = inventory.some(i => i.isEquipped && (i.equipped_slot === 'Shield' || inferEquippedSlot(i) === 'Shield'));
-                                                            detailText = `${previewAc}${shieldEquipped ? ` / ${previewAc + 2}` : ''} AC`;
-                                                            isPreview = true;
-                                                        } else if (slot === 'Shield') {
-                                                            const currentAc = stats.hasShield ? stats.ac - 2 : stats.ac;
-                                                            detailText = `${currentAc} / ${currentAc + 2} AC`;
-                                                            isPreview = true;
-                                                        }
+                                                    if (slot === 'Weapon' && (item.Damage || item.damage)) {
+                                                        const isProf = weaponProfs.some(p => item.type?.includes(p)) || item.type === 'Any' || item.name === "Cat's Claws";
+                                                        const isFinesse = (item.Properties || item.properties || '').toLowerCase().includes('finesse');
+                                                        const mod = (isFinesse && stats.mods.dex > stats.mods.str) ? stats.mods.dex : stats.mods.str;
+                                                        const atk = mod + (isProf ? stats.profBonus : 0) + (Number(item.attack_bonus) || 0);
+                                                        const dmg = mod + (Number(item.damage_bonus) || 0);
+                                                        detailText = `${atk >= 0 ? '+' : ''}${atk} to hit | ${item.Damage || item.damage}${dmg >= 0 ? '+' : ''}${dmg} dmg`;
+                                                    } else if (slot === 'Armor') {
+                                                        const baseAcMatch = (item.AC || '').match(/^(\d+)/);
+                                                        const baseAc = baseAcMatch ? parseInt(baseAcMatch[1], 10) : 10;
+                                                        const type = (item.Type || item.type || '').toLowerCase();
+                                                        let previewAc = baseAc;
+                                                        if (type.includes('light')) previewAc += stats.mods.dex;
+                                                        else if (type.includes('medium')) previewAc += Math.min(stats.mods.dex, 2);
+                                                        const shieldEquipped = inventory.some(i => i.isEquipped && (i.equipped_slot === 'Shield' || inferEquippedSlot(i) === 'Shield'));
+                                                        detailText = `${previewAc}${shieldEquipped ? ` / ${previewAc + 2}` : ''} AC`;
+                                                    } else if (slot === 'Shield') {
+                                                        const currentAc = stats.hasShield ? stats.ac - 2 : stats.ac;
+                                                        detailText = `${currentAc} / ${currentAc + 2} AC`;
                                                     }
 
                                                     return (
-                                                        <p className={`text-[10px] uppercase font-black flex items-center gap-2 ${isPreview ? 'text-emerald-400' : 'text-gray-500'}`}>
+                                                        <p className="text-[10px] uppercase font-black flex items-center gap-2 text-gray-500">
                                                             {slot} • {detailText}
                                                         </p>
                                                     );
