@@ -130,14 +130,14 @@ export default function CharacterWizard() {
                 <button
                     onClick={prevStep}
                     disabled={step === 1}
-                    className="px-6 py-2 rounded border border-gray-600 hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                    className="px-8 py-2 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white disabled:opacity-30 transition-all font-medium uppercase tracking-wider text-sm"
                 >
                     Back
                 </button>
                 {step < maxSteps && (
                     <button
                         onClick={nextStep}
-                        className="px-6 py-2 rounded bg-brand-500 text-black font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                        className="px-8 py-2 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-all font-medium uppercase tracking-wider text-sm"
                     >
                         Next Step
                     </button>
