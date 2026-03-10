@@ -223,77 +223,79 @@ export default function Review({ data }) {
             <AbilityScoreImpact data={data} />
 
             {/* Bottom Section: Gear & Inventory */}
-            <div className="bg-black/20 border border-emerald-900/30 rounded-lg p-6 relative overflow-hidden">
+            <div className="mt-8 pt-8 border-t border-emerald-900/50">
                 <h3 className="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z" /><path d="m3.1 8.44 8.27 4.69c.4.22.9.22 1.3 0l8.24-4.69" /><path d="M12 13v9" /><path d="M4.3 17a3 3 0 0 0 2.1 5.1h11.2A3 3 0 0 0 19.7 17l-7.7-4.3Z" /></svg>
                     Gear & Inventory
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Currency & Treasure */}
-                    <div className="space-y-4">
-                        <p className="text-sm font-bold text-amber-500 uppercase tracking-wider">Currency</p>
-                        <div className="flex gap-2 flex-wrap">
-                            {[
-                                { id: 'cp', label: 'CP', color: 'text-orange-400' },
-                                { id: 'sp', label: 'SP', color: 'text-gray-300' },
-                                { id: 'ep', label: 'EP', color: 'text-blue-300' },
-                                { id: 'gp', label: 'GP', color: 'text-yellow-400' },
-                                { id: 'pp', label: 'PP', color: 'text-teal-300' }
-                            ].map(coin => (
-                                <div key={coin.id} className="bg-black/40 px-3 py-1 rounded border border-gray-800 flex items-center gap-2">
-                                    <span className={`text-[10px] font-black ${coin.color} uppercase`}>{coin.label}</span>
-                                    <span className="text-sm font-bold text-white">{data.money?.[coin.id] || 0}</span>
+                <div className="bg-black/20 border border-emerald-900/30 rounded-lg p-6 relative overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Currency & Treasure */}
+                        <div className="space-y-4">
+                            <p className="text-sm font-bold text-amber-500 uppercase tracking-wider">Currency</p>
+                            <div className="flex gap-2 flex-wrap">
+                                {[
+                                    { id: 'cp', label: 'CP', color: 'text-orange-400' },
+                                    { id: 'sp', label: 'SP', color: 'text-gray-300' },
+                                    { id: 'ep', label: 'EP', color: 'text-blue-300' },
+                                    { id: 'gp', label: 'GP', color: 'text-yellow-400' },
+                                    { id: 'pp', label: 'PP', color: 'text-teal-300' }
+                                ].map(coin => (
+                                    <div key={coin.id} className="bg-black/40 px-3 py-1 rounded border border-gray-800 flex items-center gap-2">
+                                        <span className={`text-[10px] font-black ${coin.color} uppercase`}>{coin.label}</span>
+                                        <span className="text-sm font-bold text-white">{data.money?.[coin.id] || 0}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {data.treasure && (
+                                <div className="mt-4">
+                                    <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Recorded Treasure</p>
+                                    <div className="bg-black/40 p-3 rounded border border-amber-500/20">
+                                        <p className="text-xs text-gray-400 italic font-medium whitespace-pre-wrap">{data.treasure}</p>
+                                    </div>
                                 </div>
-                            ))}
+                            )}
                         </div>
 
-                        {data.treasure && (
-                            <div className="mt-4">
-                                <p className="text-sm font-bold text-amber-500 uppercase tracking-wider mb-2">Recorded Treasure</p>
-                                <div className="bg-black/40 p-3 rounded border border-amber-500/20">
-                                    <p className="text-xs text-gray-400 italic font-medium whitespace-pre-wrap">{data.treasure}</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                        {/* Backpack Items */}
+                        <div className="md:col-span-2 space-y-4">
+                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Backpack Contents</p>
 
-                    {/* Backpack Items */}
-                    <div className="md:col-span-2 space-y-4">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Backpack Contents</p>
-
-                        {/* Starting Pack Contents */}
-                        {data.startingPack && STARTING_PACKS[data.startingPack] && (
-                            <div className="mb-4 bg-emerald-900/10 border border-emerald-800/30 p-3 rounded-lg">
-                                <p className="text-[10px] text-emerald-400 font-black uppercase mb-2 tracking-widest">{data.startingPack} Items</p>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                    {STARTING_PACKS[data.startingPack].map((item, idx) => (
-                                        <div key={`pack-${idx}`} className="text-[10px] text-gray-400 flex items-center gap-1.5">
-                                            <span className="w-1 h-1 rounded-full bg-emerald-500/40"></span>
-                                            {item.Item}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Individual Inventory Items */}
-                        <div className="space-y-2">
-                            {data.inventory?.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                    {data.inventory.map((item, idx) => (
-                                        <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center gap-2">
-                                            <span className="text-emerald-500/50">•</span>
-                                            <div className="flex flex-col">
-                                                <span className="font-bold text-emerald-100">{item.name}</span>
-                                                <span className="text-[10px] text-gray-500">{item.type}</span>
+                            {/* Starting Pack Contents */}
+                            {data.startingPack && STARTING_PACKS[data.startingPack] && (
+                                <div className="mb-4 bg-emerald-900/10 border border-emerald-800/30 p-3 rounded-lg">
+                                    <p className="text-[10px] text-emerald-400 font-black uppercase mb-2 tracking-widest">{data.startingPack} Items</p>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        {STARTING_PACKS[data.startingPack].map((item, idx) => (
+                                            <div key={`pack-${idx}`} className="text-[10px] text-gray-400 flex items-center gap-1.5">
+                                                <span className="w-1 h-1 rounded-full bg-emerald-500/40"></span>
+                                                {item.Item}
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            ) : (
-                                !data.startingPack && <p className="text-xs text-gray-500 italic">No items in backpack.</p>
                             )}
+
+                            {/* Individual Inventory Items */}
+                            <div className="space-y-2">
+                                {data.inventory?.length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        {data.inventory.map((item, idx) => (
+                                            <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center gap-2">
+                                                <span className="text-emerald-500/50">•</span>
+                                                <div className="flex flex-col">
+                                                    <span className="font-bold text-emerald-100">{item.name}</span>
+                                                    <span className="text-[10px] text-gray-500">{item.type}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    !data.startingPack && <p className="text-xs text-gray-500 italic">No items in backpack.</p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
