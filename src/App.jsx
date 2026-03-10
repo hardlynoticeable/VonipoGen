@@ -13,10 +13,6 @@ function App() {
           </h1>
         </div>
         <div className="flex gap-4">
-          <button className="text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2 text-sm font-medium">
-            <Sparkles className="w-4 h-4" />
-            Randomize Lore
-          </button>
         </div>
       </header>
 

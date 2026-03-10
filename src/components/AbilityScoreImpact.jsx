@@ -21,7 +21,7 @@ export default function AbilityScoreImpact({ data }) {
             </h3>
 
             {/* Top Row: Core Derived Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="bg-gray-900 border border-gray-700 rounded p-4 text-center">
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Max HP</p>
                     <p className="text-3xl font-bold text-white">{maxHp}</p>
@@ -44,6 +44,69 @@ export default function AbilityScoreImpact({ data }) {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Passive Perc.</p>
                     <p className="text-3xl font-bold text-white">{passivePerception}</p>
                     <p className="text-[10px] text-gray-500 mt-1">10 + Wis Mod + Prof</p>
+                </div>
+            </div>
+
+            {/* NEW: Mechanical Breakdown Box */}
+            <div className="bg-emerald-900/10 border border-emerald-500/20 rounded-lg p-5 mb-8">
+                <p className="text-[10px] text-emerald-500 uppercase font-black mb-4 tracking-widest flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Calculation Breakdown
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                    {/* AC Breakdown */}
+                    <div className="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                        <span className="text-xs font-bold text-gray-400 uppercase">Armor Class</span>
+                        <div className="text-right">
+                            <p className="text-xs font-mono text-white">
+                                {stats.breakdown.ac.base} (Base)
+                                {stats.breakdown.ac.dexBonus !== 0 && ` + ${stats.breakdown.ac.dexBonus} (DEX)`}
+                                {stats.breakdown.ac.shieldBonus !== 0 && ` + ${stats.breakdown.ac.shieldBonus} (Shield)`}
+                                {stats.breakdown.ac.specialBonus !== 0 && ` + ${stats.breakdown.ac.specialBonus} (Bonus)`}
+                                {stats.breakdown.ac.itemBonus !== 0 && ` + ${stats.breakdown.ac.itemBonus} (Items)`}
+                                {` = `}
+                                <span className="text-emerald-400 font-bold">{stats.breakdown.ac.total}</span>
+                            </p>
+                            <p className="text-[9px] text-gray-500 italic uppercase tracking-tighter">{stats.breakdown.ac.specialNote}</p>
+                        </div>
+                    </div>
+
+                    {/* HP Breakdown */}
+                    <div className="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                        <span className="text-xs font-bold text-gray-400 uppercase">Health Points</span>
+                        <div className="text-right">
+                            <p className="text-xs font-mono text-white">
+                                {stats.breakdown.hp.base} (L1)
+                                {level > 1 && ` + ${stats.breakdown.hp.levelBonus} (L2+)`}
+                                {stats.breakdown.hp.conBonus !== 0 && ` + ${stats.breakdown.hp.conBonus} (CON)`}
+                                {` = `}
+                                <span className="text-emerald-400 font-bold">{stats.breakdown.hp.total}</span>
+                            </p>
+                            <p className="text-[9px] text-gray-500 italic uppercase tracking-tighter">Level {level} {data.class}</p>
+                        </div>
+                    </div>
+
+                    {/* Initiative Breakdown */}
+                    <div className="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                        <span className="text-xs font-bold text-gray-400 uppercase">Initiative</span>
+                        <div className="text-right font-mono text-xs text-white">
+                            {formatMod(stats.breakdown.initiative.dexMod)} (DEX Mod)
+                            {` = `}
+                            <span className="text-emerald-400 font-bold">{formatMod(stats.breakdown.initiative.total)}</span>
+                        </div>
+                    </div>
+
+                    {/* Passive Perception Breakdown */}
+                    <div className="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                        <span className="text-xs font-bold text-gray-400 uppercase">Passive Perception</span>
+                        <div className="text-right font-mono text-xs text-white">
+                            10 (Base)
+                            {stats.breakdown.passivePerception.wisMod !== 0 && ` + ${formatMod(stats.breakdown.passivePerception.wisMod)} (WIS)`}
+                            {stats.breakdown.passivePerception.profBonus !== 0 && ` + ${stats.breakdown.passivePerception.profBonus} (Prof)`}
+                            {` = `}
+                            <span className="text-emerald-400 font-bold">{stats.breakdown.passivePerception.total}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 

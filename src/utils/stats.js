@@ -187,6 +187,49 @@ export function calculateStats(characterData) {
 
     ac += acBonus;
 
+    const breakdown = {
+        hp: {
+            base: hitDie,
+            levelBonus: (Math.floor(hitDie / 2) + 1) * (level - 1),
+            conBonus: conMod * level,
+            total: maxHp
+        },
+        ac: {
+            base: armorItem ? (parseInt((armorItem.AC || '').match(/^(\d+)/)?.[1], 10) || 10) : 10,
+            dexBonus: armorItem ? (
+                (armorItem.Type || armorItem.type || '').toLowerCase().includes('medium') ? Math.min(dexMod, 2) :
+                    (armorItem.Type || armorItem.type || '').toLowerCase().includes('heavy') ? 0 : dexMod
+            ) : dexMod,
+            shieldBonus: shieldItem ? 2 : 0,
+            itemBonus: acBonus,
+            specialBonus: 0,
+            specialNote: acNote,
+            total: ac
+        },
+        initiative: {
+            dexMod,
+            total: initiative
+        },
+        passivePerception: {
+            base: 10,
+            wisMod,
+            profBonus: knownSkills.has('Perception') ? profBonus : 0,
+            total: passivePerception
+        }
+    };
+
+    // Add special AC bonuses to breakdown
+    if (!armorItem) {
+        if (characterData.class === 'Monk') breakdown.ac.specialBonus = wisMod;
+        else if (characterData.class === 'Barbarian') breakdown.ac.specialBonus = conMod;
+        else if (characterData.class === 'Sorcerer' && characterData.subclass === 'Draconic Bloodline') {
+            breakdown.ac.base = 13;
+        }
+    }
+    if (characterData.class === 'Artificer' && level >= 2 && characterData.infusionDefense) {
+        breakdown.ac.specialBonus += (level >= 10 ? 2 : 1);
+    }
+
     return {
         ac,
         acNote,
@@ -202,7 +245,8 @@ export function calculateStats(characterData) {
         profBonus,
         mods: { str: strMod, dex: dexMod, con: conMod, int: intMod, wis: wisMod, cha: chaMod },
         activeItems,
-        nonProficientItems
+        nonProficientItems,
+        breakdown
     };
 }
 

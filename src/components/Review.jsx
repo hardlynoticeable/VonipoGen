@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { generateCharacterPDF } from '../utils/pdfGenerator';
 import AbilityScoreImpact from './AbilityScoreImpact';
 import { SUBCLASSES, CLASSES } from '../data/rules5e';
+import { STARTING_PACKS } from '../data/startingPacks';
 
 export default function Review({ data }) {
     const [downloading, setDownloading] = useState(false);
@@ -260,21 +261,40 @@ export default function Review({ data }) {
                     {/* Backpack Items */}
                     <div className="md:col-span-2 space-y-4">
                         <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Backpack Contents</p>
-                        {data.backpack?.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {data.backpack.map((item, idx) => (
-                                    <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center gap-2">
-                                        <span className="text-emerald-500/50">•</span>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-emerald-100">{item.name}</span>
-                                            <span className="text-[10px] text-gray-500">{item.type}</span>
+
+                        {/* Starting Pack Contents */}
+                        {data.startingPack && STARTING_PACKS[data.startingPack] && (
+                            <div className="mb-4 bg-emerald-900/10 border border-emerald-800/30 p-3 rounded-lg">
+                                <p className="text-[10px] text-emerald-400 font-black uppercase mb-2 tracking-widest">{data.startingPack} Items</p>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {STARTING_PACKS[data.startingPack].map((item, idx) => (
+                                        <div key={`pack-${idx}`} className="text-[10px] text-gray-400 flex items-center gap-1.5">
+                                            <span className="w-1 h-1 rounded-full bg-emerald-500/40"></span>
+                                            {item.Item}
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
-                        ) : (
-                            <p className="text-xs text-gray-500 italic">No items in backpack.</p>
                         )}
+
+                        {/* Individual Inventory Items */}
+                        <div className="space-y-2">
+                            {data.inventory?.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {data.inventory.map((item, idx) => (
+                                        <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center gap-2">
+                                            <span className="text-emerald-500/50">•</span>
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-emerald-100">{item.name}</span>
+                                                <span className="text-[10px] text-gray-500">{item.type}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                !data.startingPack && <p className="text-xs text-gray-500 italic">No items in backpack.</p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
