@@ -1,6 +1,6 @@
 # Tabaxi Character Generator
 
-A comprehensive, automated character construction tool for Dungeons & Dragons 5th Edition. This application streamlines the journey from concept to a professional, ready-to-play character sheet.
+A comprehensive, automated character construction tool for Dungeons & Dragons 5th Edition. This application streamlines the journey from concept to a polished, ready-to-play character sheet.
 
 ## Core Technical Achievements
 
@@ -29,7 +29,7 @@ A power-user interface for magic-inclined characters:
 - **Weapon Arsenal**: Tracks up to 3 active weapons with pre-calculated attack and damage rolls.
 
 ### Pro-Grade WOTC PDF Generation
-The final output is not just a summary, but a professionally form-filled Standard D&D 5e Character Sheet (WOTC):
+The final output is not just a summary, but a expertly form-filled Standard D&D 5e Character Sheet (WOTC):
 - **Perfect Mapping**: Physical traits, equipment lists, trait summaries, and currency are all automatically mapped to their official locations.
 - **Optimized Layout**: Long text fields (like Backstory and Traits) use dynamic font-sizing to ensure maximum readability within the standard PDF boxes.
 

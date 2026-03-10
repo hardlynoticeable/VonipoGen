@@ -25,3 +25,5 @@ dist-ssr
 
 # Project Backup Files
 old_project_files/
+tmp/
+*.pdf
