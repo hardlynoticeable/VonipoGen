@@ -30,6 +30,8 @@ export default function CoreStats({ data, updateData }) {
     const handleClassChange = (newClass) => {
         updateData({
             class: newClass,
+            subclass: '',
+            subclassOption: '',
             selectedClassSkills: [],
             background: '',
             backgroundSkills: [],
@@ -40,6 +42,30 @@ export default function CoreStats({ data, updateData }) {
             equippedWeapons: ['', '', ''],
             inventory: ''
         });
+    };
+
+    const handleLevelChange = (newLevelStr) => {
+        const newLevel = parseInt(newLevelStr) || 1;
+        const oldLevel = Number(data.level) || 1;
+
+        const updates = { level: newLevel };
+
+        // Subclass Cleanup: If dropping below the level they gain a specialization
+        if (data.class) {
+            const requiredLevel = CLASSES[data.class]?.subclassLevel || 3;
+            if (newLevel < requiredLevel) {
+                updates.subclass = '';
+                updates.subclassOption = '';
+            }
+        }
+
+        // Spell Cleanup: If level decreases, clear selections (limits and slots change)
+        if (newLevel < oldLevel) {
+            updates.selectedCantrips = [];
+            updates.selectedSpells = {};
+        }
+
+        updateData(updates);
     };
 
     const handleClassSkillChange = (skill) => {
@@ -101,7 +127,7 @@ export default function CoreStats({ data, updateData }) {
                                 min="1"
                                 max="20"
                                 value={data.level || 1}
-                                onChange={(e) => updateData({ level: e.target.value })}
+                                onChange={(e) => handleLevelChange(e.target.value)}
                                 className="w-full bg-gray-900 border border-gray-600 rounded px-4 py-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-white text-center"
                             />
                         </div>

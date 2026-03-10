@@ -1,13 +1,5 @@
 [
     {
-        "name": "Armor, +1",
-        "type": "Any",
-        "rarity": "Uncommon",
-        "stat_impact": "+1 bonus to AC",
-        "source": "DMG",
-        "category": "Armor and Shields"
-    },
-    {
         "name": "Shield, +1",
         "type": "Shield",
         "rarity": "Uncommon",
@@ -15,30 +7,6 @@
         "source": "DMG",
         "category": "Armor and Shields",
         "base_item": "Shield"
-    },
-    {
-        "name": "Adamantine Armor",
-        "type": "Medium or Heavy",
-        "rarity": "Uncommon",
-        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
-        "source": "DMG",
-        "category": "Armor and Shields"
-    },
-    {
-        "name": "Mithral Armor",
-        "type": "Medium or Heavy",
-        "rarity": "Uncommon",
-        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
-        "source": "DMG",
-        "category": "Armor and Shields"
-    },
-    {
-        "name": "Armor of Resistance",
-        "type": "Any",
-        "rarity": "Rare",
-        "stat_impact": "Grants Resistance to one specific damage type.",
-        "source": "DMG",
-        "category": "Armor and Shields"
     },
     {
         "name": "Armor of Invulnerability",

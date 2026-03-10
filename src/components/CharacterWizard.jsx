@@ -26,10 +26,7 @@ export default function CharacterWizard() {
         backgroundSkills: [],
         selectedCantrips: [],
         selectedSpells: { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] },
-        equippedArmor: 'None',
-        equippedShield: false,
-        equippedWeapons: ['', '', ''],
-        inventory: ''
+        inventory: []
     });
 
     useEffect(() => {
@@ -40,7 +37,10 @@ export default function CharacterWizard() {
     }, []);
 
     const hasSpells = Boolean(characterData.class && CLASSES[characterData.class]?.spellcasting);
-    const hasSubclass = Boolean(characterData.class && SUBCLASSES[characterData.class]);
+    const hasSubclass = Boolean(
+        characterData.class &&
+        SUBCLASSES[characterData.class]
+    );
 
     // Build conditional steps array dynamically
     const stepsConfig = [

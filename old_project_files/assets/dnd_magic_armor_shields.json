@@ -1,10 +1,135 @@
 [
     {
-        "name": "Armor, +1",
-        "type": "Any",
+        "name": "Padded Armor, +1",
+        "type": "Light",
         "rarity": "Uncommon",
         "stat_impact": "+1 bonus to AC",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Padded",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Leather Armor, +1",
+        "type": "Light",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Leather",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Studded Leather Armor, +1",
+        "type": "Light",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Studded Leather",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Hide Armor, +1",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Hide",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Shirt Armor, +1",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Shirt",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Scale Mail Armor, +1",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Breastplate Armor, +1",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Half Plate Armor, +1",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Ring Mail Armor, +1",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Ring Mail",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Mail Armor, +1",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Splint Armor, +1",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Plate Armor, +1",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "+1 bonus to AC",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Shield, +1",
@@ -12,28 +137,160 @@
         "rarity": "Uncommon",
         "stat_impact": "+1 bonus to AC (Total +3)",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Shield"
     },
     {
-        "name": "Adamantine Armor",
-        "type": "Medium or Heavy",
+        "name": "Adamantine Breastplate Armor",
+        "type": "Medium",
         "rarity": "Uncommon",
         "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": false,
+        "body_slot": "Armor"
     },
     {
-        "name": "Mariner’s Armor",
-        "type": "Any",
+        "name": "Adamantine Chain Mail Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Adamantine Half Plate Armor",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Adamantine Plate Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Adamantine Scale Mail Armor",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Adamantine Splint Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Crit Immunity: Any critical hit against you becomes a normal hit.",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mariner’s Leather Armor",
+        "type": "Light",
         "rarity": "Uncommon",
         "stat_impact": "Grants a Swimming Speed equal to your walking speed.",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Leather",
+        "attunement": false,
+        "body_slot": "Armor"
     },
     {
-        "name": "Mithral Armor",
-        "type": "Medium or Heavy",
+        "name": "Mariner’s Scale Mail",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "Grants a Swimming Speed equal to your walking speed.",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mariner’s Chain Mail",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Grants a Swimming Speed equal to your walking speed.",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Breastplate Armor",
+        "type": "Medium",
         "rarity": "Uncommon",
         "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Chain Mail Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Half Plate Armor",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Plate Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Scale Mail Armor",
+        "type": "Medium",
+        "rarity": "Uncommon",
+        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Mithral Splint Armor",
+        "type": "Heavy",
+        "rarity": "Uncommon",
+        "stat_impact": "Removes Stealth Disadvantage and Strength requirements.",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": false,
+        "body_slot": "Armor"
     },
     {
         "name": "Sentinel Shield",
@@ -41,14 +298,141 @@
         "rarity": "Uncommon",
         "stat_impact": "Advantage on Initiative and Wisdom (Perception) checks.",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": false,
+        "body_slot": "Shield"
     },
     {
-        "name": "Armor, +2",
-        "type": "Any",
+        "name": "Padded Armor, +2",
+        "type": "Light",
         "rarity": "Rare",
         "stat_impact": "+2 bonus to AC",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Padded",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Leather Armor, +2",
+        "type": "Light",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Leather",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Studded Leather Armor, +2",
+        "type": "Light",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Studded Leather",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Hide Armor, +2",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Hide",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Shirt Armor, +2",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Shirt",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Scale Mail Armor, +2",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Breastplate Armor, +2",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Half Plate Armor, +2",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Ring Mail Armor, +2",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Ring Mail",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Mail Armor, +2",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Splint Armor, +2",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Plate Armor, +2",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "+2 bonus to AC",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
     },
     {
         "name": "Shield, +2",
@@ -56,21 +440,100 @@
         "rarity": "Rare",
         "stat_impact": "+2 bonus to AC (Total +4)",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Shield"
     },
     {
-        "name": "Armor of Resistance",
-        "type": "Any",
+        "name": "Leather Armor of Resistance",
+        "type": "Light",
         "rarity": "Rare",
         "stat_impact": "Grants Resistance to one specific damage type.",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Leather",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
-        "name": "Armor of Vulnerability",
+        "name": "Studded Leather of Resistance",
+        "type": "Light",
+        "rarity": "Rare",
+        "stat_impact": "Grants Resistance to one specific damage type.",
+        "source": "DMG",
+        "base_item": "Studded Leather",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Breastplate of Resistance",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "Grants Resistance to one specific damage type.",
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Half Plate of Resistance",
+        "type": "Medium",
+        "rarity": "Rare",
+        "stat_impact": "Grants Resistance to one specific damage type.",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Plate Armor of Resistance",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "Grants Resistance to one specific damage type.",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Ring Mail of Vulnerability",
         "type": "Heavy",
         "rarity": "Rare",
         "stat_impact": "Resistance to one physical type; Vulnerability to the other two.",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Ring Mail",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Mail of Vulnerability",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "Resistance to one physical type; Vulnerability to the other two.",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Splint Armor of Vulnerability",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "Resistance to one physical type; Vulnerability to the other two.",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": true,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Plate Armor of Vulnerability",
+        "type": "Heavy",
+        "rarity": "Rare",
+        "stat_impact": "Resistance to one physical type; Vulnerability to the other two.",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Arrow-Catching Shield",
@@ -78,45 +541,60 @@
         "rarity": "Rare",
         "stat_impact": "+2 AC vs Ranged Attacks; can intercept attacks for allies within 5ft.",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": true,
+        "body_slot": "Shield"
     },
     {
         "name": "Dragon Scale Mail",
-        "type": "Scale Mail",
+        "type": "Medium",
         "rarity": "Rare",
         "stat_impact": "+1 bonus to AC; Resistance to dragon's element; Advantage vs Frightful Presence.",
         "source": "DMG",
-        "base_item": "Scale Mail"
+        "base_item": "Scale Mail",
+        "attunement": true,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Elven Chain",
-        "type": "Chain Shirt",
+        "type": "Medium",
         "rarity": "Rare",
         "stat_impact": "+1 bonus to AC; proficiency is granted while wearing.",
         "source": "DMG",
-        "base_item": "Chain Shirt"
+        "base_item": "Chain Shirt",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Glamoured Studded Leather",
-        "type": "Studded Leather",
+        "type": "Light",
         "rarity": "Rare",
         "stat_impact": "+1 bonus to AC; can magically disguise armor as clothing.",
         "source": "DMG",
-        "base_item": "Leather"
+        "base_item": "Studded Leather",
+        "attunement": false,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Mizzium Armor",
         "type": "Medium or Heavy",
         "rarity": "Rare",
         "stat_impact": "Crit Immunity; reduces damage from failed Strength/Constitution saves to 0.",
-        "source": "GGR"
+        "source": "GGR",
+        "attunement": false,
+        "body_slot": "Armor"
     },
     {
         "name": "Molten Bronze Skin",
         "type": "Any",
         "rarity": "Rare",
         "stat_impact": "Resistance to Fire; armor cannot be removed against your will.",
-        "source": "MOT"
+        "source": "MOT",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Shield of Missile Attraction",
@@ -124,14 +602,141 @@
         "rarity": "Rare",
         "stat_impact": "Resistance to Ranged Damage; forces all ranged attacks within 10ft to target you.",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": true,
+        "body_slot": "Shield"
     },
     {
-        "name": "Armor, +3",
-        "type": "Any",
+        "name": "Padded Armor, +3",
+        "type": "Light",
         "rarity": "Very Rare",
         "stat_impact": "+3 bonus to AC",
-        "source": "DMG"
+        "source": "DMG",
+        "base_item": "Padded",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Leather Armor, +3",
+        "type": "Light",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Leather",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Studded Leather Armor, +3",
+        "type": "Light",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Studded Leather",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Hide Armor, +3",
+        "type": "Medium",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Hide",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Shirt Armor, +3",
+        "type": "Medium",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Shirt",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Scale Mail Armor, +3",
+        "type": "Medium",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Scale Mail",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Breastplate Armor, +3",
+        "type": "Medium",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Breastplate",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Half Plate Armor, +3",
+        "type": "Medium",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Half Plate",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Ring Mail Armor, +3",
+        "type": "Heavy",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Ring Mail",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Chain Mail Armor, +3",
+        "type": "Heavy",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Chain Mail",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Splint Armor, +3",
+        "type": "Heavy",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Splint",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
+    },
+    {
+        "name": "Plate Armor, +3",
+        "type": "Heavy",
+        "rarity": "Very Rare",
+        "stat_impact": "+3 bonus to AC",
+        "source": "DMG",
+        "base_item": "Plate",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Armor"
     },
     {
         "name": "Shield, +3",
@@ -139,7 +744,10 @@
         "rarity": "Very Rare",
         "stat_impact": "+3 bonus to AC (Total +5)",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": false,
+        "ac_bonus": 3,
+        "body_slot": "Shield"
     },
     {
         "name": "Animated Shield",
@@ -147,23 +755,31 @@
         "rarity": "Very Rare",
         "stat_impact": "Protects you while leaving hands free (Bonus Action to activate).",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": true,
+        "body_slot": "Shield"
     },
     {
         "name": "Demon Armor",
-        "type": "Plate",
+        "type": "Heavy",
         "rarity": "Very Rare",
         "stat_impact": "+1 bonus to AC; Unarmed strikes deal 1d8 magical; Disadvantage vs Demons.",
         "source": "DMG",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Dwarven Plate",
-        "type": "Plate",
+        "type": "Heavy",
         "rarity": "Very Rare",
         "stat_impact": "+2 bonus to AC; can reduce forced movement by 10 feet as a reaction.",
         "source": "DMG",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": false,
+        "ac_bonus": 2,
+        "body_slot": "Armor"
     },
     {
         "name": "Spellguard Shield",
@@ -171,38 +787,49 @@
         "rarity": "Very Rare",
         "stat_impact": "Advantage on Saves vs Spells; Spell attacks have Disadvantage against you.",
         "source": "DMG",
-        "base_item": "Shield"
+        "base_item": "Shield",
+        "attunement": true,
+        "body_slot": "Shield"
     },
     {
         "name": "Crystal Armor",
         "type": "Any",
         "rarity": "Very Rare",
         "stat_impact": "Resistance to Radiant/Necrotic; sheds light; can blind attackers.",
-        "source": "FTD"
+        "source": "FTD",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Armor of Invulnerability",
-        "type": "Plate",
+        "type": "Heavy",
         "rarity": "Legendary",
         "stat_impact": "Resistance to all Non-Magical Damage; can grant 10 mins of Immunity.",
         "source": "DMG",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Plate of Etherealness",
-        "type": "Plate",
+        "type": "Heavy",
         "rarity": "Legendary",
         "stat_impact": "Allows casting of Etherealness to move through walls/planes.",
         "source": "DMG",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Armor of the Valiant Soul",
-        "type": "Plate",
+        "type": "Heavy",
         "rarity": "Legendary/Artifact",
         "stat_impact": "+1 to +3 AC (scaling); Resistance to Psychic; Immunity to Frightened.",
         "source": "CRCotN",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "ac_bonus": 1,
+        "body_slot": "Armor"
     },
     {
         "name": "Scorpion Armor",
@@ -210,7 +837,9 @@
         "rarity": "Legendary",
         "stat_impact": "+5 to Initiative; Immunity to Poison; deals damage to wearer if removed.",
         "source": "ToA",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
     },
     {
         "name": "Obsidian Flint Plate",
@@ -218,6 +847,8 @@
         "rarity": "Legendary",
         "stat_impact": "Resistance to Fire; attackers within 10ft take fire damage when hitting you.",
         "source": "PotA",
-        "base_item": "Plate"
+        "base_item": "Plate",
+        "attunement": true,
+        "body_slot": "Armor"
     }
 ]

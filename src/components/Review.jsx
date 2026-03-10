@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { generateCharacterPDF } from '../utils/pdfGenerator';
 import AbilityScoreImpact from './AbilityScoreImpact';
+import { SUBCLASSES, CLASSES } from '../data/rules5e';
 
 export default function Review({ data }) {
     const [downloading, setDownloading] = useState(false);
@@ -53,7 +54,10 @@ export default function Review({ data }) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Class</p>
-                            <p className="text-lg text-white">{data.class || 'Unknown'}</p>
+                            <p className="text-lg text-white">
+                                {data.class || 'Unknown'}
+                                {data.subclass && <span className="text-emerald-300 ml-2 text-base">({data.subclass})</span>}
+                            </p>
                         </div>
                         <div>
                             <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Level</p>
@@ -103,6 +107,60 @@ export default function Review({ data }) {
                             <li><span className="text-emerald-300 font-bold">Size:</span> {data.size}</li>
                         </ul>
                     </div>
+
+                    {/* Base Class Features */}
+                    {CLASSES[data.class]?.features && (
+                        <div>
+                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mt-4 mb-2">
+                                Class Features
+                            </p>
+                            <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                                {Object.entries(CLASSES[data.class].features)
+                                    .filter(([level]) => parseInt(level) <= data.level)
+                                    .flatMap(([_, featuresArray]) => featuresArray)
+                                    .map((feature, idx) => (
+                                        <li key={`base-feature-${idx}`} className="text-xs italic opacity-80 border-l-2 border-emerald-800 pl-2 ml-1">
+                                            {feature}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Subclass Features */}
+                    {data.subclass && SUBCLASSES[data.class]?.[data.subclass] && (
+                        <div>
+                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mt-4 mb-2">
+                                {CLASSES[data.class]?.subclassTitle || "Subclass"} Features ({data.subclass}{data.subclassOption ? `: ${data.subclassOption}` : ''})
+                            </p>
+                            <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                                {Object.entries(SUBCLASSES[data.class][data.subclass])
+                                    .filter(([key]) => key.startsWith('level') && parseInt(key.replace('level', '')) <= data.level)
+                                    .flatMap(([key, feature]) => {
+                                        const lines = feature.split('\n');
+                                        const options = SUBCLASSES[data.class][data.subclass].subclassOptions;
+
+                                        return lines.map((line, idx) => {
+                                            if (line.includes('Bonus Proficiency:') || line.includes('Spells:')) return null;
+
+                                            let content = line;
+                                            if (options && data.subclassOption && line.startsWith(`${options.title}:`)) {
+                                                const benefit = options.choices[data.subclassOption];
+                                                content = `${options.title} (${data.subclassOption}): ${benefit}`;
+                                            }
+
+                                            return (
+                                                <li key={`${key}-${idx}`} className="whitespace-pre-line text-xs italic opacity-80 border-l-2 border-emerald-800 pl-2 ml-1">
+                                                    {content}
+                                                </li>
+                                            );
+                                        });
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
 

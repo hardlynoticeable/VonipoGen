@@ -34,17 +34,22 @@ function parseCSV(content) {
 }
 
 function extractNumericBonuses(statImpact) {
-    if (!statImpact) return { ac_bonus: 0, attack_bonus: 0, damage_bonus: 0 };
+    if (!statImpact) return { ac_bonus: 0, attack_bonus: 0, damage_bonus: 0, save_bonus: 0 };
 
     let ac_bonus = 0;
     let attack_bonus = 0;
     let damage_bonus = 0;
+    let save_bonus = 0;
 
     const lowerImpact = statImpact.toLowerCase();
 
-    // AC bonuses
-    const acMatch = lowerImpact.match(/\+(\d+)\s+bonus\s+to\s+ac/i);
+    // AC bonuses - handle both "+1 bonus to AC" and "+1 AC"
+    const acMatch = lowerImpact.match(/\+(\d+)\s+(?:bonus\s+to\s+)?ac/i);
     if (acMatch) ac_bonus = parseInt(acMatch[1], 10);
+
+    // Save bonuses - handle "+1 bonus to Saving Throws" and "+1 to all Saving Throws"
+    const saveMatch = lowerImpact.match(/\+(\d+)\s+(?:bonus\s+to\s+|to\s+all\s+)?saving\s+throws/i);
+    if (saveMatch) save_bonus = parseInt(saveMatch[1], 10);
 
     // Weapon attack/damage bonuses
     const atkDmgMatch = lowerImpact.match(/\+(\d+)\s+bonus\s+to\s+attack\s+and\s+damage/i);
@@ -56,10 +61,36 @@ function extractNumericBonuses(statImpact) {
     // Spell attack bonuses
     const spellAtkMatch = lowerImpact.match(/\+(\d+)\s+bonus\s+to\s+spell\s+attack/i);
     if (spellAtkMatch) {
-        attack_bonus = parseInt(spellAtkMatch[1], 10); // Treating as generic attack bonus for now, we'll need UI logic to distinguish
+        attack_bonus = parseInt(spellAtkMatch[1], 10);
     }
 
-    return { ac_bonus, attack_bonus, damage_bonus };
+    return { ac_bonus, attack_bonus, damage_bonus, save_bonus };
+}
+
+function inferBodySlot(item) {
+    const lowerName = (item.name || item.Item || '').toLowerCase();
+    const lowerType = (item.Type || item.type || '').toLowerCase();
+    const category = (item.category || '').toLowerCase();
+
+    if (category === 'rings' || lowerType.includes('ring')) return 'Ring';
+
+    if (category === 'armor and shields' || lowerType.includes('armor') || lowerType.includes('shield')) {
+        if (lowerName.includes('shield') || lowerType.includes('shield')) return 'Shield';
+        return 'Armor';
+    }
+
+    // Weapons
+    if (category === 'weapons' || lowerType.includes('weapon')) return 'Weapon';
+
+    // Wondrous items slot inference
+    if (lowerName.includes('boots') || lowerName.includes('slippers') || lowerName.includes('shoes')) return 'Feet';
+    if (lowerName.includes('gloves') || lowerName.includes('gauntlets') || lowerName.includes('bracers')) return 'Hands';
+    if (lowerName.includes('helm') || lowerName.includes('hat') || lowerName.includes('cap') || lowerName.includes('circlet') || lowerName.includes('goggles') || lowerName.includes('diadem')) return 'Head';
+    if (lowerName.includes('cloak') || lowerName.includes('cape') || lowerName.includes('robe') || lowerName.includes('mantle')) return 'Back';
+    if (lowerName.includes('amulet') || lowerName.includes('necklace') || lowerName.includes('periapt') || lowerName.includes('pendant') || lowerName.includes('talisman')) return 'Neck';
+    if (lowerName.includes('belt') || lowerName.includes('girdle')) return 'Waist';
+
+    return 'Wondrous';
 }
 
 function inferItemType(magicItem, equipmentSets) {
@@ -71,15 +102,42 @@ function inferItemType(magicItem, equipmentSets) {
     const lowerType = (magicItem.type || '').toLowerCase();
     const explicitBase = (magicItem.base_item || '').toLowerCase();
 
+    // Mapping for generic types to common base items for stat inheritance
+    const genericMappings = {
+        'axe': 'battleaxe',
+        'hammer': 'warhammer',
+        'sword': 'longsword',
+        'mace': 'mace',
+        'dagger': 'dagger',
+        'spear': 'spear',
+        'bow': 'longbow',
+        'crossbow': 'light crossbow',
+        'trident': 'spear', // Fallback for trident stats if not in weapons.csv
+        'javelin': 'javelin'
+    };
+
+    let targetBase = explicitBase;
+    if (!targetBase && lowerType !== 'any') {
+        // Try to find a keyword in type or name to find a base item for stats
+        for (const [key, val] of Object.entries(genericMappings)) {
+            if (lowerType.includes(key) || lowerName.includes(key)) {
+                targetBase = val;
+                break;
+            }
+        }
+    }
+
     // Look through base weapons to map sword, axe, bow, etc.
     for (const wep of equipmentSets.weapons) {
         const wepLower = (wep.Item || '').toLowerCase();
 
-        // Exact match against base_item, OR fallback to name/type string matching
+        // Exact match against base_item/targetBase, OR fallback to name/type string matching
         let matchFound = false;
-        if (explicitBase) {
-            matchFound = (wepLower === explicitBase);
+        if (targetBase) {
+            matchFound = (wepLower === targetBase);
         } else {
+            // Check if name or type contains the weapon name
+            // e.g. "Dagger of Venom" contains "Dagger"
             matchFound = lowerName.includes(wepLower) ||
                 lowerType.includes(wepLower) ||
                 ((lowerName.includes('sword') || lowerType.includes('sword')) && wepLower === 'longsword');
@@ -91,6 +149,13 @@ function inferItemType(magicItem, equipmentSets) {
             inferredDamage = wep.Damage;
             break;
         }
+    }
+
+    // Special case for generic "Weapon, +X" or items that failed to match
+    if (!inferredType && (lowerName.includes('weapon') || lowerType === 'any')) {
+        inferredType = 'Any';
+        // Default to some generic damage if none found, to avoid empty strings
+        if (!inferredDamage) inferredDamage = '1d6';
     }
 
     // Look through base armors
@@ -108,6 +173,10 @@ function inferItemType(magicItem, equipmentSets) {
             if (matchFound) {
                 inferredType = arm.Type;
                 inferredProperties = arm.Properties;
+                // Add AC from base item if not present
+                if (!magicItem.AC && arm.AC) {
+                    magicItem.AC = arm.AC;
+                }
                 break;
             }
         }
@@ -116,11 +185,12 @@ function inferItemType(magicItem, equipmentSets) {
     return {
         inferredType: inferredType || magicItem.type,
         inferredProperties: inferredProperties || magicItem.Properties || '',
-        inferredDamage: inferredDamage || magicItem.Damage || ''
+        inferredDamage: inferredDamage || magicItem.Damage || '',
+        inferredAC: magicItem.AC || ''
     };
 }
 
-const ASSETS_DIR = path.join(__dirname, '../../assets');
+const ASSETS_DIR = path.join(__dirname, '../old_project_files/assets');
 const OUTPUT_FILE = path.join(__dirname, '../src/data/equipment.js');
 
 try {
@@ -132,22 +202,38 @@ try {
         magicItems: []
     };
 
-    // Load all magic item json files
-    const files = fs.readdirSync(ASSETS_DIR);
-    files.forEach(file => {
+    // process items to extract numeric bonuses
+    equipment.magicItems = [];
+    const magicFiles = fs.readdirSync(ASSETS_DIR);
+    magicFiles.forEach(file => {
         if (file.startsWith('dnd_') && file.endsWith('.json')) {
             const content = fs.readFileSync(path.join(ASSETS_DIR, file), 'utf8');
             try {
                 const items = JSON.parse(content);
-                // process items to extract numeric bonuses
+
+                let defaultCategory = '';
+                if (file.includes('armor_shields')) defaultCategory = 'Armor and Shields';
+                if (file.includes('weapons')) defaultCategory = 'Weapons';
+                if (file.includes('potions')) defaultCategory = 'Potions';
+                if (file.includes('rings')) defaultCategory = 'Rings';
+                if (file.includes('rods')) defaultCategory = 'Rods';
+                if (file.includes('scrolls')) defaultCategory = 'Scrolls';
+                if (file.includes('staves')) defaultCategory = 'Staves';
+                if (file.includes('wands')) defaultCategory = 'Wands';
+                if (file.includes('wondrous_items')) defaultCategory = 'Wondrous Items';
+
                 const processedItems = items.map(item => {
                     const bonuses = extractNumericBonuses(item.stat_impact);
-                    const { inferredType, inferredProperties, inferredDamage } = inferItemType(item, equipment);
+                    const { inferredType, inferredProperties, inferredDamage, inferredAC } = inferItemType(item, equipment);
+                    const body_slot = inferBodySlot({ ...item, category: item.category || defaultCategory, type: inferredType });
                     return {
+                        category: item.category || defaultCategory,
                         ...item,
                         type: inferredType,
                         Properties: inferredProperties,
                         Damage: inferredDamage,
+                        AC: inferredAC,
+                        body_slot,
                         ...bonuses
                     };
                 });
@@ -157,6 +243,27 @@ try {
             }
         }
     });
+
+    // Assign body_slots to base items
+    equipment.armor = equipment.armor.map(item => ({
+        ...item,
+        body_slot: inferBodySlot({ ...item, category: 'Armor and Shields' })
+    }));
+    equipment.weapons = equipment.weapons.map(item => ({
+        ...item,
+        body_slot: 'Weapon'
+    }));
+
+    // De-duplicate magic items by name (keep first occurrence)
+    const uniqueMagicItems = [];
+    const seenNames = new Set();
+    for (const item of equipment.magicItems) {
+        if (!seenNames.has(item.name)) {
+            uniqueMagicItems.push(item);
+            seenNames.add(item.name);
+        }
+    }
+    equipment.magicItems = uniqueMagicItems;
 
     const outputContent = `// AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 // Run scripts/parseEquipment.cjs to update
