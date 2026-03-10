@@ -82,6 +82,10 @@ export default function CharacterWizard() {
     const maxSteps = stepsConfig.length;
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [step]);
+
+    useEffect(() => {
         if (step > maxSteps) setStep(maxSteps);
     }, [maxSteps, step]);
 
