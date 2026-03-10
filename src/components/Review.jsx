@@ -107,36 +107,6 @@ export default function Review({ data }) {
                         </ul>
                     </div>
 
-                    {/* Lore & Background */}
-                    <div className="pt-4 border-t border-gray-700/50">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
-                        <div className="space-y-3">
-                            {data.personalityTraits && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
-                                </div>
-                            )}
-                            {data.ideals && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
-                                </div>
-                            )}
-                            {data.bonds && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
-                                </div>
-                            )}
-                            {data.flaws && (
-                                <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
-                                    <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
                 </div>
 
                 {/* Right Column: Stats & Traits */}
@@ -227,6 +197,37 @@ export default function Review({ data }) {
                             </div>
                         );
                     })()}
+
+                    {/* Lore & Background */}
+                    <div className="pt-4 border-t border-gray-700/50">
+                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
+                        <div className="space-y-3">
+                            {data.personalityTraits && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
+                                </div>
+                            )}
+                            {data.ideals && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
+                                </div>
+                            )}
+                            {data.bonds && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
+                                </div>
+                            )}
+                            {data.flaws && (
+                                <div>
+                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
+                                    <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 
