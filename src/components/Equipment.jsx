@@ -111,7 +111,7 @@ export default function Equipment({ data, updateData }) {
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
                 <div>
                     <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase tracking-tighter">
-                        Inventory & Arsenal
+                        Inventory
                     </h2>
                     <p className="text-gray-500 text-sm mt-1">Manage your gear, attunement, and equipped items.</p>
                 </div>
