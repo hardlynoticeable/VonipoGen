@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SUBCLASSES, CLASSES } from '../data/rules5e';
 
 export default function SubclassSelector({ data, updateData }) {
     const charClass = data.class;
     const subclasses = SUBCLASSES[charClass] || {};
     const subclassTitle = CLASSES[charClass]?.subclassTitle || "Subclass";
+    const optionsRef = useRef(null);
 
     const requiredLevel = CLASSES[charClass]?.subclassLevel || 3;
     const isRestricted = data.level < requiredLevel;
+
+    useEffect(() => {
+        if (data.subclass && subclasses[data.subclass]?.subclassOptions && optionsRef.current) {
+            optionsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [data.subclass]);
 
     const handleSelect = (subclassName) => {
         if (isRestricted) return;
@@ -98,7 +105,7 @@ export default function SubclassSelector({ data, updateData }) {
 
             {/* Subclass Options Selection */}
             {data.subclass && subclasses[data.subclass]?.subclassOptions && !isRestricted && (
-                <div className="mt-8 p-6 bg-emerald-900/20 border border-emerald-500/30 rounded-xl animate-fade-in">
+                <div ref={optionsRef} className="mt-8 p-6 bg-emerald-900/20 border border-emerald-500/30 rounded-xl animate-fade-in shadow-[0_0_30px_rgba(16,185,129,0.1)]">
                     <div className="mb-4">
                         <h3 className="text-xl font-bold text-emerald-400">{subclasses[data.subclass].subclassOptions.title}</h3>
                         <p className="text-sm text-gray-400">{subclasses[data.subclass].subclassOptions.description}</p>

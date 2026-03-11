@@ -4,9 +4,11 @@ import AbilityScoreImpact from './AbilityScoreImpact';
 import { SUBCLASSES, CLASSES } from '../data/rules5e';
 import { checkProficiency } from '../utils/stats';
 import { STARTING_PACKS } from '../data/startingPacks';
+import { getCharacterWarnings } from '../utils/validation';
 
 export default function Review({ data }) {
     const [downloading, setDownloading] = useState(false);
+    const warnings = getCharacterWarnings(data);
 
     const handleDownload = async () => {
         setDownloading(true);
@@ -39,6 +41,24 @@ export default function Review({ data }) {
                     {downloading ? 'Generating PDF...' : 'Generate Character & PDF!'}
                 </button>
             </div>
+
+            {/* Warnings Section */}
+            {warnings.length > 0 && (
+                <div className="bg-amber-900/20 border border-amber-500/50 rounded-lg p-4 mb-6 animate-pulse-slow">
+                    <div className="flex items-center gap-3 mb-3 text-amber-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+                        <h3 className="font-bold uppercase tracking-wider text-sm">Review Warnings</h3>
+                    </div>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                        {warnings.map((warning, idx) => (
+                            <li key={idx} className="text-xs text-amber-200/80 flex items-start gap-2">
+                                <span className="text-amber-500 mt-0.5">•</span>
+                                {warning}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <div className="bg-emerald-900/10 border border-emerald-800/50 rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8 relative overflow-hidden">
                 {/* Background graphic */}

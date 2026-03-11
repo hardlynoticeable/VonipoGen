@@ -397,6 +397,50 @@ export const SUBCLASSES = {
                 },
                 description: "Choose a spirit animal to guide you."
             }
+        },
+        'Path of the Ancestral Guardian': {
+            description: 'You draw on the spirits of your ancestors to protect your tribe and your allies.',
+            level3: 'Ancestral Protectors: While raging, the first creature you hit each turn has disadvantage on attacks against others and deals half damage.',
+            level6: 'Spirit Shield: Use a reaction while raging to reduce damage to an ally within 30ft by 2d6 (increases at later levels).',
+            level10: 'Consult the Spirits: Cast Clairvoyance or Augury as a ritual.',
+            level14: 'Vengeful Ancestors: Your Spirit Shield reflects back the damage reduced to the attacker.'
+        },
+        'Path of the Beast': {
+            description: 'The spirit of a beast flourishes within you when you rage, manifesting as a primal transformation.',
+            level3: 'Form of the Beast: Manifest a natural weapon when you rage (Bite, Claws, or Tail) with unique benefits.',
+            level6: 'Bestial Soul: Your natural weapons count as magical. At the end of a rest, gain a swimming, climbing, or jumping benefit.',
+            level10: 'Infectious Fury: When you hit with a natural weapon, force the target to attack another creature or take psychic damage.',
+            level14: 'Call the Hunt: Grant temporary HP to yourself and allies, and allies deal extra damage when you are raging.'
+        },
+        'Path of the Storm Herald': {
+            description: 'You channel your rage into a mantel of primal magic that swirls around you, echoing the power of nature.',
+            level3: 'Storm Aura: While raging, create a 10ft aura (Desert, Sea, or Tundra) with recurring effects.',
+            level6: 'Storm Soul: Gain damage resistance and a situational benefit based on your chosen environment.',
+            level10: 'Shielding Storm: Allies in your aura gain the damage resistance from your Storm Soul.',
+            level14: 'Raging Storm: Your aura gains an additional powerful effect to hinder enemies.',
+            subclassOptions: {
+                title: "Storm Environment",
+                choices: {
+                    "Desert": "Aura deals fire damage to enemies. Gain fire resistance and can set objects on fire.",
+                    "Sea": "Aura deals lightning damage to one target. Gain lightning resistance and swimming speed.",
+                    "Tundra": "Aura grants temporary HP to allies. Gain cold resistance and can freeze water."
+                },
+                description: "Choose an environment that shapes your storm."
+            }
+        },
+        'Path of the Wild Magic': {
+            description: 'Your rage stems from the wild, chaotic forces of the multiverse that course through you.',
+            level3: 'Magical Awareness: Sense magic within 60ft as an action.\nWild Surge: Roll on the Wild Magic Table when you enter a rage.',
+            level6: 'Bolstering Magic: Use an action to grant an ally a d3 bonus to attacks/checks or regain a spell slot.',
+            level10: 'Unstable Backlash: When you take damage or fail a save while raging, trigger a new Wild Surge (reaction).',
+            level14: 'Controlled Surge: Roll twice on the Wild Surge table and choose the effect.'
+        },
+        'Path of the Zealot': {
+            description: 'You are fueled by a religious fervor that makes you a terror on the battlefield.',
+            level3: 'Divine Fury: Deal extra necrotic or radiant damage to the first target you hit each turn while raging.\nWarrior of the Gods: Spells used to resurrect you don\'t require material components.',
+            level6: 'Fanatical Focus: Reroll a failed saving throw once per rage.',
+            level10: 'Zealous Presence: Use a bonus action to grant advantage on attacks and saves to allies within 60ft for one turn.',
+            level14: 'Rage beyond Death: While raging, having 0 HP doesn\'t knock you unconscious.'
         }
     },
     Bard: {
@@ -411,55 +455,162 @@ export const SUBCLASSES = {
             weaponProficiencies: ['Martial Melee', 'Martial Ranged'],
             level3: 'Bonus Proficiencies: Medium armor, shields, and martial weapons.\nCombat Inspiration: Allies can add inspiration die to damage or AC.',
             level6: 'Extra Attack: Attack twice when you take the Attack action.'
+        },
+        'College of Creation': {
+            description: 'Bards of this college believe the multiverse was created through a Song of Creation, and they tap into that ancient song.',
+            level3: 'Mote of Potential: Your Bardic Inspiration grants an extra benefit (Attack roll, Check, or Save).\nPerformance of Creation: Create a nonmagical item as an action.',
+            level6: 'Animating Performance: Animate a nonmagical object to fight for you.',
+            level14: 'Creative Crescendo: Create multiple items and larger items with Performance of Creation.'
+        },
+        'College of Eloquence': {
+            description: 'Adherents of the College of Eloquence master the art of oratory, using their words to influence and inspire.',
+            level3: 'Silver Tongue: Treat a roll of 9 or lower on Persuasion or Deception as a 10.\nUnsettling Words: Use Bardic Inspiration to reduce a creature\'s next saving throw.',
+            level6: 'Unfailing Inspiration: Your inspiration die is not lost if the roll still fails.\nUniversal Speech: Any creature can understand you for 1 hour.',
+            level14: 'Infectious Inspiration: When a creature succeeds using your inspiration, you can use a reaction to give inspiration to a different creature.'
+        },
+        'College of Glamour': {
+            description: 'Bards who master the magic of the Feywild to weave themes of beauty and terror into their performances.',
+            level3: 'Mantle of Inspiration: Use a bonus action to grant temporary HP and move allies without provoking opportunity attacks.\nEnthralling Performance: Charm a group of people with a 1-minute performance.',
+            level6: 'Mantle of Majesty: Cast Command as a bonus action every turn for 1 minute.',
+            level14: 'Unbreakable Majesty: Creatures have difficulty attacking you and are charmed if they fail a save after attacking.'
+        },
+        'College of Spirits': {
+            description: 'You draw on the stories of spirits from the past, acting as a medium to bring their tales to life.',
+            level3: 'Guiding Whispers: Gain the Guidance cantrip (60ft range).\nSpiritual Focus: Use a candle, crystal ball, or skull as a focus, adding 1d6 to healing/damage rolls.\nTales from Beyond: Use a bonus action to roll on the Spirits\' Tales table for a unique effect.',
+            level6: 'Spirit Session: Conduct a ritual to learn a spell from any class list temporarily.',
+            level14: 'Mystical Connection: Roll twice on the Spirits\' Tales table.'
+        },
+        'College of Swords': {
+            description: 'Commonly known as bladesingers, these bards use their weapons to perform dazzling displays of martial prowess.',
+            armorProficiencies: ['Medium'],
+            weaponProficiencies: ['Scimitar'],
+            level3: 'Bonus Proficiencies: Medium armor and scimitar.\nFighting Style: Choose Dueling or Two-Weapon Fighting.\nBlade Flourish: Use Bardic Inspiration to perform Defensive, Slashing, or Mobile Flourishes.',
+            level6: 'Extra Attack: Attack twice when you take the Attack action.',
+            level14: 'Master\'s Flourish: Use a d6 for Blade Flourishes instead of a Bardic Inspiration die.'
+        },
+        'College of Whispers': {
+            description: 'Bards of the College of Whispers appear like any other bard, but they use their magic to uncover secrets and terrorize their enemies.',
+            level3: 'Psychic Blades: When you hit a creature with a weapon attack, spend a Bardic Inspiration die to deal extra psychic damage.\nWords of Terror: Speak to a creature for 1 minute to make it frightened of you or another creature.',
+            level6: 'Mantle of Whispers: Capture a shadow of a dead creature to magically disguise yourself as them.',
+            level14: 'Shadow Lore: Use an action to whisper to a creature, charming it into serving you for 8 hours.'
         }
     },
     Druid: {
-        'Circle of the Land': {
-            description: 'A circle of mystics and sages who safeguard ancient knowledge and rites.',
-            level2: 'Bonus Cantrip: Learn one additional druid cantrip.\nNatural Recovery: Regain spell slots on a short rest.',
-            level3: 'Circle Spells: Access to always-prepared spells based on your chosen terrain.'
-        },
         'Circle of the Moon': {
             description: 'Druids of the Circle of the Moon are fierce guardians of the wilds.',
             level2: 'Combat Wild Shape: Transform as a bonus action and heal with spell slots.\nCircle Forms: Transform into more powerful beasts (CR 1).',
             level6: 'Primal Strike: Your attacks in beast form count as magical.'
+        },
+        'Circle of Dreams': {
+            description: 'Druids who fill the world with the soft light of the Feywild, tending to the wounds of the weary.',
+            level2: 'Balm of the Summer Court: Use a pool of energy (d6s) to heal and grant temporary HP to allies within 120ft.',
+            level6: 'Hearth of Moonlight and Shadow: Create a magical camp that grants bonuses to Stealth and Perception.',
+            level10: 'Hidden Paths: Teleport yourself or an ally as a bonus action.'
+        },
+        'Circle of the Shepherd': {
+            description: 'You commune with the spirits of nature, focusing on the protection of animals and fey.',
+            level2: 'Speech of the Woods: Understand and speak to beasts and learn Sylvan.\nSpirit Totem: Summon a Bear, Hawk, or Unicorn spirit to grant benefits in an aura.',
+            level6: 'Mighty Summoner: Creatures you summon have more HP and their attacks count as magical.',
+            level10: 'Guardian Spirit: Your Spirit Totem heals your summoned creatures.'
+        },
+        'Circle of Spores': {
+            description: 'You find beauty in decay, using fungal spores to animate the dead and strike your enemies.',
+            spells: {
+                2: ['Blindness/Deafness', 'Gentle Repose'],
+                3: ['Animate Dead', 'Gaseous Form'],
+                4: ['Blight', 'Confusion'],
+                5: ['Cloudkill', 'Contagion']
+            },
+            level2: 'Circle Spells: Learn the Chill Touch cantrip and gain domain spells.\nHalo of Spores: Use a reaction to deal necrotic damage to a nearby creature.\nSymbiotic Entity: Gain temporary HP and deal extra necrotic damage when you use Wild Shape to awaken your spores.',
+            level6: 'Fungal Infestation: Animate a small or medium creature that dies nearby into a zombie.',
+            level10: 'Spreading Spores: Throw your Halo of Spores to a point within 30ft.'
+        },
+        'Circle of Stars': {
+            description: 'You study the patterns of the stars, drawing on the power of the constellations to shape your magic.',
+            level2: 'Star Map: Gain the Guidance and Guiding Bolt spells (can cast Guiding Bolt for free).\nStarry Form: Use Wild Shape to take an Archer, Chalice, or Dragon form for unique benefits.',
+            level6: 'Cosmic Omen: Roll a d6 to gain a Weal or Woe effect after a long rest.',
+            level10: 'Twinkling Constellations: Your Starry Form benefits improve and you can switch forms each turn.'
+        },
+        'Circle of Wildfire': {
+            description: 'You understand that destruction is a necessary part of creation, using fire to both harm and heal.',
+            spells: {
+                2: ['Burning Hands', 'Cure Wounds'],
+                3: ['Flaming Sphere', 'Scorching Ray'],
+                4: ['Plant Growth', 'Revivify'],
+                5: ['Aura of Life', 'Fire Shield'],
+                6: ['Flame Strike', 'Mass Cure Wounds']
+            },
+            level2: 'Circle Spells: Gain extra spells.\nSummon Wildfire Spirit: Use Wild Shape to summon a spirit of flame that deals damage and can teleport allies.',
+            level6: 'Enhanced Bond: Your spells deal extra damage or healing when your wildfire spirit is active.',
+            level10: 'Cauterizing Flames: When a creature dies nearby, a spectral flame appears that can heal or damage another creature.'
         }
     },
     Artificer: {
         'Alchemist': {
             description: 'An expert at combining reagents to produce magical effects, healing draughts, and toxic fumes.',
-            spells: { 1: ['Healing Word', 'Ray of Sickness'] },
+            spells: {
+                1: ['Healing Word', 'Ray of Sickness'],
+                2: ['Flaming Sphere', 'Melf\'s Acid Arrow'],
+                3: ['Gaseous Form', 'Mass Healing Word'],
+                4: ['Blight', 'Death Ward'],
+                5: ['Cloudkill', 'Raise Dead']
+            },
             level3: 'Tool Proficiency: Alchemist\'s supplies\nExperimental Elixir: Create magical elixirs when you finish a long rest or by expending spell slots.',
-            level5: 'Alchemical Savant: Add your Intelligence modifier to rolls that heal or deal acid, fire, necrotic, or poison damage when casting through alchemist\'s supplies.'
+            level5: 'Alchemical Savant: Add your Intelligence modifier to rolls that heal or deal acid, fire, necrotic, or poison damage when casting through alchemist\'s supplies.',
+            level9: 'Restorative Libations: Elixirs now grant temporary HP, and you can cast Lesser Restoration without expending a spell slot.',
+            level15: 'Chemical Mastery: Gain resistance to acid and poison damage, immunity to the poisoned condition, and cast Greater Restoration and Heal once per day.'
         },
         'Armorer': {
             description: 'Your magic functions like technology, bonding with heavy armor to refine it into a magical second skin.',
             armorProficiencies: ['Heavy'],
-            spells: { 1: ['Magic Missile', 'Thunderwave'] },
-            level1: 'Bonus Proficiency: Heavy Armor, Smith\'s tools.',
-            level3: 'Arcane Armor: Turn armor into magical power armor\nArmor Model:\n[ ] Guardian (Thunder Gauntlets)\n[ ] Infiltrator (Lightning Launcher)',
+            spells: {
+                1: ['Magic Missile', 'Thunderwave'],
+                2: ['Mirror Image', 'Shatter'],
+                3: ['Hypnotic Pattern', 'Lightning Bolt'],
+                4: ['Fire Shield', 'Greater Invisibility'],
+                5: ['Passwall', 'Wall of Force']
+            },
+            level3: 'Tools of the Trade: Smith\'s tools proficiency.\nArcane Armor: Turn armor into magical power armor, ignoring Strength requirements.\nArmor Model: Choose Guardian (defense) or Infiltrator (stealth).',
             level5: 'Extra Attack: Attack twice when you take the Attack action on your turn.',
+            level9: 'Armor Modifications: Your Arcane Armor counts as separate items for infusions.',
+            level15: 'Perfected Armor: Your Armor Model gains powerful new benefits.',
             subclassOptions: {
                 title: "Armor Model",
                 choices: {
                     "Guardian": "Thunder Gauntlets (1d8 thunder) that impose disadvantage on target's next attack against others.",
-                    "Infiltrator": "Lightning Launcher (1d6 lightning) that deals extra damage once per turn and increases speed."
+                    "Infiltrator": "Lightning Launcher (1d6 lightning) that deals extra damage once per turn and increases speed by 5ft."
                 },
                 description: "Guardian for defense, Infiltrator for stealth and speed."
             }
         },
         'Artillerist': {
             description: 'A master of magical artillery, hurling energy across the battlefield and commanding eldritch cannons.',
-            level3: 'Tool Proficiency: Woodcarver\'s tools\nArtillerist Spells: Shield, Thunderwave\nEldritch Cannon: Create a small or tiny magical cannon (Flamethrower, Force Ballista, or Protector).',
-            level5: 'Arcane Firearm: Turn a wand, staff, or rod into a firearm, adding 1d8 to its damage rolls.'
+            spells: {
+                1: ['Shield', 'Thunderwave'],
+                2: ['Scorching Ray', 'Shatter'],
+                3: ['Fireball', 'Wind Wall'],
+                4: ['Ice Storm', 'Wall of Fire'],
+                5: ['Cone of Cold', 'Wall of Force']
+            },
+            level3: 'Tool Proficiency: Woodcarver\'s tools\nEldritch Cannon: Create a small or tiny magical cannon (Flamethrower, Force Ballista, or Protector).',
+            level5: 'Arcane Firearm: Turn a wand, staff, or rod into a firearm, adding 1d8 to its damage rolls.',
+            level9: 'Explosive Cannon: Eldritch Cannon damage increases by 1d8, and you can detonate it.',
+            level15: 'Fortified Position: You can have two cannons at once, and they provide half cover to nearby allies.'
         },
         'Battle Smith': {
             description: 'A protector and medic who fights on the front lines alongside a mechanical companion.',
             weaponProficiencies: ['Martial Melee', 'Martial Ranged'],
-            spells: { 1: ['Heroism', 'Shield'] },
-            level1: 'Bonus Proficiency: Martial Weapons, Smith\'s tools.',
-            level3: 'Battle Ready: Use Intelligence for magic weapon attacks\nSteel Defender: Create a mechanical companion that fights alongside you.',
-            level5: 'Extra Attack: Attack twice when you take the Attack action on your turn.'
+            spells: {
+                1: ['Heroism', 'Shield'],
+                2: ['Warding Bond', 'Branding Smite'],
+                3: ['Aura of Vitality', 'Conjure Barrage'],
+                4: ['Aura of Purity', 'Fire Shield'],
+                5: ['Banishing Smite', 'Mass Cure Wounds']
+            },
+            level3: 'Battle Ready: Use Intelligence for magic weapon attacks and gain martial weapon proficiency.\nSteel Defender: Create a mechanical companion that fights alongside you.',
+            level5: 'Extra Attack: Attack twice when you take the Attack action on your turn.',
+            level9: 'Arcane Jolt: Deal extra force damage or heal with your attacks.',
+            level15: 'Improved Defender: Steel Defender gains better AC and defensive capabilities.'
         }
     },
     Cleric: {
@@ -699,6 +850,42 @@ export const SUBCLASSES = {
             description: 'The archetypal Eldritch Knight combines martial mastery with a careful study of magic.',
             level3: 'Spellcasting: Gain INT-based wizard spellcasting.\nWeapon Bond: Create a magical bond with up to two weapons.',
             level7: 'War Magic: Cast a cantrip and make one weapon attack as a bonus action.'
+        },
+        'Arcane Archer': {
+            description: 'Arcane Archers study a unique elven method of archery that weaves magic into attacks to produce supernatural effects.',
+            level3: 'Arcane Archer Lore: Gain proficiency in Arcana or Nature, and the Prestidigitation or Druidcraft cantrip.\nArcane Shot: Use magical effects on your arrows (d6s force damage).',
+            level7: 'Magic Arrow: Arrows count as magical for overcoming resistances.\nCurving Shot: If an Arcane Shot misses, use a bonus action to reroll the attack against a different target.',
+            level10: 'Ever-Ready Shot: Regain one use of Arcane Shot if you have none when you roll initiative.'
+        },
+        'Cavalier': {
+            description: 'The Cavalier archetype excels at mounted combat, but their skills are equally effective on foot for protecting allies.',
+            level3: 'Bonus Proficiency: Animal Handling, History, Insight, Performance, or Persuasion.\nBorn to the Saddle: Advantage on saves to stay mounted and mounting costs only 5ft.\nUnwavering Mark: Mark an enemy you hit; they have disadvantage on attacks against others.',
+            level7: 'Warding Maneuver: Use a reaction to roll 1d8 and add it to an ally\'s AC or grant them resistance to the attack.',
+            level10: 'Hold the Line: Opportunity attacks reduce enemy speed to 0.'
+        },
+        'Echo Knight': {
+            description: 'You have learned to summon a magical shadow of yourself from an alternate timeline to aid you in battle.',
+            level3: 'Manifest Echo: Summon a grey, translucent image of yourself that you can move and attack from.\nUnleash Incarnation: Your echo can make an additional melee attack when you take the Attack action.',
+            level7: 'Echo Avatar: You can project your consciousness into your echo to scout up to 1,000 feet away.',
+            level10: 'Shadow Martyr: Use your reaction to teleport your echo in front of an ally to take the hit for them.'
+        },
+        'Psi Warrior': {
+            description: 'You awake the power of your mind, using psionic energy to bolster your physical attacks and protect your allies.',
+            level3: 'Psionic Power: Gain Psionic Energy dice (starting at d6s) for Protective Field, Psionic Strike, or Telekinetic Movement.',
+            level7: 'Telekinetic Adept: Psionic Thrust (push/knock prone) or Telekinetic Jump (bonus action flying speed).',
+            level10: 'Guarded Mind: Resistance to psychic damage and can end Charmed/Frightened conditions.'
+        },
+        'Rune Knight': {
+            description: 'You have learned the ancient art of rune magic, tattooing or carving runes into your equipment to gain giant-like power.',
+            level3: 'Bonus Proficiencies: Smith\'s tools proficiency and can speak Giant.\nRune Carver: Learn two runes (Cloud, Fire, Frost, Stone, Hill, or Storm) to imbue into your gear.\nGiant\'s Might: Become Large as a bonus action, gaining advantage on Strength checks/saves and dealing extra damage.',
+            level7: 'Runic Shield: Use a reaction to force an attacker within 60ft to reroll their attack against an ally.',
+            level10: 'Great Stature: Your height increases and your Giant\'s Might damage increases to 1d8.'
+        },
+        'Samurai': {
+            description: 'The Samurai focuses on unwavering resolve and grace to overcome any obstacle through sheer willpower.',
+            level3: 'Bonus Proficiency: Insight, Performance, Persuasion, or History.\nFighting Spirit: Give yourself advantage on all weapon attacks for one turn and gain temporary HP (bonus action).',
+            level7: 'Elegant Courtier: Add Wisdom modifier to Persuasion checks and gain proficiency in Wisdom saves.',
+            level10: 'Tireless Spirit: Regain one use of Fighting Spirit if you have none when you roll initiative.'
         }
     },
     Monk: {
@@ -715,6 +902,36 @@ export const SUBCLASSES = {
         'Way of the Four Elements': {
             description: 'Harness the elements to perform magical effects using your ki.',
             level3: 'Elemental Disciple: Learn elemental disciplines that allow you to cast spells or perform special actions.'
+        },
+        'Way of Mercy': {
+            description: 'Monks of the Way of Mercy learn to manipulate the life force of others to bring aid to those in need or to deliver a swift end to those who suffer.',
+            level3: 'Implements of Mercy: Gain proficiency in Insight, Medicine, and the herbalism kit.\nHand of Healing: Use ki to heal a creature you touch.\nHand of Harm: Use ki to deal extra necrotic damage when you hit with an unarmed strike.',
+            level6: 'Physician\'s Touch: Your Hand of Healing can now also end certain conditions. Your Hand of Harm can now poison the target.',
+            level11: 'Flurry of Healing and Harm: Use Flurry of Blows to replace unarmed strikes with Hand of Healing or Hand of Harm.'
+        },
+        'Way of the Astral Self': {
+            description: 'Your ki allows you to manifest a portion of your astral self, a representation of your soul, to fight alongside you.',
+            level3: 'Arms of the Astral Self: Summon spectral arms as a bonus action, using Wisdom for Strength checks/saves and unarmed strikes.',
+            level6: 'Visage of the Astral Self: Summon a spectral mask that grants enhanced vision and social benefits.',
+            level11: 'Body of the Astral Self: Your spectral form expands, providing better defense and damage.'
+        },
+        'Way of the Drunken Master': {
+            description: 'You emulate the staggering movements of a drunkard to confound your enemies in combat.',
+            level3: 'Bonus Proficiencies: Performance proficiency and brewer\'s supplies.\nDrunken Technique: When you use Flurry of Blows, you gain the benefits of Disengage and your speed increases by 10ft for the turn.',
+            level6: 'Tipsy Sway: Use ki to redirect a missed attack against you to another creature, or leap up from prone for only 5ft of movement.',
+            level11: 'Drunkard\'s Luck: Spend 2 ki points to cancel disadvantage on a roll.'
+        },
+        'Way of the Kensei': {
+            description: 'You treat your weapons as an extension of your body, mastering them with the same precision as your unarmed strikes.',
+            level3: 'Path of the Kensei: Choose two kensei weapons (one melee, one ranged). Gain unique benefits while wielding them.\nKensei\'s Shot: Use a bonus action to add 1d4 damage to ranged weapon attacks.',
+            level6: 'One with the Blade: Kensei weapons count as magical. Use ki to deal extra damage with them.',
+            level11: 'Sharpen the Blade: Use a bonus action to spend ki and give a kensei weapon a bonus to attack and damage (up to +3).'
+        },
+        'Way of the Sun Soul': {
+            description: 'You channel your life energy into searing bolts of light that you can hurl at your enemies.',
+            level3: 'Radiant Sun Bolt: Use your life energy to hurl magical bolts of radiant damage (range 30ft).',
+            level6: 'Searing Arc Strike: Use ki to cast Burning Hands as a bonus action after taking the Attack action.',
+            level11: 'Searing Sunburst: Create an explosion of radiant light that deals damage in a sphere.'
         }
     },
     Paladin: {
@@ -781,6 +998,14 @@ export const SUBCLASSES = {
             level7: 'Aura of the Sentinel: You and allies within 10 feet gain a bonus to initiative equal to your Charisma modifier.',
             level15: 'Vigilant Rebuke: Deal force damage to any creature that forces you or an ally to make an Intelligence, Wisdom, or Charisma save.',
             level20: 'Mortal Bulwark: Gain truesight, advantage on attacks against extraplanar creatures, and a banishing strike.'
+        },
+        'Oathbreaker': {
+            description: 'An Oathbreaker is a paladin who has broken their sacred oaths to pursue some dark ambition or serve an evil power.',
+            spells: { 1: ['Hellish Rebuke', 'Inflict Wounds'], 2: ['Crown of Madness', 'Darkness'], 3: ['Animate Dead', 'Bestow Curse'], 4: ['Blight', 'Confusion'], 5: ['Contagion', 'Dominate Person'] },
+            level3: 'Oath Spells.\nChannel Divinity: Control Undead or Dreadful Aspect.',
+            level7: 'Aura of Hate: You and nearby fiends/undead gain a bonus to melee weapon damage rolls equal to your Charisma modifier.',
+            level15: 'Supernatural Resistance: Gain resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons.',
+            level20: 'Dread Lord: Surround yourself with an aura of gloom that reduces visibility, damages enemies, and empowers your shadow attacks.'
         }
     },
     Ranger: {
@@ -802,6 +1027,77 @@ export const SUBCLASSES = {
             description: 'The Beast Master archetype embodies a friendship between the civilized races and the beasts of the world.',
             level3: 'Ranger\'s Companion: Gain a beast companion (CR 1/4 or lower) that fights alongside you.',
             level7: 'Exceptional Training: Your beast can take special actions as a bonus action.'
+        },
+        'Fey Wanderer': {
+            description: 'You represent the mortal realm in the Feywild, using your charm and joy to influence the world around you.',
+            spells: {
+                3: ['Charm Person'],
+                5: ['Misty Step'],
+                9: ['Dispel Magic'],
+                13: ['Dimension Door'],
+                17: ['Mislead']
+            },
+            level3: 'Dreadful Strikes: Deal extra psychic damage to a creature you hit (1d4, increases at later levels).\nOtherworldly Glamour: Add Wisdom modifier to Charisma checks and gain proficiency in Deception, Performance, or Persuasion.',
+            level7: 'Beguiling Twist: When a creature succeeds on a save against being charmed/frightened, use a reaction to force a different creature to save or be charmed/frightened.',
+            level11: 'Fey Wilds: Summon a fey creature to fight for you for free once per day.'
+        },
+        'Gloom Stalker': {
+            description: 'You are at home in the darkest places, using your mastery of shadows to ambush your foes.',
+            spells: {
+                3: ['Disguise Self'],
+                5: ['Rope Trick'],
+                9: ['Fear'],
+                13: ['Greater Invisibility'],
+                17: ['Seeming']
+            },
+            level3: 'Dread Ambusher: Increase your walking speed and make an extra, more powerful attack on your first turn in combat.\nUmbral Sight: Gain 60ft Darkvision (or +30ft if you already have it) and become invisible to creatures relying on darkvision in darkness.',
+            level7: 'Iron Mind: Gain proficiency in Wisdom saving throws.',
+            level11: 'Stalker\'s Flurry: Reroll a missed weapon attack once per turn.'
+        },
+        'Horizon Walker': {
+            description: 'You guard the world against threats that originate from other planes, using your knowledge of portals to move through reality.',
+            spells: {
+                3: ['Protection from Evil and Good'],
+                5: ['Misty Step'],
+                9: ['Haste'],
+                13: ['Banishment'],
+                17: ['Teleportation Circle']
+            },
+            level3: 'Detect Portal: Sense the distance and direction of the nearest planar portal within 1 mile.\nPlanar Warrior: Use a bonus action to deal extra force damage on your next hit.',
+            level7: 'Ethereal Step: Cast Etherealness as a bonus action (lasts until end of turn).',
+            level11: 'Distant Strike: Teleport up to 10ft before each attack when you use the Attack action.'
+        },
+        'Monster Slayer': {
+            description: 'You are an expert at hunting down and slaying the most dangerous monsters, using your knowledge of their weaknesses to your advantage.',
+            spells: {
+                3: ['Protection from Evil and Good'],
+                5: ['Zone of Truth'],
+                9: ['Magic Circle'],
+                13: ['Banishment'],
+                17: ['Hold Monster']
+            },
+            level3: 'Hunter\'s Sense: Learn a creature\'s damage immunities, resistances, and vulnerabilities.\nSlayer\'s Prey: Use a bonus action to deal extra damage (1d6) to a target and gain bonuses to saves/checks against them.',
+            level7: 'Supernatural Defense: Add 1d6 to saves and grapple escapes against your Slayer\'s Prey target.',
+            level11: 'Magic-User\'s Nemesis: Use a reaction to foil a teleport or spellcasting attempt within 60ft.'
+        },
+        'Swarmkeeper': {
+            description: 'You are never alone, as a swarm of nature spirits in the form of tiny creatures always surrounds you.',
+            spells: {
+                3: ['Faerie Fire'],
+                5: ['Web'],
+                9: ['Gaseous Form'],
+                13: ['Arcane Eye'],
+                17: ['Insect Plague']
+            },
+            level3: 'Gathered Swarm: Your swarm moves you or your enemies or deals extra damage when you hit with an attack.',
+            level7: 'Writhing Tide: Gain a flying speed (10ft) and can hover for 1 minute.',
+            level11: 'Mighty Swarm: Your Gathered Swarm effects become more powerful.'
+        },
+        'Drakewarden': {
+            description: 'You have formed a bond with a draconic spirit, summoning a drake companion to fight by your side.',
+            level3: 'Draconic Gift: Learn Draconic and the Thaumaturgy cantrip.\nDrake Companion: Summon a drake that fights alongside you, dealing extra elemental damage.',
+            level7: 'Bond of Fang and Scale: The drake grows to Medium size, gains a flying or swimming speed, and you gain resistance to its element.',
+            level11: 'Drake\'s Breath: You or your drake can exhale a cone of elemental damage.'
         }
     },
     Rogue: {
@@ -816,6 +1112,36 @@ export const SUBCLASSES = {
         'Arcane Trickster': {
             description: 'You combine your rogue skills with the magic of the wizard.',
             level3: 'Spellcasting: Gain INT-based wizard spellcasting.\nMage Hand Legerdemain: Your Mage Hand is invisible and can perform thieving tasks.'
+        },
+        'Inquisitive': {
+            description: 'You excel at rooting out secrets and unraveling mysteries, relying on your sharp eye for detail.',
+            level3: 'Ear for Deceit: Minimum roll of 8 on Insight checks to detect lies.\nEye for Detail: Use a bonus action to make a Perception or Investigation check.\nInsightful Fighting: Use a bonus action to gain Sneak Attack against a creature even if you don\'t have advantage.',
+            level9: 'Steady Eye: Advantage on Perception/Investigation if moving half speed.',
+            level13: 'Unerring Sight: Sense illusions and shapechangers within 30ft.'
+        },
+        'Mastermind': {
+            description: 'Your focus is on people and the influence you can exert over them, using your words as weapons.',
+            level3: 'Master of Intrigue: Gain proficiency with disguise kit, forgery kit, and one gaming set. Learn two languages and can mimic speech.\nMaster of Tactics: Use Help as a bonus action and from 30ft away.',
+            level9: 'Insightful Manipulator: Observe a creature for 1 minute to learn their relative stats.',
+            level13: 'Misdirection: When targeted by an attack while near another creature, you can cause the attack to hit them instead.'
+        },
+        'Phantom': {
+            description: 'You walk the line between life and death, drawing on the powers of the grave to fuel your strikes.',
+            level3: 'Whispers of the Dead: Gain a proficiency that changes after a rest.\nWails from the Grave: When you deal Sneak Attack, deal half damage to a second creature nearby.',
+            level9: 'Tokens of the Departed: Capture a soul when a creature dies, using it to gain benefits or ask questions.',
+            level13: 'Ghost Walk: Phase through walls and gain a flying speed.'
+        },
+        'Soulknife': {
+            description: 'You strike with the power of your mind, manifesting blades of psychic energy to slay your foes.',
+            level3: 'Psionic Power: Gain Psionic Energy dice (starting at d6s) for Psi-Bolstered Knack or Psychic Whispers.\nPsychic Blades: Manifest shimmering blades of psychic energy to attack (1d6 melee/60ft range).',
+            level9: 'Soul Blades: Use psionic dice to turn a miss into a hit or to teleport.',
+            level13: 'Psychic Veil: Turn invisible as an action for 1 hour.'
+        },
+        'Swashbuckler': {
+            description: 'You focus your training on the art of the duel, using your speed and charm to outmaneuver your opponents.',
+            level3: 'Fancy Footwork: If you make a melee attack against a creature, it can\'t make opportunity attacks against you.\nRakish Audacity: Add Charisma modifier to initiative and gain Sneak Attack when dueling alone.',
+            level9: 'Panache: Use Persuasion as an action to charm a neutral creature or goad a hostile one.',
+            level13: 'Elegant Maneuver: Use a bonus action to gain advantage on your next Acrobatics or Athletics check.'
         }
     },
     Sorcerer: {
@@ -844,6 +1170,61 @@ export const SUBCLASSES = {
             description: 'Your magic comes from the wild forces of chaos.',
             level1: 'Wild Magic Surge: Your spellcasting can unleash surges of untamed magic.\nTides of Chaos: Gain advantage on one attack, ability check, or save.',
             level6: 'Bend Luck: Use sorcery points to alter another creature\'s roll damage.'
+        },
+        'Aberrant Mind': {
+            description: 'An alien influence has wrapped its tendrils around your mind, giving you psionic power.',
+            spells: {
+                1: ['Arms of Hadar', 'Dissonant Whispers', 'Mind Sliver'],
+                3: ['Calm Emotions', 'Detect Thoughts'],
+                5: ['Hunger of Hadar', 'Sending'],
+                7: ['Evard\'s Black Tentacles', 'Summon Aberration'],
+                9: ['Rary\'s Telepathic Bond', 'Telekinesis']
+            },
+            level1: 'Psionic Spells: Gain extra spells that you can replace with Divination/Enchantment spells from the Wizard/Warlock/Sorcerer lists.\nTelepathic Speech: Create a telepathic link with a creature within 30ft.',
+            level6: 'Psionic Sorcery: Spend sorcery points to cast your psionic spells without components.\nPsychic Defenses: Resistance to psychic damage and advantage against being charmed/frightened.',
+            level14: 'Revelation in Flesh: Spend sorcery points to transform your body (flying, swimming, or seeing invisible tokens).'
+        },
+        'Clockwork Soul': {
+            description: 'Your magic is rooted in the cosmic order of Mechanus, giving you power to stabilize reality.',
+            spells: {
+                1: ['Alarm', 'Protection from Evil and Good'],
+                3: ['Aid', 'Lesser Restoration'],
+                5: ['Dispel Magic', 'Protection from Energy'],
+                7: ['Freedom of Movement', 'Summon Construct'],
+                9: ['Greater Restoration', 'Wall of Force']
+            },
+            level1: 'Clockwork Spells: Gain extra spells that you can replace with Abjuration/Transmutation spells from the Wizard/Warlock/Sorcerer lists.\nRestore Balance: Use your reaction to cancel advantage or disadvantage for a creature within 60ft.',
+            level6: 'Bastion of Law: Create a magical ward that reduces damage to yourself or an ally.',
+            level14: 'Trance of Order: For 1 minute, your attack rolls, ability checks, and saving throws can\'t be lower than a 10.'
+        },
+        'Divine Soul': {
+            description: 'Your innate magic comes from a divine source, granting you the power of the gods.',
+            level1: 'Divine Magic: Choose an affinity (Good, Evil, Law, Chaos, or Neutrality) to gain a special spell and access to the Cleric spell list.\nFavored by the Gods: Add 2d4 to a failed attack roll or saving throw once per rest.',
+            level6: 'Empowered Healing: Spend sorcery points to reroll healing dice.',
+            level14: 'Otherworldly Wings: Manifest spectral wings to gain a flying speed (30ft).',
+            subclassOptions: {
+                title: "Divine Affinity",
+                choices: {
+                    "Good": "Gain the Cure Wounds spell.",
+                    "Evil": "Gain the Inflict Wounds spell.",
+                    "Law": "Gain the Bless spell.",
+                    "Chaos": "Gain the Bane spell.",
+                    "Neutrality": "Gain the Protection from Evil and Good spell."
+                },
+                description: "Choose a source for your divine magic."
+            }
+        },
+        'Shadow Magic': {
+            description: 'Your magic comes from the Shadowfell, weaving darkness and gloom into your spells.',
+            level1: 'Eyes of the Dark: Gain 120ft Darkvision and can cast Darkness with sorcery points (seeing through it).\nStrength of the Grave: When dropped to 0 HP, make a Charisma save to drop to 1 HP instead.',
+            level6: 'Hound of Ill Omen: Summon a spectral wolf to haunt and hinder an enemy.',
+            level14: 'Shadow Walk: Teleport through shadows as a bonus action.'
+        },
+        'Storm Sorcery': {
+            description: 'Your magic is born from the power of the storm, allowing you to control the wind and lightning.',
+            level1: 'Wind Speaker: Learn Primordial.\nTempestuous Magic: Fly up to 10ft without provoking opportunity attacks as a bonus action after casting a spell of 1st level or higher.',
+            level6: 'Heart of the Storm: Resistance to lightning and thunder damage. Deal damage to nearby enemies when you cast spells.\nStorm Guide: Control rain and wind direction nearby.',
+            level14: 'Storm\'s Fury: Use a reaction to push and damage a creature that hits you with a melee attack.'
         }
     },
     Warlock: {
@@ -864,6 +1245,48 @@ export const SUBCLASSES = {
             spells: { 1: ['Dissonant Whispers', 'Tasha\'s Hideous Laughter'] },
             level1: 'Expanded Spell List: Dissonant Whispers, Tasha\'s Hideous Laughter.\nAwakened Mind: Communicate telepathically with any creature within 30ft.',
             level6: 'Entropic Ward: Impose disadvantage on an attack roll against you.'
+        },
+        'The Celestial': {
+            description: 'Your patron is a powerful being of the Upper Planes, a creature of pure light and goodness.',
+            spells: { 1: ['Cure Wounds', 'Guiding Bolt'] },
+            level1: 'Bonus Cantrips: Gain Light and Sacred Flame.\nHealing Light: Use a pool of d6s to heal creatures within 60ft as a bonus action.',
+            level6: 'Radiant Soul: Resistance to radiant damage and add Charisma modifier to radiant or fire damage.'
+        },
+        'The Fathomless': {
+            description: 'You have plunged into a pact with an entity from the depths of the ocean or the Elemental Plane of Water.',
+            spells: { 1: ['Create or Destroy Water', 'Thunderwave'] },
+            level1: 'Tentacle of the Deep: Summon a spectral tentacle as a bonus action to attack and slow enemies.\nGift of the Sea: Gain a swimming speed (40ft) and can breathe underwater.',
+            level6: 'Oceanic Soul: Resistance to cold damage and can communicate with aquatic creatures.'
+        },
+        'The Genie': {
+            description: 'Your patron is a noble genie, a lord of the elemental planes.',
+            spells: { 1: ['Detect Evil and Good'] },
+            level1: 'Genie\'s Vessel: Gain a tiny magical object that you can enter or use to store items.\nGenie\'s Wrath: Deal extra damage of your patron\'s element once per turn.',
+            level6: 'Elemental Gift: Resistance to your patron\'s element and a flying speed.',
+            subclassOptions: {
+                title: "Genie Kind",
+                choices: {
+                    "Dao (Earth)": "Bludgeoning damage and resistance to same.",
+                    "Djinni (Air)": "Thunder damage and resistance to same.",
+                    "Efreeti (Fire)": "Fire damage and resistance to same.",
+                    "Marid (Water)": "Cold damage and resistance to same."
+                },
+                description: "Choose your genie patron type."
+            }
+        },
+        'The Undead': {
+            description: 'Your patron is a powerful undead being, such as a lich, a vampire lord, or a death knight.',
+            spells: { 1: ['Bane', 'False Life'] },
+            level1: 'Form of Dread: Transform as a bonus action to gain temporary HP, immunity to being frightened, and can frighten others.\nGrave Touch: Your attacks deal necrotic damage and you don\'t need to eat/drink/breathe.',
+            level6: 'Grave Hunger: Deal extra damage when you hit a creature with necrotic damage while in Form of Dread.'
+        },
+        'The Hexblade': {
+            description: 'You have made a pact with a mysterious entity from the Shadowfell that manifests as a sentient magic weapon.',
+            armorProficiencies: ['Medium', 'Shield'],
+            weaponProficiencies: ['Martial Melee', 'Martial Ranged'],
+            spells: { 1: ['Shield', 'Wrathful Smite'] },
+            level1: 'Hexblade\'s Curse: Curse a target as a bonus action to gain bonuses to damage and crit chance.\nHex Warrior: Gain proficiency with medium armor, shields, and martial weapons. Use Charisma for attacks with one weapon.',
+            level6: 'Accursed Specter: When you kill a humanoid, manifest its soul as a loyal specter.'
         }
     },
     Wizard: {
@@ -897,7 +1320,35 @@ export const SUBCLASSES = {
         },
         'School of Transmutation': {
             description: 'You focus on spells that alter physical properties.',
-            level2: 'Transmutation Savant: Halve cost/time to copy transmutation spells.\nMinor Alchemy: Temporarily alter the physical properties of one object.'
+            level2: 'Transmutation Savant: Halve cost/time to copy transmutation spells.\nMinor Alchemy: Temporarily alter the physical properties of one object.',
+            level6: 'Transmuter\'s Stone: Create a magical stone that grants a benefit of your choice.'
+        },
+        'Bladesinging': {
+            description: 'Bladesingers are elves who bravely defend their people, weaving magic into a dance of weapon strikes and defenses.',
+            armorProficiencies: ['Light'],
+            weaponProficiencies: ['Shortsword', 'Scimitar', 'Rapier', 'Whip'],
+            level2: 'Training in War and Song: Gain proficiency in performance and light armor, and one one-handed melee weapon.\nBladesong: Use a bonus action to enter a state of enhanced defense and mobility.',
+            level6: 'Extra Attack: Attack twice when you take the Attack action, and one attack can be a cantrip.'
+        },
+        'Order of Scribes': {
+            description: 'You believe and understand that magic is a form of language, and you treat your spellbook as a living companion.',
+            level2: 'Wizardly Quill: Create a magical quill that reduces copying time/cost.\nAwakened Spellbook: Your spellbook becomes sentient and can change spell damage types or be used as a focus.',
+            level6: 'Manifest Mind: Project the mind of your spellbook to scout or cast spells from its position.'
+        },
+        'War Magic': {
+            description: 'This tradition mixes evocation and abjuration, specializing in the raw power of spells and their tactical use in battle.',
+            level2: 'Arcane Deflection: Use a reaction to gain +2 AC or +4 to a saving throw.\nTactical Wit: Add Intelligence modifier to initiative rolls.',
+            level6: 'Power Surge: Store magical energy to deal extra force damage with your spells.'
+        },
+        'Chronurgy Magic': {
+            description: 'You focus on the manipulation of time, bending the moments of reality to your will.',
+            level2: 'Chronal Shift: Use a reaction to force a creature within 30ft to reroll a d20.\nTemporal Awareness: Add Intelligence modifier to initiative rolls.',
+            level6: 'Momentary Stasis: Use an action to force a creature into a field of magical energy that incapacitates it.'
+        },
+        'Graviturgy Magic': {
+            description: 'You learn to manipulate the fundamental force of gravity to alter the weight and movement of objects and creatures.',
+            level2: 'Adjust Density: Use an action to double or halve the weight of a creature or object.',
+            level6: 'Gravity Well: Move a creature 5ft after you hit it with a spell.'
         }
     }
 };

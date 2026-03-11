@@ -9,23 +9,30 @@ A comprehensive, high-fidelity character construction tool for Dungeons & Dragon
 ### Progressive Web App (PWA)
 Installable on desktop and mobile for a premium, app-like experience. Features full offline support via service workers, ensuring your character data is always accessible even without an internet connection.
 
+### Comprehensive Subclass Expansion
+Access over **50+ official subclasses** from *Xanathar's Guide to Everything* and *Tasha's Cauldron of Everything*.
+- **Full Coverage**: Every class (from Artificer to Wizard) now includes its most popular official specializations.
+- **Smart UI**: Subclasses with additional choices (like the Warlock's **Genie Kind** or Barbarian's **Storm Environment**) automatically trigger a smooth-scroll transition to their specific options section.
+
+### Character Creation Warnings
+Built-in validation system that keeps your build on track. The **Review** tab provides real-time alerts for:
+- **Missing Essentials**: Background, Alignment, and Bonus Languages.
+- **Mechanical Completion**: Incomplete Ability Scores or unapplied racial bonuses (+1/+1/+1 or +2/+1).
+- **Spells & Skills**: Alerts for unspent skill points or unselected spell slots.
+- **Equipment Readiness**: Reminders to equip weapons/armor in your inventory or attune to magic items.
+
 ### Mechanical Breakdown & Transparency
-No more "black box" numbers. The generator features a dedicated **Calculation Breakdown** UI that provides full visibility into character mechanics:
-- **AC Math**: Visual step-by-step breakdown of Base Armor + DEX + Shield + Special Bonuses (Unarmored Defense, Draconic Resilience, etc.).
+No more "black box" numbers. The generator features a dedicated **Calculation Breakdown** UI providing full visibility:
+- **AC Math**: Visual step-by-step breakdown of Base Armor + DEX + Shield + Special Bonuses (Unarmored Defense, Infusions, etc.).
 - **HP Scaling**: Transparent tracking of Base HP + Level Up Scaling + Constitution bonuses.
 - **Stat Derivation**: Detailed components for Initiative and Passive Perception (Base + Mod + Proficiency).
 
-### Centralized Logic Architecture
-Built on a "Single Source of Truth" philosophy. All mechanical calculations are handled by a centralized `stats.js` engine, ensuring perfect data parity between:
-- The Interactive UI
-- The Review Summary
-- The Final Form-Filled PDF
-
 ### High-Utility Inventory Management
-- **Modal-Driven Database**: Access 5,000+ items (Weapons, Armor, Gear) through a streamlined, searchable modal interface.
-- **Starting Pack Support**: One-click selection of official class starter packs (Explorer's, Dungeoneer's, etc.) with automated inventory population.
-- **Live Previews**: Dynamic previews of Attack/Damage and AC potential directly within the backpack, before you even equip the item.
-- **Attunement Tracking**: Intelligent slot enforcement with built-in attunement limits and slots (Head, Neck, Rings, etc.).
+- **Modal-Driven Database**: Access 5,000+ items (Weapons, Armor, Gear) through a searchable modal interface.
+- **Proficiency Feedback**: Immediate visual indicators (Proficient/Non-Proficient) with detailed warnings about mechanical penalties (Disadvantage/Spellcasting restrictions).
+- **Starting Pack Support**: One-click selection of official class starter packs (Explorer's, Dungeoneer's, etc.).
+- **Live Previews**: Dynamic previews of Attack/Damage and AC potential directly within the backpack.
+- **Attunement Tracking**: Slot enforcement and dynamic limit scaling (with special support for Artificer's *Magic Item Adept* features).
 
 ### Advanced Spellcasting System
 - **1,000+ Spell Library**: Comprehensive database including full descriptions for SRD and expanded content via interactive modals.
