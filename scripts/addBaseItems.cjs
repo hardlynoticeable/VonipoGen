@@ -1,91 +1,51 @@
 const fs = require('fs');
 const path = require('path');
 
-const ASSETS_DIR = path.join(__dirname, '../../assets');
+async function run() {
+    const filePath = path.join(__dirname, '../src/data/equipment.js');
+    let content = fs.readFileSync(filePath, 'utf8');
 
-function parseCSV(content) {
-    const lines = content.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-    const headers = lines[0].split(',').map(h => h.trim());
+    // Rather than parsing JSON (which fails due to ES6 export), 
+    // we'll dynamically import, modify, and rewrite.
 
-    return lines.slice(1).map(line => {
-        let inQuotes = false;
-        let currentValue = '';
-        const values = [];
+    const m = await import('file:///' + filePath.replace(/\\/g, '/'));
+    const db = m.EQUIPMENT_DB;
 
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
-                values.push(currentValue.trim());
-                currentValue = '';
-            } else {
-                currentValue += char;
-            }
+    const missingWeapons = [
+        { "Item": "Light hammer", "Type": "Simple Melee", "Cost": "2 gp", "Damage": "1d4 bludg.", "Properties": "Light, Thrown (20/60)" },
+        { "Item": "Sickle", "Type": "Simple Melee", "Cost": "1 gp", "Damage": "1d4 slash.", "Properties": "Light" },
+        { "Item": "Dart", "Type": "Simple Ranged", "Cost": "5 cp", "Damage": "1d4 pierc.", "Properties": "Finesse, Thrown (20/60)" },
+        { "Item": "Sling", "Type": "Simple Ranged", "Cost": "1 sp", "Damage": "1d4 bludg.", "Properties": "Ammunition (30/120)" },
+        { "Item": "Flail", "Type": "Martial Melee", "Cost": "10 gp", "Damage": "1d8 bludg.", "Properties": "—" },
+        { "Item": "Glaive", "Type": "Martial Melee", "Cost": "20 gp", "Damage": "1d10 slash.", "Properties": "Heavy, Reach, Two-handed" },
+        { "Item": "Halberd", "Type": "Martial Melee", "Cost": "20 gp", "Damage": "1d10 slash.", "Properties": "Heavy, Reach, Two-handed" },
+        { "Item": "Lance", "Type": "Martial Melee", "Cost": "10 gp", "Damage": "1d12 pierc.", "Properties": "Reach, Special" },
+        { "Item": "Morningstar", "Type": "Martial Melee", "Cost": "15 gp", "Damage": "1d8 pierc.", "Properties": "—" },
+        { "Item": "Pike", "Type": "Martial Melee", "Cost": "5 gp", "Damage": "1d10 pierc.", "Properties": "Heavy, Reach, Two-handed" },
+        { "Item": "Trident", "Type": "Martial Melee", "Cost": "5 gp", "Damage": "1d6 pierc.", "Properties": "Thrown (20/60), Versatile (1d8)" },
+        { "Item": "War pick", "Type": "Martial Melee", "Cost": "5 gp", "Damage": "1d8 pierc.", "Properties": "—" },
+        { "Item": "Whip", "Type": "Martial Melee", "Cost": "2 gp", "Damage": "1d4 slash.", "Properties": "Finesse, Reach" },
+        { "Item": "Blowgun", "Type": "Martial Ranged", "Cost": "10 gp", "Damage": "1 pierc.", "Properties": "Ammunition (25/100), Loading" },
+        { "Item": "Hand Crossbow", "Type": "Martial Ranged", "Cost": "75 gp", "Damage": "1d6 pierc.", "Properties": "Ammunition (30/120), Light, Loading" },
+        { "Item": "Heavy Crossbow", "Type": "Martial Ranged", "Cost": "50 gp", "Damage": "1d10 pierc.", "Properties": "Ammunition (50/200), Heavy, Loading, Two-handed" },
+        { "Item": "Net", "Type": "Martial Ranged", "Cost": "1 gp", "Damage": "—", "Properties": "Special, Thrown (5/15)" }
+    ].map(item => ({ ...item, equipped_slot: "Weapon" }));
+
+    // Filter out if they already exist
+    const existingNames = new Set(db.weapons.map(w => w.Item.toLowerCase()));
+    for (const w of missingWeapons) {
+        if (!existingNames.has(w.Item.toLowerCase())) {
+            db.weapons.push(w);
         }
-        values.push(currentValue.trim());
+    }
 
-        const obj = {};
-        headers.forEach((header, index) => {
-            obj[header] = values[index] || '';
-        });
-        return obj;
-    });
+    // Write it back
+    const outputContent = `// AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
+// Run scripts/parseEquipment.cjs to update
+
+export const EQUIPMENT_DB = ${JSON.stringify(db, null, 4)};\n`;
+
+    fs.writeFileSync(filePath, outputContent);
+    console.log('Appended weapons successfully');
 }
-
-const equipmentSets = {
-    weapons: parseCSV(fs.readFileSync(path.join(ASSETS_DIR, 'weapons.csv'), 'utf8')),
-    armor: parseCSV(fs.readFileSync(path.join(ASSETS_DIR, 'Armorshields.csv'), 'utf8'))
-};
-
-function inferBaseItem(magicItem) {
-    const lowerName = (magicItem.name || '').toLowerCase();
-    const lowerType = (magicItem.type || '').toLowerCase();
-
-    // Check weapons
-    for (const wep of equipmentSets.weapons) {
-        const wepLower = (wep.Item || '').toLowerCase();
-        if (lowerName.includes(wepLower) ||
-            lowerType.includes(wepLower) ||
-            ((lowerName.includes('sword') || lowerType.includes('sword')) && wepLower === 'longsword')) {
-            return wep.Item;
-        }
-    }
-
-    // Check armor
-    for (const arm of equipmentSets.armor) {
-        const armLower = (arm.Item || '').toLowerCase();
-        if (lowerName.includes(armLower) || lowerType.includes(armLower)) {
-            return arm.Item;
-        }
-    }
-
-    return null;
-}
-
-const files = fs.readdirSync(ASSETS_DIR);
-files.forEach(file => {
-    if (file.startsWith('dnd_') && file.endsWith('.json')) {
-        const filePath = path.join(ASSETS_DIR, file);
-        const content = fs.readFileSync(filePath, 'utf8');
-        try {
-            const items = JSON.parse(content);
-            const updatedItems = items.map(item => {
-                if (item.base_item) return item;
-
-                const baseItemStr = inferBaseItem(item);
-                if (baseItemStr) {
-                    return {
-                        ...item,
-                        base_item: baseItemStr
-                    };
-                }
-                return item;
-            });
-            fs.writeFileSync(filePath, JSON.stringify(updatedItems, null, 4));
-            console.log(`Updated ${file}`);
-        } catch (e) {
-            console.error(`Error processing ${file}:`, e);
-        }
-    }
-});
+run();

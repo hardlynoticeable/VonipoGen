@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { generateCharacterPDF } from '../utils/pdfGenerator';
 import AbilityScoreImpact from './AbilityScoreImpact';
 import { SUBCLASSES, CLASSES } from '../data/rules5e';
+import { SPECIES } from '../data/species5e';
 import { checkProficiency } from '../utils/stats';
 import { STARTING_PACKS } from '../data/startingPacks';
 import { getCharacterWarnings } from '../utils/validation';
@@ -24,13 +25,13 @@ export default function Review({ data }) {
     return (
         <div className="space-y-6 animate-fade-in text-[var(--color-brand-100)]">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                    Review Your Tabaxi
+                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-fuchsia-300">
+                    Review Your Character
                 </h2>
                 <button
                     onClick={handleDownload}
                     disabled={downloading}
-                    className="px-6 py-3 rounded-lg bg-emerald-500 text-black font-bold hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] flex items-center gap-2"
+                    className="px-6 py-3 rounded-lg bg-brand-500 text-black font-bold hover:bg-brand-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-[0_0_15px_rgba(139,92,246,0.4)] flex items-center gap-2"
                 >
                     {downloading && (
                         <svg className="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -60,73 +61,82 @@ export default function Review({ data }) {
                 </div>
             )}
 
-            <div className="bg-emerald-900/10 border border-emerald-800/50 rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8 relative overflow-hidden">
+            <div className="bg-brand-900/10 border border-brand-800/50 rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8 relative overflow-hidden">
                 {/* Background graphic */}
-                <div className="absolute right-[-10%] bottom-[-20%] opacity-5 text-emerald-500 pointer-events-none scale-150">
+                <div className="absolute right-[-10%] bottom-[-20%] opacity-5 text-brand-500 pointer-events-none scale-150">
                     <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" /></svg>
                 </div>
 
                 {/* Left Column: Identity */}
                 <div className="space-y-4 relative z-10">
                     <div>
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Name</p>
+                        <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Name</p>
                         <p className="text-xl font-medium text-white">{data.name || 'Unnamed Wanderer'}</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Class</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Class</p>
                             <p className="text-lg text-white">
                                 {data.class || 'Unknown'}
-                                {data.subclass && <span className="text-emerald-300 ml-2 text-base">({data.subclass})</span>}
+                                {data.subclass && <span className="text-brand-300 ml-2 text-base">({data.subclass})</span>}
                             </p>
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Level</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Level</p>
                             <p className="text-lg text-white">{data.level}</p>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Background</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Background</p>
                             <p className="text-lg text-white">{data.background || 'Unknown'}</p>
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Alignment</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Alignment</p>
                             <p className="text-lg text-white">{data.alignment || 'Neutral'}</p>
                         </div>
                     </div>
 
                     <div className="pt-4 border-t border-gray-700/50">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-2">Ability Scores</p>
+                        <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mb-2">Ability Scores</p>
                         <div className="flex gap-3 flex-wrap">
                             {Object.entries(data.abilityScores).map(([key, val]) => {
-                                const bonus = data.abilityBonuses ? (data.abilityBonuses[key] || 0) : 0;
+                                const selectedSpecies = SPECIES[data.species];
+                                const bonus = (selectedSpecies?.abilityBonuses?.[key]) || 0;
                                 const baseScore = val !== "" && val !== undefined ? Number(val) : 0;
                                 const total = baseScore + bonus;
                                 return (
                                     <div key={key} className="bg-gray-800 px-3 py-1 rounded border border-gray-600 font-mono">
                                         <span className="text-gray-400 mr-2 uppercase">{key}</span>
-                                        <span className={`font-bold ${bonus > 0 ? 'text-brand-400' : 'text-emerald-400'}`}>{total}</span>
+                                        <span className={`font-bold ${bonus > 0 ? 'text-brand-400' : 'text-brand-300'}`}>{total}</span>
                                     </div>
                                 );
                             })}
                         </div>
                     </div>
 
-                    {/* Tabaxi Traits */}
-                    <div className="pt-4 border-t border-gray-700/50">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-2">Tabaxi Traits</p>
-                        <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
-                            <li><span className="text-emerald-300 font-bold">Speed:</span> 30ft Walking, 30ft Climbing</li>
-                            <li><span className="text-emerald-300 font-bold">Darkvision:</span> 60ft</li>
-                            <li><span className="text-emerald-300 font-bold">Cat's Talent:</span> Proficiency in Perception & Stealth</li>
-                            <li><span className="text-emerald-300 font-bold">Feline Agility:</span> Double speed burst</li>
-                            <li><span className="text-emerald-300 font-bold">Cat's Claws:</span> 1d6 Slashing unarmed strikes</li>
-                            <li><span className="text-emerald-300 font-bold">Size:</span> {data.size}</li>
-                        </ul>
-                    </div>
+                    {/* Species Traits */}
+                    {data.species && SPECIES[data.species] && (
+                        <div className="pt-4 border-t border-gray-700/50">
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mb-2">{data.species} Traits</p>
+                            <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
+                                <li><span className="text-brand-300 font-bold">Speed:</span> {SPECIES[data.species].speed}ft Walking{SPECIES[data.species].climbSpeed ? `, ${SPECIES[data.species].climbSpeed}ft Climbing` : ''}</li>
+                                <li><span className="text-brand-300 font-bold">Darkvision:</span> {SPECIES[data.species].darkvision > 0 ? `${SPECIES[data.species].darkvision}ft` : 'None'}</li>
+                                <li><span className="text-brand-300 font-bold">Size:</span> {SPECIES[data.species].size.includes('or') ? data.size || 'Medium' : SPECIES[data.species].size}</li>
+                                {SPECIES[data.species].traits.map((trait, idx) => {
+                                    const splitIndex = trait.indexOf(':');
+                                    if (splitIndex !== -1) {
+                                        return (
+                                            <li key={idx}><span className="text-brand-300 font-bold">{trait.substring(0, splitIndex)}:</span> {trait.substring(splitIndex + 1).trim()}</li>
+                                        );
+                                    }
+                                    return <li key={idx}>{trait}</li>;
+                                })}
+                            </ul>
+                        </div>
+                    )}
 
                 </div>
 
@@ -135,7 +145,7 @@ export default function Review({ data }) {
                     {/* Base Class Features */}
                     {CLASSES[data.class]?.features && (
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mt-4 mb-2">
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
                                 Class Features
                             </p>
                             <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
@@ -143,7 +153,7 @@ export default function Review({ data }) {
                                     .filter(([level]) => parseInt(level) <= data.level)
                                     .flatMap(([_, featuresArray]) => featuresArray)
                                     .map((feature, idx) => (
-                                        <li key={`base-feature-${idx}`} className="text-xs italic opacity-80 border-l-2 border-emerald-800 pl-2 ml-1">
+                                        <li key={`base-feature-${idx}`} className="text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
                                             {feature}
                                         </li>
                                     ))
@@ -155,7 +165,7 @@ export default function Review({ data }) {
                     {/* Subclass Features */}
                     {data.subclass && SUBCLASSES[data.class]?.[data.subclass] && (
                         <div>
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mt-4 mb-2">
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
                                 {CLASSES[data.class]?.subclassTitle || "Subclass"} Features ({data.subclass}{data.subclassOption ? `: ${data.subclassOption}` : ''})
                             </p>
                             <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
@@ -175,7 +185,7 @@ export default function Review({ data }) {
                                             }
 
                                             return (
-                                                <li key={`${key}-${idx}`} className="whitespace-pre-line text-xs italic opacity-80 border-l-2 border-emerald-800 pl-2 ml-1">
+                                                <li key={`${key}-${idx}`} className="whitespace-pre-line text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
                                                     {content}
                                                 </li>
                                             );
@@ -198,19 +208,19 @@ export default function Review({ data }) {
 
                         return (
                             <div className="pt-4 border-t border-gray-700/50">
-                                <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-2">
+                                <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mb-2">
                                     Spells
                                 </p>
                                 <div className="space-y-3">
                                     {cantrips.length > 0 && (
                                         <div>
-                                            <p className="text-[10px] text-emerald-300/60 uppercase font-black mb-1">Cantrips</p>
+                                            <p className="text-[10px] text-brand-300/60 uppercase font-black mb-1">Cantrips</p>
                                             <p className="text-xs text-gray-300 italic">{cantrips.join(', ')}</p>
                                         </div>
                                     )}
                                     {allLeveledSpells.length > 0 && (
                                         <div>
-                                            <p className="text-[10px] text-emerald-300/60 uppercase font-black mb-1">Leveled Spells</p>
+                                            <p className="text-[10px] text-brand-300/60 uppercase font-black mb-1">Leveled Spells</p>
                                             <p className="text-xs text-gray-300 italic">{allLeveledSpells.join(', ')}</p>
                                         </div>
                                     )}
@@ -221,29 +231,29 @@ export default function Review({ data }) {
 
                     {/* Lore & Background */}
                     <div className="pt-4 border-t border-gray-700/50">
-                        <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Lore & Background</p>
+                        <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mb-3">Lore & Background</p>
                         <div className="space-y-3">
                             {data.personalityTraits && (
                                 <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Personality Traits</p>
+                                    <p className="text-[10px] text-brand-300/60 uppercase font-black">Personality Traits</p>
                                     <p className="text-xs text-gray-300 italic">"{data.personalityTraits}"</p>
                                 </div>
                             )}
                             {data.ideals && (
                                 <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Ideals</p>
+                                    <p className="text-[10px] text-brand-300/60 uppercase font-black">Ideals</p>
                                     <p className="text-xs text-gray-300 italic">"{data.ideals}"</p>
                                 </div>
                             )}
                             {data.bonds && (
                                 <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Bonds</p>
+                                    <p className="text-[10px] text-brand-300/60 uppercase font-black">Bonds</p>
                                     <p className="text-xs text-gray-300 italic">"{data.bonds}"</p>
                                 </div>
                             )}
                             {data.flaws && (
                                 <div>
-                                    <p className="text-[10px] text-emerald-300/60 uppercase font-black">Flaws</p>
+                                    <p className="text-[10px] text-brand-300/60 uppercase font-black">Flaws</p>
                                     <p className="text-xs text-gray-300 italic">"{data.flaws}"</p>
                                 </div>
                             )}
@@ -255,12 +265,12 @@ export default function Review({ data }) {
             <AbilityScoreImpact data={data} />
 
             {/* Bottom Section: Gear & Inventory */}
-            <div className="mt-8 pt-8 border-t border-emerald-900/50">
-                <h3 className="text-xl font-bold text-emerald-400 mb-6">
+            <div className="mt-8 pt-8 border-t border-brand-900/50">
+                <h3 className="text-xl font-bold text-brand-400 mb-6">
                     Gear & Inventory
                 </h3>
 
-                <div className="bg-black/20 border border-emerald-900/30 rounded-lg p-6 relative overflow-hidden">
+                <div className="bg-black/20 border border-brand-900/30 rounded-lg p-6 relative overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Currency & Treasure */}
                         <div className="space-y-4">
@@ -292,16 +302,16 @@ export default function Review({ data }) {
 
                         {/* Backpack Items */}
                         <div className="md:col-span-2 space-y-4">
-                            <p className="text-sm font-bold text-emerald-500 uppercase tracking-wider">Backpack Contents</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Backpack Contents</p>
 
                             {/* Starting Pack Contents */}
                             {data.startingPack && STARTING_PACKS[data.startingPack] && (
-                                <div className="mb-4 bg-emerald-900/10 border border-emerald-800/30 p-3 rounded-lg">
-                                    <p className="text-[10px] text-emerald-400 font-black uppercase mb-2 tracking-widest">{data.startingPack} Items</p>
+                                <div className="mb-4 bg-brand-900/10 border border-brand-800/30 p-3 rounded-lg">
+                                    <p className="text-[10px] text-brand-400 font-black uppercase mb-2 tracking-widest">{data.startingPack} Items</p>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                         {STARTING_PACKS[data.startingPack].map((item, idx) => (
                                             <div key={`pack-${idx}`} className="text-[10px] text-gray-400 flex items-center gap-1.5">
-                                                <span className="w-1 h-1 rounded-full bg-emerald-500/40"></span>
+                                                <span className="w-1 h-1 rounded-full bg-brand-500/40"></span>
                                                 {item.Item}
                                             </div>
                                         ))}
@@ -316,15 +326,15 @@ export default function Review({ data }) {
                                         {data.inventory.map((item, idx) => (
                                             <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center justify-between gap-2">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-emerald-500/50">•</span>
+                                                    <span className="text-brand-500/50">•</span>
                                                     <div className="flex flex-col">
-                                                        <span className="font-bold text-emerald-100">{item.name}</span>
+                                                        <span className="font-bold text-brand-100">{item.name}</span>
                                                         <span className="text-[10px] text-gray-500">{item.type}</span>
                                                     </div>
                                                 </div>
                                                 {(() => {
                                                     const isProf = checkProficiency(data, item);
-                                                    if (isProf === true) return <span className="text-[9px] font-black text-emerald-500/60 uppercase">Proficient</span>;
+                                                    if (isProf === true) return <span className="text-[9px] font-black text-brand-500/60 uppercase">Proficient</span>;
                                                     if (isProf === false) return <span className="text-[9px] font-black text-amber-500 uppercase">Non-Proficient</span>;
                                                     return null;
                                                 })()}

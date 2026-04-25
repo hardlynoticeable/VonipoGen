@@ -91,6 +91,21 @@ export default function Equipment({ data, updateData }) {
         updateData({ inventory: inventory.filter(i => i.id !== itemId) });
     };
 
+    const getCountInInventory = (itemName) => {
+        if (!itemName) return 0;
+        let count = inventory.filter(i => (i.name || i.Item) === itemName).length;
+        if (data.startingPack && STARTING_PACKS[data.startingPack]) {
+            const baseName = itemName.split(' (')[0].toLowerCase();
+            const packMatch = STARTING_PACKS[data.startingPack].find(p => p.Item.toLowerCase().startsWith(baseName));
+            if (packMatch) {
+                const matchQty = packMatch.Item.match(/\((\d+)/);
+                if (matchQty) count += parseInt(matchQty[1]);
+                else count += 1;
+            }
+        }
+        return count;
+    };
+
     const filteredDbItems = useMemo(() => {
         const categoryData = EQUIPMENT_DB[selectedCategory] || [];
         const filtered = !searchTerm ? categoryData : categoryData.filter(item =>
@@ -111,15 +126,15 @@ export default function Equipment({ data, updateData }) {
         <div className="space-y-6 animate-fade-in text-brand-100 h-full overflow-y-auto pr-2 pb-6 custom-scrollbar">
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
                 <div>
-                    <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase tracking-tighter">
+                    <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-fuchsia-300 uppercase tracking-tighter">
                         Inventory
                     </h2>
                     <p className="text-gray-500 text-sm mt-1">Manage your gear, attunement, and equipped items.</p>
                 </div>
                 <div className="flex gap-4 items-center w-full md:w-auto">
-                    <div className="bg-gray-900 border border-emerald-500/30 rounded-lg px-4 py-2 flex items-center gap-4 w-full md:w-auto justify-around md:justify-start">
+                    <div className="bg-gray-900 border border-brand-500/30 rounded-lg px-4 py-2 flex items-center gap-4 w-full md:w-auto justify-around md:justify-start">
                         <div className="text-center">
-                            <p className="text-[10px] text-emerald-500 uppercase font-black">Armor Class</p>
+                            <p className="text-[10px] text-brand-500 uppercase font-black">Armor Class</p>
                             <p className="text-2xl font-black text-white">
                                 {stats.hasShield ? `${stats.ac - 2}/${stats.ac}` : stats.ac}
                             </p>
@@ -130,7 +145,7 @@ export default function Equipment({ data, updateData }) {
                             className="text-center"
                             title={data.class === 'Artificer' ? `Artificer Limit: ${data.level >= 18 ? 'Magic Item Master' : data.level >= 14 ? 'Magic Item Savant' : data.level >= 10 ? 'Magic Item Adept' : 'Standard'}` : 'Standard Attunement Limit: 3'}
                         >
-                            <p className="text-[10px] text-teal-500 uppercase font-black">Attunement</p>
+                            <p className="text-[10px] text-brand-500 uppercase font-black">Attunement</p>
                             <p className={`text-2xl font-black ${attunedCount >= attunementLimit ? 'text-amber-400' : 'text-white'}`}>
                                 {attunedCount}<span className="text-gray-600 text-sm">/{attunementLimit}</span>
                             </p>
@@ -143,12 +158,12 @@ export default function Equipment({ data, updateData }) {
                 {/* Full Width: Backpack, Equipped Arsenal, Currency, Treasure */}
                 <main className="xl:col-span-12 space-y-6">
                     {/* Starting Equipment Packs */}
-                    <div className="glass-card p-5 border-emerald-500/20">
-                        <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest mb-4">Starting Equipment Pack</h3>
+                    <div className="glass-card p-5 border-brand-500/20">
+                        <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-4">Starting Equipment Pack</h3>
                         <div className="flex flex-wrap gap-2 mb-4">
                             <button
                                 onClick={() => updateData({ startingPack: null })}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${!data.startingPack ? 'bg-emerald-600 text-white border-emerald-500' : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-emerald-500/30'}`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${!data.startingPack ? 'bg-brand-600 text-white border-brand-500' : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-brand-500/30'}`}
                             >
                                 None
                             </button>
@@ -156,7 +171,7 @@ export default function Equipment({ data, updateData }) {
                                 <button
                                     key={packName}
                                     onClick={() => updateData({ startingPack: packName })}
-                                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${data.startingPack === packName ? 'bg-emerald-600 text-white border-emerald-500' : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-emerald-500/30'}`}
+                                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${data.startingPack === packName ? 'bg-brand-600 text-white border-brand-500' : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-brand-500/30'}`}
                                 >
                                     {packName}
                                 </button>
@@ -165,13 +180,13 @@ export default function Equipment({ data, updateData }) {
 
                         {data.startingPack && (
                             <div className="bg-black/40 rounded-xl p-4 border border-gray-800">
-                                <h4 className="text-sm font-bold text-emerald-400 mb-2">
+                                <h4 className="text-sm font-bold text-brand-400 mb-2">
                                     Contents of {data.startingPack}
                                 </h4>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1">
                                     {STARTING_PACKS[data.startingPack].map((item, idx) => (
                                         <div key={idx} className="text-[11px] text-gray-400 flex items-center gap-2">
-                                            <div className="w-1 h-1 rounded-full bg-emerald-500/30"></div>
+                                            <div className="w-1 h-1 rounded-full bg-brand-500/30"></div>
                                             {item.Item}
                                         </div>
                                     ))}
@@ -189,11 +204,26 @@ export default function Equipment({ data, updateData }) {
                         </h3>
                         <button
                             onClick={() => setShowDatabaseModal(true)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-lg transition-all"
+                            className="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-lg transition-all"
                         >
                             Add Items
                         </button>
                     </div>
+
+                    {(() => {
+                        const isTwoHandedEquipped = inventory.some(i => i.isEquipped && (i.equipped_slot === 'Weapon' || inferEquippedSlot(i) === 'Weapon') && (i.Properties || i.properties || '').toLowerCase().includes('two-handed'));
+                        const isShieldEquipped = inventory.some(i => i.isEquipped && (i.equipped_slot === 'Shield' || inferEquippedSlot(i) === 'Shield'));
+                        
+                        if (isTwoHandedEquipped && isShieldEquipped) {
+                            return (
+                                <div className="bg-amber-900/40 border border-amber-500/50 text-amber-400 p-3 rounded flex items-start md:items-center gap-3">
+                                    <AlertCircle size={18} className="mt-0.5 md:mt-0 shrink-0" />
+                                    <p className="text-xs font-bold uppercase tracking-widest leading-tight md:leading-normal">Warning: Two-Handed Weapon and Shield equipped simultaneously. You cannot gain the shield's AC bonus while attacking.</p>
+                                </div>
+                            );
+                        }
+                        return null;
+                    })()}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {inventory.length === 0 ? (
@@ -202,7 +232,7 @@ export default function Equipment({ data, updateData }) {
                             </div>
                         ) : (
                             [...inventory].sort((a, b) => a.name.localeCompare(b.name)).map(item => (
-                                <div key={item.id} className={`glass-card p-4 transition-all border-l-4 ${item.isEquipped ? 'border-emerald-500 bg-emerald-900/5' : 'border-gray-700 bg-gray-900/40 opacity-70 hover:opacity-100'}`}>
+                                <div key={item.id} className={`glass-card p-4 transition-all border-l-4 ${item.isEquipped ? 'border-brand-500 bg-brand-900/5' : 'border-gray-700 bg-gray-900/40 opacity-70 hover:opacity-100'}`}>
                                     <div className="flex justify-between items-start mb-2">
                                         <div>
                                             <h4 className="font-bold text-lg text-white leading-tight">{item.name}</h4>
@@ -213,8 +243,17 @@ export default function Equipment({ data, updateData }) {
 
                                                     if (slot === 'Weapon' && (item.Damage || item.damage)) {
                                                         const isProf = weaponProfs.some(p => item.type?.includes(p)) || item.type === 'Any' || item.name === "Cat's Claws";
-                                                        const isFinesse = (item.Properties || item.properties || '').toLowerCase().includes('finesse');
-                                                        const mod = (isFinesse && stats.mods.dex > stats.mods.str) ? stats.mods.dex : stats.mods.str;
+                                                        const properties = (item.Properties || item.properties || '').toLowerCase();
+                                                        const type = (item.Type || item.type || '').toLowerCase();
+                                                        
+                                                        const isFinesse = properties.includes('finesse');
+                                                        const isRanged = type.includes('ranged');
+                                                        
+                                                        let useDex = isRanged;
+                                                        if (isFinesse && stats.mods.dex > stats.mods.str) useDex = true;
+                                                        else if (isFinesse && stats.mods.str > stats.mods.dex) useDex = false;
+                                                        
+                                                        const mod = useDex ? stats.mods.dex : stats.mods.str;
                                                         const atk = mod + (isProf ? stats.profBonus : 0) + (Number(item.attack_bonus) || 0);
                                                         const dmg = mod + (Number(item.damage_bonus) || 0);
                                                         detailText = `${atk >= 0 ? '+' : ''}${atk} to hit | ${item.Damage || item.damage}${dmg >= 0 ? '+' : ''}${dmg} dmg`;
@@ -239,7 +278,7 @@ export default function Equipment({ data, updateData }) {
                                                             </p>
                                                             {(() => {
                                                                 const isProf = checkProficiency(data, item);
-                                                                if (isProf === true) return <span className="text-[9px] font-black text-emerald-500/60 uppercase">Proficient</span>;
+                                                                if (isProf === true) return <span className="text-[9px] font-black text-brand-500/60 uppercase">Proficient</span>;
                                                                 if (isProf === false) return <span className="text-[9px] font-black text-amber-500 uppercase flex items-center gap-1"><AlertCircle size={8} /> Non-Proficient</span>;
                                                                 return null;
                                                             })()}
@@ -270,9 +309,9 @@ export default function Equipment({ data, updateData }) {
 
                                     {(item.ac_bonus > 0 || item.save_bonus > 0) && (
                                         <div className="flex gap-2 mb-3">
-                                            {item.ac_bonus > 0 && <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">+{item.ac_bonus} AC</span>}
-                                            {item.save_bonus > 0 && <span className="text-[10px] font-bold bg-teal-500/20 text-teal-400 px-2 py-0.5 rounded">+{item.save_bonus} Saves</span>}
-                                        </div>
+                                    {item.ac_bonus > 0 && <span className="text-[10px] font-bold bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded">+{item.ac_bonus} AC</span>}
+                                    {item.save_bonus > 0 && <span className="text-[10px] font-bold bg-fuchsia-500/20 text-fuchsia-400 px-2 py-0.5 rounded">+{item.save_bonus} Saves</span>}
+                                </div>
                                     )}
 
                                     <div className="flex gap-2 mt-4">
@@ -282,7 +321,7 @@ export default function Equipment({ data, updateData }) {
                                             <button
                                                 disabled={!item.isEquipped && (item.attunement === true || item.attunement === 'true') && attunedCount >= attunementLimit}
                                                 onClick={() => toggleEquip(item.id)}
-                                                className={`flex-1 py-1.5 rounded text-xs font-bold flex items-center justify-center gap-2 transition-all ${item.isEquipped ? 'bg-emerald-600 text-white' :
+                                                className={`flex-1 py-1.5 rounded text-xs font-bold flex items-center justify-center gap-2 transition-all ${item.isEquipped ? 'bg-brand-600 text-white' :
                                                     (!item.isEquipped && (item.attunement === true || item.attunement === 'true') && attunedCount >= attunementLimit) ? 'bg-gray-800 text-gray-600 cursor-not-allowed' :
                                                         'bg-gray-800 text-gray-400 hover:bg-gray-700'
                                                     }`}
@@ -298,7 +337,7 @@ export default function Equipment({ data, updateData }) {
                                             </div>
                                         )}
                                         {item.isAttuned && (
-                                            <div className="flex items-center gap-1 bg-teal-900/30 text-teal-400 px-3 py-1.5 rounded border border-teal-500/20 text-xs font-bold">
+                                            <div className="flex items-center gap-1 bg-fuchsia-900/30 text-fuchsia-400 px-3 py-1.5 rounded border border-fuchsia-500/20 text-xs font-bold">
                                                 <Star size={12} fill="currentColor" /> Attuned
                                             </div>
                                         )}
@@ -314,10 +353,10 @@ export default function Equipment({ data, updateData }) {
                     </div>
 
                     {/* Equipped Items Summary (User Requested Position: Below Backpack, Above Currency) */}
-                    <div className="glass-card p-5 border-emerald-500/20 overflow-hidden">
+                    <div className="glass-card p-5 border-brand-500/20 overflow-hidden">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800/50">
                             <div>
-                                <h3 className="text-sm font-black text-emerald-500 uppercase tracking-widest">
+                                <h3 className="text-sm font-black text-brand-500 uppercase tracking-widest">
                                     Equipped and Attuned
                                 </h3>
                                 <p className="text-[10px] text-gray-500 mt-1 uppercase font-bold tracking-tight">
@@ -326,12 +365,12 @@ export default function Equipment({ data, updateData }) {
                             </div>
                             <div className="flex gap-4">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <span className="text-[10px] font-bold text-emerald-400 uppercase">Equipped</span>
+                                    <div className="w-2 h-2 rounded-full bg-brand-500"></div>
+                                    <span className="text-[10px] font-bold text-brand-400 uppercase">Equipped</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-teal-400 text-xs">★</span>
-                                    <span className="text-[10px] font-bold text-teal-400 uppercase">Attuned</span>
+                                    <span className="text-fuchsia-400 text-xs">★</span>
+                                    <span className="text-[10px] font-bold text-fuchsia-400 uppercase">Attuned</span>
                                 </div>
                             </div>
                         </div>
@@ -342,9 +381,9 @@ export default function Equipment({ data, updateData }) {
                                 .map(slot => {
                                     const hasItems = slot.items.length > 0;
                                     return (
-                                        <div key={slot.id} className={`p-3 rounded-xl border transition-all ${hasItems ? 'bg-emerald-900/10 border-emerald-500/30' : 'bg-black/20 border-gray-800/50 opacity-40'}`}>
+                                        <div key={slot.id} className={`p-3 rounded-xl border transition-all ${hasItems ? 'bg-brand-900/10 border-brand-500/30' : 'bg-black/20 border-gray-800/50 opacity-40'}`}>
                                             <div className="flex items-center gap-2 mb-2">
-                                                <slot.icon size={12} className={hasItems ? 'text-emerald-400' : 'text-gray-600'} />
+                                                <slot.icon size={12} className={hasItems ? 'text-brand-400' : 'text-gray-600'} />
                                                 <p className="text-[9px] text-gray-500 uppercase font-black tracking-tighter">{slot.label}</p>
                                             </div>
                                             {hasItems ? (
@@ -352,7 +391,7 @@ export default function Equipment({ data, updateData }) {
                                                     {slot.items.map(item => (
                                                         <div key={item.id} className="space-y-1">
                                                             <p className="text-xs font-bold text-white leading-tight truncate">
-                                                                {item.name} {item.isAttuned && <span className="text-teal-400 text-[10px]">★</span>}
+                                                                {item.name} {item.isAttuned && <span className="text-fuchsia-400 text-[10px]">★</span>}
                                                             </p>
                                                             {checkProficiency(data, item) === false && (
                                                                 <p className="text-[8px] font-black text-amber-500 uppercase flex items-center gap-0.5">
@@ -375,13 +414,13 @@ export default function Equipment({ data, updateData }) {
                             <div>
                                 <p className="text-[10px] text-gray-500 uppercase font-black mb-3 tracking-widest">Armor Proficiencies</p>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {armorProfs.length > 0 ? armorProfs.map(p => <span key={p} className="text-[9px] font-bold bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded border border-emerald-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
+                                    {armorProfs.length > 0 ? armorProfs.map(p => <span key={p} className="text-[9px] font-bold bg-brand-900/30 text-brand-300 px-2 py-1 rounded border border-brand-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
                                 </div>
                             </div>
                             <div>
                                 <p className="text-[10px] text-gray-500 uppercase font-black mb-3 tracking-widest">Weapon Proficiencies</p>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {weaponProfs.length > 0 ? weaponProfs.map(p => <span key={p} className="text-[9px] font-bold bg-teal-900/30 text-teal-300 px-2 py-1 rounded border border-teal-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
+                                    {weaponProfs.length > 0 ? weaponProfs.map(p => <span key={p} className="text-[9px] font-bold bg-fuchsia-900/30 text-fuchsia-300 px-2 py-1 rounded border border-fuchsia-500/20 uppercase">{p}</span>) : <span className="text-gray-600 italic text-[10px]">None</span>}
                                 </div>
                             </div>
                         </div>
@@ -436,10 +475,10 @@ export default function Equipment({ data, updateData }) {
 
             {showDatabaseModal && createPortal(
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-gray-900 border border-emerald-500/30 rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-[0_0_50px_rgba(16,185,129,0.1)] overflow-hidden relative">
+                    <div className="bg-gray-900 border border-brand-500/30 rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-[0_0_50px_rgba(217,70,239,0.1)] overflow-hidden relative">
                         <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-black/40">
                             <div>
-                                <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase tracking-tighter">
+                                <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-fuchsia-300 uppercase tracking-tighter">
                                     Equipment Database
                                 </h3>
                                 <p className="text-sm text-gray-400">Browse and add items to your character's inventory.</p>
@@ -459,14 +498,14 @@ export default function Equipment({ data, updateData }) {
                                         placeholder="Search artifacts and gear..."
                                         value={searchTerm}
                                         onChange={e => setSearchTerm(e.target.value)}
-                                        className="w-full bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none pl-10"
+                                        className="w-full bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none pl-10"
                                     />
                                     <Sword size={16} className="absolute left-3 top-3.5 text-gray-600" />
                                 </div>
                                 <select
                                     value={selectedCategory}
                                     onChange={e => setSelectedCategory(e.target.value)}
-                                    className="bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none"
+                                    className="bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none"
                                 >
                                     <option value="weapons">Weapons</option>
                                     <option value="magicItems">Magic Items</option>
@@ -477,16 +516,30 @@ export default function Equipment({ data, updateData }) {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-1">
                                 {filteredDbItems.map((item, i) => (
-                                    <div key={i} className="bg-gray-900/60 border border-gray-800 rounded-xl p-4 flex flex-col gap-2 justify-between group hover:border-emerald-500/40 hover:bg-black/40 transition-all h-full">
+                                <div key={i} className="bg-gray-900/60 border border-gray-800 rounded-xl p-4 flex flex-col gap-2 justify-between group hover:border-brand-500/40 hover:bg-black/40 transition-all h-full">
                                         <div>
-                                            <h4 className="font-bold text-white group-hover:text-emerald-400 transition-colors uppercase tracking-tight">{item.name || item.Item}</h4>
-                                            <div className="flex justify-between items-start">
+                                            <h4 className="font-bold text-white group-hover:text-brand-400 transition-colors uppercase tracking-tight flex items-center flex-wrap gap-2">
+                                                {item.name || item.Item}
+                                                {(() => {
+                                                    const count = getCountInInventory(item.name || item.Item);
+                                                    return count > 0 ? <span className="bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30 text-[9px] whitespace-nowrap">{count} IN PACK</span> : null;
+                                                })()}
+                                            </h4>
+                                            <div className="flex justify-between items-start mt-1">
                                                 <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">
                                                     {item.type || item.Type || 'Item'} • {item.rarity || item.Cost || 'Standard'}
+                                                    {(() => {
+                                                        const details = [];
+                                                        if (item.Damage || item.damage) details.push(item.Damage || item.damage);
+                                                        if ((item.Properties || item.properties || '').toLowerCase().includes('two-handed')) details.push('Two-Handed');
+                                                        if (item.AC) details.push(`${item.AC} AC`);
+                                                        if (item.Stealth === 'Disadvantage') details.push('Stealth Disadv.');
+                                                        return details.length > 0 ? ` • ${details.join(' • ')}` : '';
+                                                    })()}
                                                 </p>
                                                 {(() => {
                                                     const isProf = checkProficiency(data, item);
-                                                    if (isProf === true) return <span className="text-[9px] font-black bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20 uppercase">Proficient</span>;
+                                                    if (isProf === true) return <span className="text-[9px] font-black bg-brand-500/20 text-brand-400 px-1.5 py-0.5 rounded border border-brand-500/20 uppercase">Proficient</span>;
                                                     if (isProf === false) return <span className="text-[9px] font-black bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20 uppercase flex items-center gap-1"><AlertCircle size={8} /> Non-Proficient</span>;
                                                     return null;
                                                 })()}
@@ -499,8 +552,8 @@ export default function Equipment({ data, updateData }) {
                                                 setTimeout(() => setAddedItemId(null), 1000);
                                             }}
                                             className={`w-full px-3 py-2 rounded-lg text-xs font-black transition-all border ${addedItemId === i
-                                                ? 'bg-emerald-500 text-black border-emerald-400 scale-[0.98]'
-                                                : 'bg-emerald-600/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-600 hover:text-white'
+                                                ? 'bg-brand-500 text-black border-brand-400 scale-[0.98]'
+                                                : 'bg-brand-600/10 text-brand-500 border-brand-500/20 hover:bg-brand-600 hover:text-white'
                                                 }`}
                                         >
                                             {addedItemId === i ? 'ADDED!' : 'ADD TO BACKPACK'}

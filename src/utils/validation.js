@@ -37,7 +37,9 @@ export function getCharacterWarnings(data) {
         }
     }
 
-    // 3. Background & Alignment & Language
+    // 3. Background & Alignment & Language & Species
+    if (!data.parentSpecies) warnings.push("No species selected.");
+    if (data.parentSpecies && !data.species) warnings.push("No sub-species/ancestry selected.");
     if (!data.background) warnings.push("No background selected.");
     if (!data.alignment) warnings.push("No alignment selected.");
     if (!data.language) warnings.push("No bonus language selected.");
@@ -54,10 +56,6 @@ export function getCharacterWarnings(data) {
     const scores = Object.values(data.abilityScores || {});
     if (scores.length < 6 || scores.some(s => s === "" || s === 0)) {
         warnings.push("Ability scores are incomplete.");
-    }
-    const tokens = data.abilityTokens || {};
-    if (!tokens.t1 || !tokens.t2 || !tokens.t3) {
-        warnings.push("Ability score racial bonuses (+1/+1/+1 or +2/+1) are not fully applied.");
     }
 
     // 6. Spells

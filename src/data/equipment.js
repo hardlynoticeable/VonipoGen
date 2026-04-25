@@ -162,6 +162,142 @@ export const EQUIPMENT_DB = {
             "Damage": "1d8 pierc.",
             "Properties": "Range 150/600, Heavy, 2H",
             "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Light hammer",
+            "Type": "Simple Melee",
+            "Cost": "2 gp",
+            "Damage": "1d4 bludg.",
+            "Properties": "Light, Thrown (20/60)",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Sickle",
+            "Type": "Simple Melee",
+            "Cost": "1 gp",
+            "Damage": "1d4 slash.",
+            "Properties": "Light",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Dart",
+            "Type": "Simple Ranged",
+            "Cost": "5 cp",
+            "Damage": "1d4 pierc.",
+            "Properties": "Finesse, Thrown (20/60)",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Sling",
+            "Type": "Simple Ranged",
+            "Cost": "1 sp",
+            "Damage": "1d4 bludg.",
+            "Properties": "Ammunition (30/120)",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Flail",
+            "Type": "Martial Melee",
+            "Cost": "10 gp",
+            "Damage": "1d8 bludg.",
+            "Properties": "—",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Glaive",
+            "Type": "Martial Melee",
+            "Cost": "20 gp",
+            "Damage": "1d10 slash.",
+            "Properties": "Heavy, Reach, Two-handed",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Halberd",
+            "Type": "Martial Melee",
+            "Cost": "20 gp",
+            "Damage": "1d10 slash.",
+            "Properties": "Heavy, Reach, Two-handed",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Lance",
+            "Type": "Martial Melee",
+            "Cost": "10 gp",
+            "Damage": "1d12 pierc.",
+            "Properties": "Reach, Special",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Morningstar",
+            "Type": "Martial Melee",
+            "Cost": "15 gp",
+            "Damage": "1d8 pierc.",
+            "Properties": "—",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Pike",
+            "Type": "Martial Melee",
+            "Cost": "5 gp",
+            "Damage": "1d10 pierc.",
+            "Properties": "Heavy, Reach, Two-handed",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Trident",
+            "Type": "Martial Melee",
+            "Cost": "5 gp",
+            "Damage": "1d6 pierc.",
+            "Properties": "Thrown (20/60), Versatile (1d8)",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "War pick",
+            "Type": "Martial Melee",
+            "Cost": "5 gp",
+            "Damage": "1d8 pierc.",
+            "Properties": "—",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Whip",
+            "Type": "Martial Melee",
+            "Cost": "2 gp",
+            "Damage": "1d4 slash.",
+            "Properties": "Finesse, Reach",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Blowgun",
+            "Type": "Martial Ranged",
+            "Cost": "10 gp",
+            "Damage": "1 pierc.",
+            "Properties": "Ammunition (25/100), Loading",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Hand Crossbow",
+            "Type": "Martial Ranged",
+            "Cost": "75 gp",
+            "Damage": "1d6 pierc.",
+            "Properties": "Ammunition (30/120), Light, Loading",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Heavy Crossbow",
+            "Type": "Martial Ranged",
+            "Cost": "50 gp",
+            "Damage": "1d10 pierc.",
+            "Properties": "Ammunition (50/200), Heavy, Loading, Two-handed",
+            "equipped_slot": "Weapon"
+        },
+        {
+            "Item": "Net",
+            "Type": "Martial Ranged",
+            "Cost": "1 gp",
+            "Damage": "—",
+            "Properties": "Special, Thrown (5/15)",
+            "equipped_slot": "Weapon"
         }
     ],
     "armor": [

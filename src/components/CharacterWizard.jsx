@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { saveCharacter, loadCharacter } from '../utils/storage';
-import TabaxiLore from './TabaxiLore';
+import SpeciesLore from './SpeciesLore';
 import CoreStats from './CoreStats';
 import AbilityScores from './AbilityScores';
 import SubclassSelector from './SubclassSelector';
@@ -16,17 +16,15 @@ export const DEFAULT_CHARACTER = {
     background: '',
     alignment: '',
     level: 1,
-    size: 'Medium', // MotM choice
+    size: 'Medium', // Default size
     abilityScores: { str: '', dex: '', con: '', int: '', wis: '', cha: '' },
     abilityBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
-    tabaxiSkills: ['Perception', 'Stealth'],
+    speciesSkills: [],
     selectedClassSkills: [],
     backgroundSkills: [],
     selectedCantrips: [],
     selectedSpells: { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] },
-    inventory: [
-        { id: 'cats-claws', name: "Cat's Claws", Damage: '1d6', equipped_slot: 'Weapon', isEquipped: true }
-    ],
+    inventory: [],
     money: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
     treasure: '',
     personalityTraits: '',
@@ -71,8 +69,8 @@ export default function CharacterWizard() {
 
     // Build conditional steps array dynamically
     const stepsConfig = [
-        { id: 1, label: 'Lore', canEnter: true },
-        { id: 2, label: 'Stats', canEnter: true },
+        { id: 1, label: 'Background', canEnter: true },
+        { id: 2, label: 'Class', canEnter: !!characterData.species },
         { id: 3, label: 'Abilities', canEnter: !!characterData.class }
     ];
 
@@ -137,7 +135,7 @@ export default function CharacterWizard() {
             </div>
 
             <div className="min-h-[400px] relative z-10">
-                {step === 1 && <TabaxiLore data={characterData} updateData={updateData} />}
+                {step === 1 && <SpeciesLore data={characterData} updateData={updateData} />}
                 {step === 2 && <CoreStats data={characterData} updateData={updateData} />}
                 {step === 3 && <AbilityScores data={characterData} updateData={updateData} />}
                 {hasSubclass && step === stepsConfig.find(s => s.label === 'Subclass')?.id && <SubclassSelector data={characterData} updateData={updateData} />}

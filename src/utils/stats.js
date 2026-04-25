@@ -1,4 +1,5 @@
 import { CLASSES, SUBCLASSES } from '../data/rules5e';
+import { SPECIES } from '../data/species5e';
 
 /**
  * Infers the body slot for an item based on its properties.
@@ -155,8 +156,9 @@ export function calculateStats(characterData) {
     }
 
     // Speed Calculation
-    let speed = 30;
-    let climbSpeed = 30;
+    const selectedSpecies = SPECIES[characterData.species];
+    let speed = selectedSpecies ? selectedSpecies.speed : 30;
+    let climbSpeed = selectedSpecies?.climbSpeed || 0;
 
     if (charClass && characterData.class === 'Monk' && level >= 2) {
         // Unarmored Movement: +10 at L2, +15 at L6, +20 at L10, +25 at L14, +30 at L18
@@ -177,8 +179,10 @@ export function calculateStats(characterData) {
     const maxHp = hitDie + (Math.floor(hitDie / 2) + 1) * (level - 1) + (conMod * level);
 
     // Skills & Passive Perception
+    const innateSkills = selectedSpecies?.skills || [];
     const knownSkills = new Set([
-        ...(characterData.tabaxiSkills || []),
+        ...innateSkills,
+        ...(characterData.speciesSkills || []),
         ...(characterData.selectedClassSkills || []),
         ...(characterData.backgroundSkills || [])
     ]);

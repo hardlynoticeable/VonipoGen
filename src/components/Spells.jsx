@@ -93,30 +93,30 @@ export default function Spells({ data, updateData }) {
     return (
         <>
             <div className="space-y-6 animate-fade-in text-[var(--color-brand-100)] h-full overflow-y-auto pr-2 pb-6 custom-scrollbar">
-                <h2 className="text-3xl mb-2 font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
+                <h2 className="text-3xl mb-2 font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-fuchsia-300">
                     Spellcasting (Level {level} {charClass})
                 </h2>
 
                 {/* Spellcasting Core Stats Header */}
                 <div className="flex gap-4 mb-6 relative">
-                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-emerald-900/50 flex flex-col items-center">
+                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-brand-900/50 flex flex-col items-center">
                         <span className="text-xs uppercase font-bold text-gray-400 mb-1">Ability</span>
-                        <span className="text-xl font-bold text-emerald-300 uppercase">{ability}</span>
+                        <span className="text-xl font-bold text-brand-300 uppercase">{ability}</span>
                     </div>
-                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-emerald-900/50 flex flex-col items-center">
+                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-brand-900/50 flex flex-col items-center">
                         <span className="text-xs uppercase font-bold text-gray-400 mb-1">Save DC</span>
-                        <span className="text-3xl font-bold text-emerald-400">{spellSaveDC}</span>
+                        <span className="text-3xl font-bold text-brand-400">{spellSaveDC}</span>
                     </div>
-                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-emerald-900/50 flex flex-col items-center">
+                    <div className="flex-1 bg-gray-900/60 p-4 rounded-lg border border-brand-900/50 flex flex-col items-center">
                         <span className="text-xs uppercase font-bold text-gray-400 mb-1">Attack Bonus</span>
-                        <span className="text-3xl font-bold text-emerald-400">+{spellAttackBonus}</span>
+                        <span className="text-3xl font-bold text-brand-400">+{spellAttackBonus}</span>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Cantrips Section */}
                     <div className="bg-[var(--color-dark-card)] p-6 rounded-lg border border-gray-700 h-fit">
-                        <h3 className="text-xl font-bold text-emerald-400 mb-2 border-b border-gray-700 pb-2">
+                        <h3 className="text-xl font-bold text-brand-400 mb-2 border-b border-gray-700 pb-2">
                             Cantrips ({selectedCantrips.length} / {cantripsKnown})
                         </h3>
                         {cantripsKnown > 0 ? (
@@ -126,13 +126,13 @@ export default function Spells({ data, updateData }) {
                                     const hitCap = selectedCantrips.length >= cantripsKnown;
                                     return (
                                         <div key={spell} className="flex items-center">
-                                            <label className={`flex items-center space-x-2 text-sm p-1 rounded cursor-pointer transition-colors flex-1 ${isSelected ? 'bg-emerald-900/40 text-white' : 'hover:bg-gray-800'}`}>
+                                            <label className={`flex items-center space-x-2 text-sm p-1 rounded cursor-pointer transition-colors flex-1 ${isSelected ? 'bg-brand-900/40 text-white' : 'hover:bg-gray-800'}`}>
                                                 <input
                                                     type="checkbox"
                                                     checked={isSelected}
                                                     disabled={!isSelected && hitCap}
                                                     onChange={() => toggleCantrip(spell)}
-                                                    className="w-4 h-4 text-emerald-500 rounded focus:ring-emerald-500 bg-gray-900 border-gray-600"
+                                                    className="w-4 h-4 text-brand-500 rounded focus:ring-brand-500 bg-gray-900 border-gray-600"
                                                 />
                                                 <span className="flex-1">{spell}</span>
                                             </label>
@@ -142,7 +142,7 @@ export default function Spells({ data, updateData }) {
                                                     e.stopPropagation();
                                                     setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "Description for this spell is not available in the SRD database. Please consult your sourcebooks." });
                                                 }}
-                                                className="ml-2 text-emerald-500 hover:text-emerald-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
+                                                className="ml-2 text-brand-500 hover:text-brand-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
                                                 title="Spell Description"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -158,7 +158,7 @@ export default function Spells({ data, updateData }) {
 
                     {/* Leveled Spells Section */}
                     <div className="bg-[var(--color-dark-card)] p-6 rounded-lg border border-gray-700">
-                        <h3 className="text-xl font-bold text-emerald-400 mb-2 border-b border-gray-700 pb-2">
+                        <h3 className="text-xl font-bold text-brand-400 mb-2 border-b border-gray-700 pb-2">
                             {spellcasting.type === 'prepared' ? 'Prepared Spells' : 'Spells Known'} ({totalSelectedSpells} / {maxPreparedOrKnown})
                         </h3>
                         <div className="mt-4 space-y-6">
@@ -190,7 +190,7 @@ export default function Spells({ data, updateData }) {
                                                 ) : (
                                                     <>
                                                         {Array.from({ length: numSlots }).map((_, i) => (
-                                                            <div key={i} className="w-3 h-3 rounded bg-emerald-700 border border-emerald-400" title="Spell Slot"></div>
+                                                            <div key={i} className="w-3 h-3 rounded bg-brand-700 border border-brand-400" title="Spell Slot"></div>
                                                         ))}
                                                         {numSlots === 0 && <span className="text-xs text-gray-500">-</span>}
                                                     </>
@@ -204,18 +204,18 @@ export default function Spells({ data, updateData }) {
                                                 const hitCap = totalSelectedSpells >= maxPreparedOrKnown;
                                                 return (
                                                     <div key={spell} className="flex items-center">
-                                                        <label className={`flex items-center space-x-2 text-sm p-1 rounded transition-colors flex-1 ${isSelected ? 'bg-emerald-900/40 text-white' : 'hover:bg-gray-800'} ${isAlwaysKnown ? 'cursor-default border border-emerald-500/30' : 'cursor-pointer'}`}>
+                                                        <label className={`flex items-center space-x-2 text-sm p-1 rounded transition-colors flex-1 ${isSelected ? 'bg-brand-900/40 text-white' : 'hover:bg-gray-800'} ${isAlwaysKnown ? 'cursor-default border border-brand-500/30' : 'cursor-pointer'}`}>
                                                             <input
                                                                 type="checkbox"
                                                                 checked={isSelected}
                                                                 disabled={isAlwaysKnown || (!isSelected && hitCap)}
                                                                 onChange={() => toggleSpell(spellLevel, spell)}
-                                                                className={`w-4 h-4 rounded focus:ring-emerald-500 bg-gray-900 border-gray-600 ${isAlwaysKnown ? 'text-emerald-400 opacity-100' : 'text-emerald-500'}`}
+                                                                className={`w-4 h-4 rounded focus:ring-brand-500 bg-gray-900 border-gray-600 ${isAlwaysKnown ? 'text-brand-400 opacity-100' : 'text-brand-500'}`}
                                                             />
                                                             <span className="flex-1 flex items-center gap-2">
                                                                 {spell}
                                                                 {isAlwaysKnown && (
-                                                                    <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-900/50 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                                                                    <span className="text-[10px] uppercase font-bold text-brand-400 bg-brand-900/50 px-1.5 py-0.5 rounded border border-brand-500/30">
                                                                         {data.subclass}
                                                                     </span>
                                                                 )}
@@ -227,7 +227,7 @@ export default function Spells({ data, updateData }) {
                                                                 e.stopPropagation();
                                                                 setSelectedDescription({ name: spell, desc: SPELL_DESCRIPTIONS[spell] || "Description for this spell is not available in the SRD database. Please consult your sourcebooks." });
                                                             }}
-                                                            className="ml-2 text-emerald-500 hover:text-emerald-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
+                                                            className="ml-2 text-brand-500 hover:text-brand-400 p-1 flex items-center justify-center transition-transform hover:scale-110"
                                                             title="Spell Description"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -251,9 +251,9 @@ export default function Spells({ data, updateData }) {
             {/* Spell Description Modal */}
             {selectedDescription && createPortal(
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedDescription(null)}>
-                    <div className="bg-gray-900 border border-emerald-500 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden animate-slide-up" onClick={e => e.stopPropagation()}>
-                        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-emerald-900/10">
-                            <h3 className="text-2xl font-bold text-emerald-400">{selectedDescription.name}</h3>
+                    <div className="bg-gray-900 border border-brand-500 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden animate-slide-up" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-brand-900/10">
+                            <h3 className="text-2xl font-bold text-brand-400">{selectedDescription.name}</h3>
                             <button onClick={() => setSelectedDescription(null)} className="text-gray-400 hover:text-white transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
@@ -266,7 +266,7 @@ export default function Spells({ data, updateData }) {
                         <div className="p-4 border-t border-gray-800 flex justify-end">
                             <button
                                 onClick={() => setSelectedDescription(null)}
-                                className="px-6 py-2 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-emerald-900/20"
+                                className="px-6 py-2 bg-brand-700 hover:bg-brand-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-brand-900/20"
                             >
                                 Close
                             </button>

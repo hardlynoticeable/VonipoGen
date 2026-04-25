@@ -7,8 +7,8 @@ function App() {
     <div className="min-h-screen text-white relative">
       <header className="fixed top-0 w-full z-50 glass border-b border-dark-border py-4 px-8 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-200">
-            Tabaxi Generator
+          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-fuchsia-300">
+            D&D 5e Character Generator
           </h1>
         </div>
         <div className="flex gap-4">
@@ -18,7 +18,7 @@ function App() {
                 window.dispatchEvent(new CustomEvent('reset-character'));
               }
             }}
-            className="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm font-bold flex items-center gap-2"
+            className="px-4 py-2 rounded-lg bg-brand-500/10 border border-brand-500/50 text-brand-400 hover:bg-brand-500/20 transition-all text-sm font-bold flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
             Reset Character
@@ -35,7 +35,7 @@ function App() {
           href="https://github.com/hardlynoticeable/tabaxi"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-emerald-400 transition-colors"
+          className="hover:text-brand-400 transition-colors"
         >
           Created for D&D 5e Character Generation
         </a>

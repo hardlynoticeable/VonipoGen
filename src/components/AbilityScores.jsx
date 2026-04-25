@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CLASSES } from '../data/rules5e';
+import { SPECIES } from '../data/species5e';
 import AbilityScoreImpact from './AbilityScoreImpact';
 
 export default function AbilityScores({ data, updateData }) {
@@ -37,11 +38,9 @@ export default function AbilityScores({ data, updateData }) {
             newScores[key] = rolls[0] + rolls[1] + rolls[2];
         });
 
-        // Set the base scores and reset bonuses
+        // Set the base scores and clear any legacy tokens
         updateData({
-            abilityScores: newScores,
-            abilityBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
-            abilityTokens: { t1: '', t2: '', t3: '' }
+            abilityScores: newScores
         });
 
         // Cooldown
@@ -60,7 +59,8 @@ export default function AbilityScores({ data, updateData }) {
         // Subtract bonus from user input to find the true BASE score.
         // e.g. User types "16", active bonus is +2 -> Base score is 14.
         const numVal = Math.max(3, Math.min(20, Number(value)));
-        const activeBonus = (data.abilityBonuses && data.abilityBonuses[key]) || 0;
+        const selectedSpecies = SPECIES[data.species];
+        const activeBonus = (selectedSpecies?.abilityBonuses?.[key]) || 0;
         const newBase = numVal - activeBonus;
 
         updateData({
@@ -68,30 +68,6 @@ export default function AbilityScores({ data, updateData }) {
         });
     };
 
-    const toggleToken = (key, tokenIdx) => {
-        const tokens = { ...(data.abilityTokens || { t1: '', t2: '', t3: '' }) };
-        const tokenKey = `t${tokenIdx}`;
-
-        if (tokens[tokenKey] === key) {
-            // Unassign if already here
-            tokens[tokenKey] = '';
-        } else {
-            // Check if this stat already has 2 tokens
-            const count = Object.values(tokens).filter(v => v === key).length;
-            if (count >= 2) return;
-
-            // Assign token (steals it from elsewhere if it was assigned)
-            tokens[tokenKey] = key;
-        }
-
-        const bonuses = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
-        Object.values(tokens).forEach(k => { if (k) bonuses[k]++; });
-
-        updateData({
-            abilityTokens: tokens,
-            abilityBonuses: bonuses
-        });
-    };
 
     const getSortedScoresArray = () => {
         const scores = [];
@@ -167,10 +143,15 @@ export default function AbilityScores({ data, updateData }) {
         highestVal = sortedScores[sortedScores.length - 1].val;
     }
 
+    const getBonusesText = () => {
+        if (!data.species || !SPECIES[data.species]) return "";
+        return Object.entries(SPECIES[data.species].abilityBonuses || {}).map(([k, v]) => `+${v} ${k.toUpperCase()}`).join(', ');
+    };
+
     return (
         <div className="space-y-6 animate-fade-in text-[var(--color-brand-100)]">
             <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-6 gap-4">
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 m-0">
+                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-200 m-0">
                     Ability Scores
                 </h2>
 
@@ -178,7 +159,7 @@ export default function AbilityScores({ data, updateData }) {
                     onClick={generateRandomScores}
                     disabled={isGenerating}
                     className={`px-4 py-2 rounded font-bold transition-all shadow-md flex items-center gap-2
-                        ${isGenerating ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-600 hover:bg-brand-500 text-white shadow-[0_0_10px_rgba(16,185,129,0.3)]'}`}
+                        ${isGenerating ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-600 hover:bg-brand-500 text-white shadow-[0_0_10px_rgba(var(--color-brand-rgb),0.3)]'}`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isGenerating ? 'animate-spin' : ''}>
                         <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.28l5.67-5.67" />
@@ -187,15 +168,19 @@ export default function AbilityScores({ data, updateData }) {
                 </button>
             </div>
 
-            <div className="bg-emerald-900/20 p-4 border border-emerald-800/50 rounded mb-8">
-                <h3 className="text-emerald-400 font-bold mb-2">
-                    Monsters of the Multiverse Rules
-                </h3>
-                <p className="text-sm opacity-90 leading-relaxed">
-                    Tabaxi Ability Score Increases are flexible! Assign your <span className="font-bold text-brand-400">three +1 tokens</span> to any scores you wish. <br />
-                    <span className="font-semibold text-emerald-300">• You can assign up to two +1 tokens to a single score (for a +2 total), but not three.</span><br />
-                </p>
-            </div>
+            {data.species && (
+                <div className="mb-8 p-4 bg-brand-950/20 border border-brand-800/30 rounded-lg flex items-center gap-4 animate-fade-in">
+                    <div className="bg-brand-500/10 p-2 rounded-full hidden sm:block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-400"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /></svg>
+                    </div>
+                    <div>
+                        <h4 className="text-xs font-black text-brand-400 uppercase tracking-widest mb-1">{data.species} Bonuses</h4>
+                        <p className="text-sm text-brand-100/80 leading-relaxed font-medium">
+                            The {data.species} species provides: <span className="text-white font-bold">{getBonusesText()}</span>. These are automatically added to your scores below.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {data.class && CLASSES[data.class] && (
                 <div className={`bg-[var(--color-dark-card)] p-4 border-l-4 rounded mb-8 shadow-md transition-all ${flashGuidance ? 'border-brand-500 animate-flash-3x' : 'border-gray-700'}`}>
@@ -208,23 +193,22 @@ export default function AbilityScores({ data, updateData }) {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex-none w-full md:w-56 space-y-4">
                 {abilities.map(({ key, label }) => {
                     const baseScore = data.abilityScores && data.abilityScores[key] !== undefined ? data.abilityScores[key] : "";
-                    const bonus = (data.abilityBonuses && data.abilityBonuses[key]) || 0;
+                    const selectedSpecies = SPECIES[data.species];
+                    const bonus = (selectedSpecies?.abilityBonuses?.[key]) || 0;
                     const totalScore = baseScore !== "" ? Number(baseScore) + bonus : "";
+                    const mod = calculateModifier(totalScore);
 
                     const isBlank = baseScore === "";
-                    const isHighest = !isBlank && Number(baseScore) === highestVal;
-                    const isLowest = !isBlank && Number(baseScore) === lowestVal;
-
                     const isPrimary = data.class && CLASSES[data.class]?.primaryAbilities?.includes(key);
                     const cardBorder = (isPrimary && flashGuidance) ? 'animate-flash-3x' : 'border-gray-700 hover:border-brand-500';
                     const textClass = (isPrimary && flashGuidance) ? 'animate-flash-text-3x' : 'text-gray-400';
 
                     return (
                         <div key={key} className={`bg-[var(--color-dark-card)] p-4 pt-6 rounded-lg border flex items-center justify-between relative overflow-hidden group transition-colors ${cardBorder}`}>
-                            {/* Hexagon shape background hint */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-gray-400 pointer-events-none scale-150 group-hover:text-brand-500 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /></svg>
                             </div>
@@ -233,36 +217,6 @@ export default function AbilityScores({ data, updateData }) {
                                 {label}
                             </label>
 
-                            {/* Left Side: Three +1 Token Buttons */}
-                            <div className="flex flex-col gap-1 z-10 mt-2">
-                                {[1, 2, 3].map(tokenIdx => {
-                                    const tokenKey = `t${tokenIdx}`;
-                                    const isAssignedHere = data.abilityTokens?.[tokenKey] === key;
-                                    const isAssignedElsewhere = data.abilityTokens?.[tokenKey] && data.abilityTokens[tokenKey] !== key;
-
-                                    // Check if this stat already has 2 tokens and this specific token ISN'T one of them
-                                    const countOnThisStat = Object.values(data.abilityTokens || {}).filter(v => v === key).length;
-                                    const isBlockedByCount = countOnThisStat >= 2 && !isAssignedHere;
-
-                                    return (
-                                        <button
-                                            key={tokenIdx}
-                                            onClick={() => toggleToken(key, tokenIdx)}
-                                            disabled={isBlockedByCount}
-                                            className={`w-8 h-8 rounded text-[10px] font-black border transition-all flex items-center justify-center
-                                                ${isAssignedHere ? 'bg-brand-500 border-brand-400 text-black shadow-[0_0_8px_rgba(16,185,129,0.5)] scale-110 z-20' :
-                                                    isAssignedElsewhere ? 'bg-gray-800/20 border-gray-800 text-gray-700 cursor-not-allowed' :
-                                                        isBlockedByCount ? 'bg-gray-900 border-gray-800 text-gray-800 opacity-20 cursor-not-allowed' :
-                                                            'bg-gray-800 border-gray-600 text-gray-500 hover:border-brand-500 hover:text-brand-400'}`}
-                                            title={isAssignedHere ? `Token ${tokenIdx} assigned to ${label}` : isAssignedElsewhere ? `Token ${tokenIdx} assigned elsewhere` : `Assign Token ${tokenIdx} to ${label}`}
-                                        >
-                                            +1
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Center: The Score Input */}
                             <div className="flex flex-col items-center z-10">
                                 <input
                                     type="number"
@@ -270,18 +224,26 @@ export default function AbilityScores({ data, updateData }) {
                                     onChange={(e) => handleScoreChange(key, e.target.value)}
                                     placeholder="-"
                                     className={`w-20 text-center bg-gray-900/80 border-2 rounded-lg text-4xl font-bold py-2 focus:outline-none focus:border-brand-500 transition-colors placeholder:text-gray-700
-                                        ${bonus > 0 && totalScore !== "" ? 'text-brand-400 border-brand-900/50' : 'text-white border-emerald-900/50'}`}
+                                        ${bonus > 0 && totalScore !== "" ? 'text-brand-400 border-brand-900/50' : 'text-white border-brand-900/50'}`}
                                 />
-                                <div className="mt-2 px-4 py-1 bg-emerald-900/40 rounded-full border border-emerald-500/30 text-emerald-300 font-mono font-bold text-sm">
-                                    {calculateModifier(totalScore)}
+                                <div className="mt-4 flex items-center justify-between w-full">
+                                    <div className="flex items-center gap-1.5 overflow-hidden">
+                                        {bonus > 0 && (
+                                            <div className="px-1.5 py-0.5 bg-brand-100 text-brand-900 text-[9px] font-black rounded border border-brand-500 whitespace-nowrap flex items-center gap-0.5">
+                                                <span>+{bonus}</span>
+                                                <span className="opacity-70">SPS</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className={`text-2xl font-black ${isPrimary ? 'text-brand-500' : 'text-gray-400'}`}>
+                                        {mod >= 0 ? '+' : ''}{mod}
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Right Side: Swapping Arrows */}
                             <div className="flex flex-col gap-1 z-10 mt-2">
                                 <button
                                     onClick={() => handleSwapUp(key)}
-                                    // Disable if blank, or if this score is equal to the absolute highest score
                                     disabled={isBlank || Number(baseScore) === highestVal}
                                     className="w-8 h-8 rounded bg-gray-800 border border-gray-600 text-gray-400 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-700 hover:text-white transition-colors"
                                     title="Swap with next highest score"
@@ -301,9 +263,14 @@ export default function AbilityScores({ data, updateData }) {
                         </div>
                     );
                 })}
-            </div>
+                </div>
+                
+                <hr className="border-gray-800 my-4 md:hidden block" />
 
-            <AbilityScoreImpact data={data} />
+                <div className="flex-1 w-full min-w-0">
+                    <AbilityScoreImpact data={data} />
+                </div>
+            </div>
         </div>
     );
 }

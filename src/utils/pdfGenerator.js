@@ -4,6 +4,7 @@ import { SPELLCASTING_PROGRESSIONS, ATTACK_CANTRIPS } from '../data/spells5e';
 import { EQUIPMENT_DB } from '../data/equipment';
 import { STARTING_PACKS } from '../data/startingPacks';
 import { calculateStats } from './stats';
+import { SPECIES } from '../data/species5e';
 
 export async function generateCharacterPDF(characterData) {
     try {
@@ -26,11 +27,11 @@ export async function generateCharacterPDF(characterData) {
             } catch (e) { }
         };
 
-        setField('CharacterName', characterData.name || 'Wandering Tabaxi', 12);
-        setField('CharacterName 2', characterData.name || 'Wandering Tabaxi', 12);
+        setField('CharacterName', characterData.name || 'Wandering Adventurer', 12);
+        setField('CharacterName 2', characterData.name || 'Wandering Adventurer', 12);
         setField('ClassLevel', `${characterData.class || ''} ${characterData.level}`, 10);
         setField('Background', characterData.background || '', 10);
-        setField('Race ', 'Tabaxi', 10);
+        setField('Race ', characterData.species || '', 10);
         setField('Alignment', characterData.alignment || '', 10);
         setField('ProfBonus', `+${profBonus}`, 10);
         setField('Initiative', mods.dex >= 0 ? `+${mods.dex}` : mods.dex, 10);
@@ -215,13 +216,17 @@ export async function generateCharacterPDF(characterData) {
         setField('Equipment', characterData.treasure || '', 8);
 
         // Features and Traits
-        const traitList = [
-            "Tabaxi Traits:",
-            "- Darkvision (60 ft)",
-            "- Feline Agility (Double speed for a turn; recharge on 0 ft move)",
-            "- Cat's Claws (Climb 30 ft; Claws deal 1d6 + STR slashing)",
-            "- Cat's Talent (Proficiency: Perception, Stealth)"
-        ];
+        const traitList = [];
+        if (characterData.species && SPECIES[characterData.species]) {
+            const sps = SPECIES[characterData.species];
+            traitList.push(`${characterData.species} Traits:`);
+            if (sps.darkvision > 0) traitList.push(`- Darkvision (${sps.darkvision} ft)`);
+            sps.traits.forEach(t => {
+                const splitIndex = t.indexOf(':');
+                if (splitIndex !== -1) traitList.push(`- ${t.substring(0, splitIndex)}`);
+                else traitList.push(`- ${t}`);
+            });
+        }
 
         if (nonProficientItems?.length > 0) {
             traitList.push("");
@@ -275,7 +280,7 @@ export async function generateCharacterPDF(characterData) {
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `${characterData.name || 'Tabaxi'}.pdf`;
+        link.download = `${characterData.name || 'Character'}.pdf`;
         link.click();
 
     } catch (error) {
