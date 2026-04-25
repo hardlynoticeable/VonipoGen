@@ -8,7 +8,7 @@ function App() {
       <header className="fixed top-0 w-full z-50 bg-[#12181b]/95 backdrop-blur-xl border-b border-dark-border py-4 px-8 flex justify-between items-center shadow-2xl">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-fuchsia-300">
-            Vonipo Generator
+            D&D 5e Character Generator
           </h1>
         </div>
         <div className="flex gap-3">
@@ -18,7 +18,7 @@ function App() {
           >
             Load
           </button>
-          
+
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('save-character'))}
             className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white transition-all text-xs font-bold"
