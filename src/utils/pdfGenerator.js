@@ -157,8 +157,18 @@ export async function generateCharacterPDF(characterData) {
             };
 
             const mapSpells = (list, fields) => fields.forEach((f, i) => setField(f, list[i] || '', 7));
-            mapSpells(characterData.selectedCantrips || [], spellFieldMaps[0]);
-            for (let l = 1; l <= 9; l++) mapSpells(characterData.selectedSpells?.[l] || [], spellFieldMaps[l]);
+            
+            const subclassData = SUBCLASSES[characterData.class]?.[characterData.subclass];
+            
+            const subclassCantrips = subclassData?.spells?.[0] || [];
+            const allCantrips = [...new Set([...subclassCantrips, ...(characterData.selectedCantrips || [])])];
+            mapSpells(allCantrips, spellFieldMaps[0]);
+            
+            for (let l = 1; l <= 9; l++) {
+                const subclassLeveled = subclassData?.spells?.[l] || [];
+                const allLevel = [...new Set([...subclassLeveled, ...(characterData.selectedSpells?.[l] || [])])];
+                mapSpells(allLevel, spellFieldMaps[l]);
+            }
         }
 
         // Weapons and Attacks

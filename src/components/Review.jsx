@@ -198,13 +198,19 @@ export default function Review({ data }) {
 
                     {/* Spells */}
                     {(() => {
-                        const cantrips = data.selectedCantrips || [];
-                        const subclassSpells = data.class && data.subclass && SUBCLASSES[data.class]?.[data.subclass]?.spells ?
-                            Object.values(SUBCLASSES[data.class][data.subclass].spells).flat() : [];
-                        const selectedLeveledSpells = Object.values(data.selectedSpells || {}).flat();
-                        const allLeveledSpells = [...new Set([...subclassSpells, ...selectedLeveledSpells])];
+                        const subclassSpellsObj = (data.class && data.subclass && SUBCLASSES[data.class]?.[data.subclass]?.spells) || {};
+                        const subclassCantrips = subclassSpellsObj[0] || [];
+                        const subclassLeveledSpells = Object.entries(subclassSpellsObj)
+                            .filter(([lvl]) => lvl !== '0')
+                            .flatMap(([_, spells]) => spells);
 
-                        if (cantrips.length === 0 && allLeveledSpells.length === 0) return null;
+                        const selectedCantrips = data.selectedCantrips || [];
+                        const selectedLeveledSpells = Object.values(data.selectedSpells || {}).flat();
+
+                        const allCantrips = [...new Set([...subclassCantrips, ...selectedCantrips])];
+                        const allLeveledSpells = [...new Set([...subclassLeveledSpells, ...selectedLeveledSpells])];
+
+                        if (allCantrips.length === 0 && allLeveledSpells.length === 0) return null;
 
                         return (
                             <div className="pt-4 border-t border-gray-700/50">
@@ -212,10 +218,10 @@ export default function Review({ data }) {
                                     Spells
                                 </p>
                                 <div className="space-y-3">
-                                    {cantrips.length > 0 && (
+                                    {allCantrips.length > 0 && (
                                         <div>
                                             <p className="text-[10px] text-brand-300/60 uppercase font-black mb-1">Cantrips</p>
-                                            <p className="text-xs text-gray-300 italic">{cantrips.join(', ')}</p>
+                                            <p className="text-xs text-gray-300 italic">{allCantrips.join(', ')}</p>
                                         </div>
                                     )}
                                     {allLeveledSpells.length > 0 && (

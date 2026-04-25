@@ -476,6 +476,9 @@ export const SUBCLASSES = {
         },
         'College of Spirits': {
             description: 'You draw on the stories of spirits from the past, acting as a medium to bring their tales to life.',
+            spells: {
+                0: ['Guidance']
+            },
             level3: 'Guiding Whispers: Gain the Guidance cantrip (60ft range).\nSpiritual Focus: Use a candle, crystal ball, or skull as a focus, adding 1d6 to healing/damage rolls.\nTales from Beyond: Use a bonus action to roll on the Spirits\' Tales table for a unique effect.',
             level6: 'Spirit Session: Conduct a ritual to learn a spell from any class list temporarily.',
             level14: 'Mystical Connection: Roll twice on the Spirits\' Tales table.'
@@ -516,6 +519,7 @@ export const SUBCLASSES = {
         'Circle of Spores': {
             description: 'You find beauty in decay, using fungal spores to animate the dead and strike your enemies.',
             spells: {
+                0: ['Chill Touch'],
                 2: ['Blindness/Deafness', 'Gentle Repose'],
                 3: ['Animate Dead', 'Gaseous Form'],
                 4: ['Blight', 'Confusion'],
@@ -527,6 +531,10 @@ export const SUBCLASSES = {
         },
         'Circle of Stars': {
             description: 'You study the patterns of the stars, drawing on the power of the constellations to shape your magic.',
+            spells: {
+                0: ['Guidance'],
+                1: ['Guiding Bolt']
+            },
             level2: 'Star Map: Gain the Guidance and Guiding Bolt spells (can cast Guiding Bolt for free).\nStarry Form: Use Wild Shape to take an Archer, Chalice, or Dragon form for unique benefits.',
             level6: 'Cosmic Omen: Roll a d6 to gain a Weal or Woe effect after a long rest.',
             level10: 'Twinkling Constellations: Your Starry Form benefits improve and you can switch forms each turn.'
@@ -617,6 +625,7 @@ export const SUBCLASSES = {
         'Arcana Domain': {
             description: 'Magic is an energy that infuses the multiverse, and these clerics study it as a divine force.',
             effect: 'Gain Arcana proficiency, Wizard cantrips, and domain spells from the Wizard list. You can turn celestials, elementals, fey, and fiends.',
+            bonusCantrips: { count: 2, list: 'Wizard' },
             spells: {
                 1: ['Detect Magic', 'Magic Missile'],
                 2: ['Magic Weapon', 'Nystul\'s Magic Aura'],
@@ -633,6 +642,7 @@ export const SUBCLASSES = {
             description: 'Concerned with the forces that cause death, these clerics harness necrotic energy.',
             effect: 'Gain martial weapons, powerful necromancy spells, and the ability to target two creatures with necromancy cantrips.',
             weaponProficiencies: ['Martial Melee', 'Martial Ranged'],
+            bonusCantrips: { count: 1, options: ['Chill Touch', 'Spare the Dying', 'Toll the Dead'] },
             spells: {
                 1: ['False Life', 'Ray of Sickness'],
                 2: ['Blindness/Deafness', 'Ray of Enfeeblement'],
@@ -665,6 +675,7 @@ export const SUBCLASSES = {
             description: 'Guardians of the line between life and death who seek to put restless spirits to rest.',
             effect: 'Learn Spare the Dying (cast as bonus action at range), maximize healing on creatures at 0 HP, and detect undead.',
             spells: {
+                0: ['Spare the Dying'],
                 1: ['Bane', 'False Life'],
                 2: ['Gentle Repose', 'Ray of Enfeeblement'],
                 3: ['Revivify', 'Vampiric Touch'],
@@ -711,6 +722,7 @@ export const SUBCLASSES = {
             description: 'Clerics of the Light promote ideals of rebirth, truth, and burning away the darkness.',
             effect: 'Gain the Light cantrip, fiery offensive domain spells (like Fireball), and the ability to impose disadvantage on incoming attacks.',
             spells: {
+                0: ['Light'],
                 1: ['Burning Hands', 'Faerie Fire'],
                 2: ['Flaming Sphere', 'Scorching Ray'],
                 3: ['Daylight', 'Fireball'],
@@ -726,6 +738,7 @@ export const SUBCLASSES = {
             description: 'Clerics of nature gods protect the natural world.',
             effect: 'Gain heavy armor, a Druid cantrip, and proficiency in an outdoorsy skill (Animal Handling, Nature, Survival).',
             armorProficiencies: ['Heavy'],
+            bonusCantrips: { count: 1, list: 'Druid' },
             spells: {
                 1: ['Animal Friendship', 'Speak with Animals'],
                 2: ['Barkskin', 'Spike Growth'],
@@ -848,11 +861,20 @@ export const SUBCLASSES = {
         },
         'Eldritch Knight': {
             description: 'The archetypal Eldritch Knight combines martial mastery with a careful study of magic.',
+            spellcasting: {
+                ability: 'int',
+                type: 'known',
+                progression: 'third',
+                cantripsKnown: [0, 0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+                spellsKnown: [0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13]
+            },
             level3: 'Spellcasting: Gain INT-based wizard spellcasting.\nWeapon Bond: Create a magical bond with up to two weapons.',
             level7: 'War Magic: Cast a cantrip and make one weapon attack as a bonus action.'
         },
         'Arcane Archer': {
             description: 'Arcane Archers study a unique elven method of archery that weaves magic into attacks to produce supernatural effects.',
+            spellcasting: { cantripsKnown: Array(20).fill(0) },
+            bonusCantrips: { count: 1, options: ['Druidcraft', 'Prestidigitation'] },
             level3: 'Arcane Archer Lore: Gain proficiency in Arcana or Nature, and the Prestidigitation or Druidcraft cantrip.\nArcane Shot: Use magical effects on your arrows (d6s force damage).',
             level7: 'Magic Arrow: Arrows count as magical for overcoming resistances.\nCurving Shot: If an Arcane Shot misses, use a bonus action to reroll the attack against a different target.',
             level10: 'Ever-Ready Shot: Regain one use of Arcane Shot if you have none when you roll initiative.'
@@ -896,6 +918,10 @@ export const SUBCLASSES = {
         },
         'Way of Shadow': {
             description: 'Monks of the Way of Shadow follow a tradition that values stealth and subterfuge.',
+            spellcasting: { cantripsKnown: Array(20).fill(0) },
+            spells: {
+                0: ['Minor Illusion']
+            },
             level3: 'Shadow Arts: Use ki to cast Darkness, Darkvision, Pass without Trace, or Silence.\nMage Hand: Gain the Minor Illusion cantrip.',
             level6: 'Shadow Step: Teleport from one shadow to another as a bonus action.'
         },
@@ -1095,6 +1121,9 @@ export const SUBCLASSES = {
         },
         'Drakewarden': {
             description: 'You have formed a bond with a draconic spirit, summoning a drake companion to fight by your side.',
+            spells: {
+                0: ['Thaumaturgy']
+            },
             level3: 'Draconic Gift: Learn Draconic and the Thaumaturgy cantrip.\nDrake Companion: Summon a drake that fights alongside you, dealing extra elemental damage.',
             level7: 'Bond of Fang and Scale: The drake grows to Medium size, gains a flying or swimming speed, and you gain resistance to its element.',
             level11: 'Drake\'s Breath: You or your drake can exhale a cone of elemental damage.'
@@ -1111,6 +1140,16 @@ export const SUBCLASSES = {
         },
         'Arcane Trickster': {
             description: 'You combine your rogue skills with the magic of the wizard.',
+            spellcasting: {
+                ability: 'int',
+                type: 'known',
+                progression: 'third',
+                cantripsKnown: [0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+                spellsKnown: [0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13]
+            },
+            spells: {
+                0: ['Mage Hand']
+            },
             level3: 'Spellcasting: Gain INT-based wizard spellcasting.\nMage Hand Legerdemain: Your Mage Hand is invisible and can perform thieving tasks.'
         },
         'Inquisitive': {
@@ -1248,7 +1287,7 @@ export const SUBCLASSES = {
         },
         'The Celestial': {
             description: 'Your patron is a powerful being of the Upper Planes, a creature of pure light and goodness.',
-            spells: { 1: ['Cure Wounds', 'Guiding Bolt'] },
+            spells: { 0: ['Light', 'Sacred Flame'], 1: ['Cure Wounds', 'Guiding Bolt'] },
             level1: 'Bonus Cantrips: Gain Light and Sacred Flame.\nHealing Light: Use a pool of d6s to heal creatures within 60ft as a bonus action.',
             level6: 'Radiant Soul: Resistance to radiant damage and add Charisma modifier to radiant or fire damage.'
         },

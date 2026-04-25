@@ -7,12 +7,13 @@ import { SPELL_DESCRIPTIONS } from '../data/spellDescriptions';
 export default function Spells({ data, updateData }) {
     const [selectedDescription, setSelectedDescription] = React.useState(null);
     const charClass = data.class;
+    const subclassData = (data.subclass && SUBCLASSES[charClass]?.[data.subclass]) || null;
     const level = Number(data.level) || 1;
-    const spellcasting = charClass ? CLASSES[charClass]?.spellcasting : null;
+    const spellcasting = (charClass ? CLASSES[charClass]?.spellcasting : null) || subclassData?.spellcasting;
 
-    if (!spellcasting) return <div>No spellcasting for this class.</div>;
+    if (!spellcasting) return <div className="text-gray-400 p-8 text-center bg-[var(--color-dark-card)] rounded border border-gray-800 m-4">No spellcasting for this class.</div>;
 
-    const ability = spellcasting.ability; // 'int', 'wis', 'cha'
+    const ability = spellcasting.ability || 'int'; // 'int', 'wis', 'cha'
     const abilityScore = data.abilityScores[ability] || 10;
     const abilityBonus = data.abilityBonuses[ability] || 0;
     const totalAbility = Number(abilityScore) + abilityBonus;
@@ -23,11 +24,28 @@ export default function Spells({ data, updateData }) {
     const spellAttackBonus = profBonus + abilityMod;
 
     // Cantrips
-    const cantripsKnown = spellcasting.cantripsKnown[level - 1] || 0;
-    const cantripOptions = SPELL_LIST[charClass]?.[0] || [];
+    let baseCantripsKnown = spellcasting.cantripsKnown?.[level - 1] || 0;
+    const bonusCantrips = subclassData?.bonusCantrips;
+    if (bonusCantrips) {
+        baseCantripsKnown += (bonusCantrips.count || 0);
+    }
+    const cantripsKnown = baseCantripsKnown;
+
+    const subclassCantrips = subclassData?.spells?.[0] || [];
+    let classCantrips = SPELL_LIST[charClass]?.[0] || [];
+    
+    if (bonusCantrips) {
+        if (bonusCantrips.list && SPELL_LIST[bonusCantrips.list]?.[0]) {
+            classCantrips = [...classCantrips, ...SPELL_LIST[bonusCantrips.list][0]];
+        } else if (bonusCantrips.options) {
+            classCantrips = [...classCantrips, ...bonusCantrips.options];
+        }
+    }
+
+    const cantripOptions = [...new Set([...classCantrips, ...subclassCantrips])].sort();
 
     // Slots & Leveled Spells
-    const progression = SPELLCASTING_PROGRESSIONS[spellcasting.progression];
+    const progression = SPELLCASTING_PROGRESSIONS[spellcasting.progression] || Array(20).fill([]);
     const availableSlots = progression[level - 1] || []; // e.g. [4, 2] means 4 1st, 2 2nd
 
     // Allowed known spells (if applicable)
@@ -49,7 +67,6 @@ export default function Spells({ data, updateData }) {
     const { selectedCantrips = [], selectedSpells = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] } } = data;
 
     // Get subclass spells
-    const subclassData = (data.subclass && SUBCLASSES[charClass]?.[data.subclass]) || null;
     const alwaysKnownSpells = {};
     if (subclassData?.spells) {
         Object.entries(subclassData.spells).forEach(([lvl, spells]) => {
@@ -70,11 +87,13 @@ export default function Spells({ data, updateData }) {
         );
         return total + manuallySelected.length;
     }, 0);
+    const totalSelectedCantrips = selectedCantrips.filter(s => !subclassCantrips.includes(s) && cantripOptions.includes(s)).length;
+
     const toggleCantrip = (spell) => {
         const current = [...selectedCantrips];
         if (current.includes(spell)) {
             updateData({ selectedCantrips: current.filter(s => s !== spell) });
-        } else if (current.length < cantripsKnown) {
+        } else if (totalSelectedCantrips < cantripsKnown) {
             updateData({ selectedCantrips: [...current, spell] });
         }
     };
@@ -117,24 +136,32 @@ export default function Spells({ data, updateData }) {
                     {/* Cantrips Section */}
                     <div className="bg-[var(--color-dark-card)] p-6 rounded-lg border border-gray-700 h-fit">
                         <h3 className="text-xl font-bold text-brand-400 mb-2 border-b border-gray-700 pb-2">
-                            Cantrips ({selectedCantrips.length} / {cantripsKnown})
+                            Cantrips ({totalSelectedCantrips} / {cantripsKnown})
                         </h3>
-                        {cantripsKnown > 0 ? (
+                        {cantripsKnown > 0 || subclassCantrips.length > 0 ? (
                             <div className="mt-4 flex flex-col gap-1">
                                 {cantripOptions.map(spell => {
-                                    const isSelected = selectedCantrips.includes(spell);
-                                    const hitCap = selectedCantrips.length >= cantripsKnown;
+                                    const isAlwaysKnown = subclassCantrips.includes(spell);
+                                    const isSelected = isAlwaysKnown || selectedCantrips.includes(spell);
+                                    const hitCap = totalSelectedCantrips >= cantripsKnown;
                                     return (
                                         <div key={spell} className="flex items-center">
-                                            <label className={`flex items-center space-x-2 text-sm p-1 rounded cursor-pointer transition-colors flex-1 ${isSelected ? 'bg-brand-900/40 text-white' : 'hover:bg-gray-800'}`}>
+                                            <label className={`flex items-center space-x-2 text-sm p-1 rounded transition-colors flex-1 ${isSelected ? 'bg-brand-900/40 text-white' : 'hover:bg-gray-800'} ${isAlwaysKnown ? 'cursor-default border border-brand-500/30' : 'cursor-pointer'}`}>
                                                 <input
                                                     type="checkbox"
                                                     checked={isSelected}
-                                                    disabled={!isSelected && hitCap}
+                                                    disabled={isAlwaysKnown || (!isSelected && hitCap)}
                                                     onChange={() => toggleCantrip(spell)}
-                                                    className="w-4 h-4 text-brand-500 rounded focus:ring-brand-500 bg-gray-900 border-gray-600"
+                                                    className={`w-4 h-4 rounded focus:ring-brand-500 bg-gray-900 border-gray-600 ${isAlwaysKnown ? 'text-brand-400 opacity-100' : 'text-brand-500'}`}
                                                 />
-                                                <span className="flex-1">{spell}</span>
+                                                <span className="flex-1 flex items-center gap-2">
+                                                    {spell}
+                                                    {isAlwaysKnown && (
+                                                        <span className="text-[10px] uppercase font-bold text-brand-400 bg-brand-900/50 px-1.5 py-0.5 rounded border border-brand-500/30">
+                                                            {data.subclass}
+                                                        </span>
+                                                    )}
+                                                </span>
                                             </label>
                                             <button
                                                 onClick={(e) => {
