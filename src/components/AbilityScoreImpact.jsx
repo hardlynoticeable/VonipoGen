@@ -1,6 +1,7 @@
 import React from 'react';
-import { CLASSES, SKILLS } from '../data/rules5e';
+import { CLASSES, SKILLS, BACKGROUNDS } from '../data/rules5e';
 import { calculateStats } from '../utils/stats';
+import { SPECIES } from '../data/species5e';
 
 export default function AbilityScoreImpact({ data }) {
     if (!data.class) return null;

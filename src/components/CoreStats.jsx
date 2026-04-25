@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { CLASSES, BACKGROUNDS, LANGUAGES } from '../data/rules5e';
-import { APPEARANCES } from '../data/species5e';
+import { APPEARANCES, SPECIES } from '../data/species5e';
 
 export default function CoreStats({ data, updateData }) {
     const classes = Object.keys(CLASSES);
