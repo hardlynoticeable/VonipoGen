@@ -56,12 +56,16 @@ export default function AbilityScores({ data, updateData }) {
             return;
         }
 
-        // Subtract bonus from user input to find the true BASE score.
-        // e.g. User types "16", active bonus is +2 -> Base score is 14.
-        const numVal = Math.max(3, Math.min(20, Number(value)));
+        const numVal = Number(value);
+        if (isNaN(numVal)) return;
+
+        // Allow users to type intermediate values (like 1 or 2) without jumping to 3 
+        // but still cap the upper bound at 30 (being generous for magic items/buffs)
+        const cappedVal = Math.min(30, numVal);
+        
         const selectedSpecies = SPECIES[data.species];
         const activeBonus = (selectedSpecies?.abilityBonuses?.[key]) || 0;
-        const newBase = numVal - activeBonus;
+        const newBase = cappedVal - activeBonus;
 
         updateData({
             abilityScores: { ...data.abilityScores, [key]: newBase }
@@ -129,9 +133,8 @@ export default function AbilityScores({ data, updateData }) {
     };
 
     const calculateModifier = (totalScore) => {
-        if (totalScore === "" || isNaN(totalScore)) return "+0";
-        const mod = Math.floor((totalScore - 10) / 2);
-        return mod >= 0 ? `+${mod}` : mod;
+        if (totalScore === "" || isNaN(totalScore)) return 0;
+        return Math.floor((totalScore - 10) / 2);
     };
 
     // Calculate disabled arrows
@@ -208,7 +211,7 @@ export default function AbilityScores({ data, updateData }) {
                     const textClass = (isPrimary && flashGuidance) ? 'animate-flash-text-3x' : 'text-gray-400';
 
                     return (
-                        <div key={key} className={`bg-[var(--color-dark-card)] p-4 pt-6 rounded-lg border flex items-center justify-between relative overflow-hidden group transition-colors ${cardBorder}`}>
+                        <div key={key} className={`bg-[var(--color-dark-card)] p-4 pt-8 rounded-lg border flex items-center justify-between relative overflow-hidden group transition-colors ${cardBorder}`}>
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-gray-400 pointer-events-none scale-150 group-hover:text-brand-500 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /></svg>
                             </div>
@@ -226,7 +229,7 @@ export default function AbilityScores({ data, updateData }) {
                                     className={`w-20 text-center bg-gray-900/80 border-2 rounded-lg text-4xl font-bold py-2 focus:outline-none focus:border-brand-500 transition-colors placeholder:text-gray-700
                                         ${bonus > 0 && totalScore !== "" ? 'text-brand-400 border-brand-900/50' : 'text-white border-brand-900/50'}`}
                                 />
-                                <div className="mt-4 flex items-center justify-between w-full">
+                                <div className="mt-2 flex items-center justify-between w-full">
                                     <div className="flex items-center gap-1.5 overflow-hidden">
                                         {bonus > 0 && (
                                             <div className="px-1.5 py-0.5 bg-brand-100 text-brand-900 text-[9px] font-black rounded border border-brand-500 whitespace-nowrap flex items-center gap-0.5">

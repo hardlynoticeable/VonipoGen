@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Award } from 'lucide-react';
 import { SUBCLASSES, CLASSES } from '../data/rules5e';
 
 export default function SubclassSelector({ data, updateData }) {
