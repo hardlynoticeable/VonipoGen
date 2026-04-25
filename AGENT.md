@@ -22,6 +22,9 @@ This codebase is a generic D&D 5e Character generator with comprehensive support
 - **State Management:** Single source of truth in `CharacterWizard.jsx` (the `data` object).
 - **Inventory Regex:** Item properties (like "Two-Handed" or "Stealth Disadv.") are inferred via regex in `src/utils/stats.js`. Ensure data additions follow the naming patterns in `src/data/equipment.js`.
 
+## Production Website
+- **Current Remote:** `https://charactergenerator.vonipo.com`
+
 ## GitHub Repository
 - **Current Remote:** `https://github.com/hardlynoticeable/VonipoGen`
 - **Legacy Base:** `hardlynoticeable/tabaxi` (DO NOT push new VonipoGen updates to the tabaxi repo).
