@@ -53,7 +53,7 @@ function App() {
           rel="noopener noreferrer"
           className="hover:text-brand-400 transition-colors font-medium"
         >
-          Vonipo Character Generator - 2026
+          Vonipo Character Generator - Github
         </a>
       </footer>
     </div>

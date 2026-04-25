@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { saveCharacter, loadCharacter } from '../utils/storage';
+import { saveCharacter, loadCharacter, exportCharacterJSON } from '../utils/storage';
 import SpeciesLore from './SpeciesLore';
 import CoreStats from './CoreStats';
 import AbilityScores from './AbilityScores';
@@ -43,6 +43,7 @@ export const DEFAULT_CHARACTER = {
 export default function CharacterWizard() {
     const [step, setStep] = useState(1);
     const [characterData, setCharacterData] = useState(DEFAULT_CHARACTER);
+    const fileInputRef = React.useRef(null);
 
     useEffect(() => {
         const saved = loadCharacter();
@@ -57,9 +58,25 @@ export default function CharacterWizard() {
             setStep(1);
             saveCharacter(DEFAULT_CHARACTER);
         };
+
+        const handleSave = () => {
+            exportCharacterJSON(characterData);
+        };
+
+        const handleTriggerLoad = () => {
+            if (fileInputRef.current) fileInputRef.current.click();
+        };
+
         window.addEventListener('reset-character', handleReset);
-        return () => window.removeEventListener('reset-character', handleReset);
-    }, []);
+        window.addEventListener('save-character', handleSave);
+        window.addEventListener('trigger-load-character', handleTriggerLoad);
+        
+        return () => {
+            window.removeEventListener('reset-character', handleReset);
+            window.removeEventListener('save-character', handleSave);
+            window.removeEventListener('trigger-load-character', handleTriggerLoad);
+        };
+    }, [characterData]);
 
     const hasSpells = Boolean(characterData.class && CLASSES[characterData.class]?.spellcasting);
     const hasSubclass = Boolean(
@@ -115,8 +132,42 @@ export default function CharacterWizard() {
         }
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const loadedData = JSON.parse(event.target.result);
+                // Simple validation check: ensure it has basic keys
+                if (loadedData.abilityScores && loadedData.level) {
+                    setCharacterData(loadedData);
+                    saveCharacter(loadedData);
+                    alert(`Character "${loadedData.name || 'Unnamed'}" loaded successfully!`);
+                } else {
+                    alert("Invalid character file format.");
+                }
+            } catch (err) {
+                console.error("Error parsing JSON:", err);
+                alert("Failed to read character file.");
+            }
+        };
+        reader.readAsText(file);
+        // Clear input so same file can be loaded again
+        e.target.value = '';
+    };
+
     return (
         <div className="glass-card w-full max-w-4xl mx-auto p-8 shadow-2xl relative overflow-hidden">
+            {/* Hidden File Input for Loading */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".json"
+                className="hidden"
+            />
             {/* Step Indicator */}
             <div className="flex justify-between items-center mb-8 relative z-10 gap-2">
                 {stepsConfig.map((s) => (
