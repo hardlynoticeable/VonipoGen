@@ -19,6 +19,22 @@ export const SKILLS = {
     Survival: 'wis'
 };
 
+export const MULTICLASS_PROFICIENCIES = {
+    Artificer: { armor: ['Light', 'Medium', 'Shield'], weapons: [], tools: ["Thieves' tools", "Tinker's tools"], skills: 0 },
+    Barbarian: { armor: ['Shield'], weapons: ['Simple Melee', 'Simple Ranged', 'Martial Melee', 'Martial Ranged'], skills: 0 },
+    Bard: { armor: ['Light'], weapons: [], skills: 1 },
+    Cleric: { armor: ['Light', 'Medium', 'Shield'], weapons: [], skills: 0 },
+    Druid: { armor: ['Light', 'Medium', 'Shield'], weapons: [], skills: 0 },
+    Fighter: { armor: ['Light', 'Medium', 'Shield'], weapons: ['Simple Melee', 'Simple Ranged', 'Martial Melee', 'Martial Ranged'], skills: 0 },
+    Monk: { armor: [], weapons: ['Simple Melee', 'Simple Ranged', 'Shortsword'], skills: 0 },
+    Paladin: { armor: ['Light', 'Medium', 'Shield'], weapons: ['Simple Melee', 'Simple Ranged', 'Martial Melee', 'Martial Ranged'], skills: 0 },
+    Ranger: { armor: ['Light', 'Medium', 'Shield'], weapons: ['Simple Melee', 'Simple Ranged', 'Martial Melee', 'Martial Ranged'], skills: 1 },
+    Rogue: { armor: ['Light'], weapons: [], skills: 1 },
+    Sorcerer: { armor: [], weapons: [], skills: 0 },
+    Warlock: { armor: ['Light'], weapons: ['Simple Melee', 'Simple Ranged'], skills: 0 },
+    Wizard: { armor: [], weapons: [], skills: 0 }
+};
+
 export const CLASSES = {
     Artificer: {
         hitDie: 8,

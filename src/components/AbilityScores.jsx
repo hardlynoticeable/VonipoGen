@@ -7,8 +7,13 @@ export default function AbilityScores({ data, updateData }) {
     const [isGenerating, setIsGenerating] = useState(false);
     const [flashGuidance, setFlashGuidance] = useState(false);
 
+    const allSelectedClasses = [data, ...(data.multiClasses || [])].filter(c => c && c.class);
+    const isMulticlass = allSelectedClasses.length > 1;
+    const [activeOptimizationClass, setActiveOptimizationClass] = useState(data.class);
+
     useEffect(() => {
         if (data.class) {
+            setActiveOptimizationClass(data.class);
             setFlashGuidance(true);
             const timer = setTimeout(() => {
                 setFlashGuidance(false);
@@ -16,6 +21,12 @@ export default function AbilityScores({ data, updateData }) {
             return () => clearTimeout(timer);
         }
     }, [data.class]);
+
+    const handleShowPriority = (className) => {
+        setActiveOptimizationClass(className);
+        setFlashGuidance(true);
+        setTimeout(() => setFlashGuidance(false), 3000);
+    };
 
     const abilities = [
         { key: 'str', label: 'Strength' },
@@ -186,13 +197,27 @@ export default function AbilityScores({ data, updateData }) {
             )}
 
             {data.class && CLASSES[data.class] && (
-                <div className={`bg-[var(--color-dark-card)] p-4 border-l-4 rounded mb-8 shadow-md transition-all ${flashGuidance ? 'border-brand-500 animate-flash-3x' : 'border-gray-700'}`}>
-                    <h3 className="text-brand-300 font-bold mb-1">
-                        {data.class} Optimization Strategy
-                    </h3>
-                    <p className="text-sm text-gray-300 italic">
-                        {CLASSES[data.class].abilityAdvice}
-                    </p>
+                <div className="flex flex-col gap-4 mb-8">
+                    {allSelectedClasses.map((c, i) => (
+                        <div key={i} className={`bg-[var(--color-dark-card)] p-4 border-l-4 rounded shadow-md transition-all ${flashGuidance && activeOptimizationClass === c.class ? 'border-brand-500 animate-flash-3x' : 'border-gray-700'}`}>
+                            <div className="flex justify-between items-start md:items-center mb-2 flex-col md:flex-row gap-2">
+                                <h3 className="text-brand-300 font-bold">
+                                    {c.class} Optimization Strategy
+                                </h3>
+                                {isMulticlass && (
+                                    <button 
+                                        onClick={() => handleShowPriority(c.class)}
+                                        className="text-xs px-3 py-1.5 bg-brand-900/40 hover:bg-brand-500 text-brand-300 hover:text-white rounded border border-brand-500/50 transition-colors shadow-sm"
+                                    >
+                                        Show me the priority status for {c.class}
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-sm text-gray-300 italic">
+                                {CLASSES[c.class]?.abilityAdvice}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             )}
 
@@ -206,7 +231,7 @@ export default function AbilityScores({ data, updateData }) {
                     const mod = calculateModifier(totalScore);
 
                     const isBlank = baseScore === "";
-                    const isPrimary = data.class && CLASSES[data.class]?.primaryAbilities?.includes(key);
+                    const isPrimary = activeOptimizationClass && CLASSES[activeOptimizationClass]?.primaryAbilities?.includes(key);
                     const cardBorder = (isPrimary && flashGuidance) ? 'animate-flash-3x' : 'border-gray-700 hover:border-brand-500';
                     const textClass = (isPrimary && flashGuidance) ? 'animate-flash-text-3x' : 'text-gray-400';
 

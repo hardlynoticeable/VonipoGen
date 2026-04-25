@@ -27,9 +27,12 @@ export async function generateCharacterPDF(characterData) {
             } catch (e) { }
         };
 
+        const allClasses = [characterData, ...(characterData.multiClasses || [])].filter(c => c && c.class && CLASSES[c.class]);
+        const classLevelText = allClasses.map(c => `${c.class} ${c.level}`).join('/');
+
         setField('CharacterName', characterData.name || 'Wandering Adventurer', 12);
         setField('CharacterName 2', characterData.name || 'Wandering Adventurer', 12);
-        setField('ClassLevel', `${characterData.class || ''} ${characterData.level}`, 10);
+        setField('ClassLevel', classLevelText, 10);
         setField('Background', characterData.background || '', 10);
         setField('Race ', characterData.species || '', 10);
         setField('Alignment', characterData.alignment || '', 10);
@@ -128,20 +131,110 @@ export async function generateCharacterPDF(characterData) {
         });
 
         // Spellcasting
-        if (charClass?.spellcasting) {
-            const ability = charClass.spellcasting.ability;
-            const abilityMod = mods[ability];
-            const dc = 8 + profBonus + abilityMod;
-            const atk = profBonus + abilityMod;
+        const spellcastingClasses = allClasses.filter(c => CLASSES[c.class]?.spellcasting || SUBCLASSES[c.class]?.[c.subclass]?.spellcasting);
 
-            setField('Spellcasting Class 2', characterData.class);
-            setField('SpellcastingAbility 2', ability.toUpperCase());
-            setField('SpellSaveDC  2', dc.toString());
-            setField('SpellAtkBonus 2', `+${atk}`);
+        if (spellcastingClasses.length > 0) {
+            const isMultiCaster = spellcastingClasses.length > 1;
+            const classesList = [];
+            const abilitiesList = [];
+            const dcsList = [];
+            const atksList = [];
 
-            const progression = SPELLCASTING_PROGRESSIONS[charClass.spellcasting.progression];
-            const availableSlots = progression[(Number(characterData.level) || 1) - 1] || [];
-            availableSlots.forEach((num, idx) => setField(`SlotsTotal ${19 + idx}`, num || '-'));
+            // Gather all combined slots to determine max spell level
+            let effectiveLevel = 0;
+            let numSpellcasters = 0;
+            let warlockSlots = [];
+
+            allClasses.forEach(c => {
+                const sc = CLASSES[c.class]?.spellcasting || SUBCLASSES[c.class]?.[c.subclass]?.spellcasting;
+                if (!sc) return;
+                if (sc.progression === 'warlock') {
+                    warlockSlots = SPELLCASTING_PROGRESSIONS.warlock[c.level - 1] || [];
+                    return;
+                }
+                numSpellcasters++;
+                if (sc.progression === 'full') effectiveLevel += c.level;
+                else if (sc.progression === 'half') effectiveLevel += Math.floor(c.level / 2);
+                else if (sc.progression === 'artificer') effectiveLevel += Math.ceil(c.level / 2);
+                else if (sc.progression === 'third') effectiveLevel += Math.floor(c.level / 3);
+            });
+            const combinedLevel = Math.min(20, Math.max(1, effectiveLevel));
+            let combinedSlots = numSpellcasters > 0 ? SPELLCASTING_PROGRESSIONS.full[combinedLevel - 1] || [] : [];
+
+            if (numSpellcasters === 1) {
+                const singleClass = allClasses.find(c => {
+                    const sc = CLASSES[c.class]?.spellcasting || SUBCLASSES[c.class]?.[c.subclass]?.spellcasting;
+                    return sc && sc.progression !== 'warlock';
+                });
+                if (singleClass) {
+                    const sc = CLASSES[singleClass.class].spellcasting || SUBCLASSES[singleClass.class][singleClass.subclass].spellcasting;
+                    combinedSlots = SPELLCASTING_PROGRESSIONS[sc.progression][singleClass.level - 1] || [];
+                }
+            }
+
+            const getAvailableSpellLevels = (cData) => {
+                const sc = CLASSES[cData.class]?.spellcasting || SUBCLASSES[cData.class]?.[cData.subclass]?.spellcasting;
+                if (sc.progression === 'warlock') {
+                    const slots = [1,2,3,4,5].filter(l => cData.level >= l * 2 - 1);
+                    return slots;
+                } else {
+                    const effectiveLvl = sc.progression === 'full' ? cData.level : 
+                                         sc.progression === 'half' ? Math.floor(cData.level/2) : 
+                                         sc.progression === 'artificer' ? Math.ceil(cData.level/2) :
+                                         Math.floor(cData.level/3);
+                    const maxSpellLevel = Math.ceil(effectiveLvl / 2);
+                    return [1,2,3,4,5,6,7,8,9].filter(l => l <= maxSpellLevel);
+                }
+            };
+
+            const allSpellsByLevel = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] };
+
+            spellcastingClasses.forEach(c => {
+                const sc = CLASSES[c.class]?.spellcasting || SUBCLASSES[c.class]?.[c.subclass]?.spellcasting;
+                const ability = sc.ability;
+                const abilityMod = mods[ability];
+                const dc = 8 + profBonus + abilityMod;
+                const atk = profBonus + abilityMod;
+
+                classesList.push(c.class);
+                if (!abilitiesList.includes(ability.toUpperCase())) abilitiesList.push(ability.toUpperCase());
+                dcsList.push(dc);
+                atksList.push(`+${atk}`);
+
+                const subclassData = SUBCLASSES[c.class]?.[c.subclass];
+
+                const subclassCantrips = subclassData?.spells?.[0] || [];
+                const classSelectedCantrips = c.selectedCantrips || [];
+
+                [...new Set([...subclassCantrips, ...classSelectedCantrips])].forEach(spell => {
+                    const label = isMultiCaster ? `${spell} (${c.class})` : spell;
+                    if (!allSpellsByLevel[0].includes(label)) allSpellsByLevel[0].push(label);
+                });
+
+                const availableLevels = getAvailableSpellLevels(c);
+                availableLevels.forEach(l => {
+                    const subclassLeveled = subclassData?.spells?.[l] || [];
+                    const classSelectedLeveled = c.selectedSpells?.[l] || [];
+                    [...new Set([...subclassLeveled, ...classSelectedLeveled])].forEach(spell => {
+                        const label = isMultiCaster ? `${spell} (${c.class})` : spell;
+                        if (!allSpellsByLevel[l].includes(label)) allSpellsByLevel[l].push(label);
+                    });
+                });
+            });
+
+            // Set character name in the spell page banner (using Spellcasting Class 2 field)
+            setField('Spellcasting Class 2', characterData.name || 'Wandering Adventurer', 12);
+            setField('SpellcastingAbility 2', abilitiesList.join('/'), isMultiCaster ? 8 : 10);
+            setField('SpellSaveDC  2', dcsList.join('/'), isMultiCaster ? 8 : 10);
+            setField('SpellAtkBonus 2', atksList.join('/'), isMultiCaster ? 8 : 10);
+
+            const slotsToRender = [...combinedSlots];
+            warlockSlots.forEach((val, idx) => {
+                if (slotsToRender[idx] === undefined) slotsToRender[idx] = 0;
+                slotsToRender[idx] += val;
+            });
+
+            slotsToRender.forEach((num, idx) => setField(`SlotsTotal ${19 + idx}`, num || '-'));
 
             const spellFieldMaps = {
                 0: ['Spells 1014', 'Spells 1016', 'Spells 1017', 'Spells 1018', 'Spells 1019', 'Spells 1020', 'Spells 1021', 'Spells 1022'],
@@ -158,16 +251,8 @@ export async function generateCharacterPDF(characterData) {
 
             const mapSpells = (list, fields) => fields.forEach((f, i) => setField(f, list[i] || '', 7));
             
-            const subclassData = SUBCLASSES[characterData.class]?.[characterData.subclass];
-            
-            const subclassCantrips = subclassData?.spells?.[0] || [];
-            const allCantrips = [...new Set([...subclassCantrips, ...(characterData.selectedCantrips || [])])];
-            mapSpells(allCantrips, spellFieldMaps[0]);
-            
-            for (let l = 1; l <= 9; l++) {
-                const subclassLeveled = subclassData?.spells?.[l] || [];
-                const allLevel = [...new Set([...subclassLeveled, ...(characterData.selectedSpells?.[l] || [])])];
-                mapSpells(allLevel, spellFieldMaps[l]);
+            for (let l = 0; l <= 9; l++) {
+                mapSpells(allSpellsByLevel[l], spellFieldMaps[l]);
             }
         }
 
@@ -177,8 +262,24 @@ export async function generateCharacterPDF(characterData) {
             i.isEquipped &&
             i.equipped_slot === 'Weapon' &&
             i.Damage && i.Damage.trim() !== ""
-        ).slice(0, 3);
-        const attackCantrips = (characterData.selectedCantrips || []).filter(c => ATTACK_CANTRIPS[c]);
+        );
+        
+        // Gather attack cantrips from all classes
+        const attackCantrips = [];
+        allClasses.forEach(c => {
+            const sc = CLASSES[c.class]?.spellcasting || (c.subclass && SUBCLASSES[c.class]?.[c.subclass]?.spellcasting);
+            if (!sc) return;
+            const cantrips = c.selectedCantrips || [];
+            cantrips.forEach(cn => {
+                if (ATTACK_CANTRIPS[cn]) {
+                    attackCantrips.push({ 
+                        name: cn, 
+                        ability: sc.ability,
+                        className: c.class
+                    });
+                }
+            });
+        });
 
         const weaponSlots = [
             { name: 'Wpn Name', atk: 'Wpn1 AtkBonus', dmg: 'Wpn1 Damage' },
@@ -187,30 +288,58 @@ export async function generateCharacterPDF(characterData) {
         ];
 
         let slotIdx = 0;
+        const overflowLines = [];
+
         equippedWeapons.forEach(wp => {
-            if (slotIdx >= 3) return;
-            const slot = weaponSlots[slotIdx++];
             const isProf = charClass?.weaponProficiencies?.some(p => wp.type?.includes(p)) || wp.type === 'Any' || (wp.name === "Cat's Claws");
             const isFinesse = (wp.Properties || wp.properties || '').toLowerCase().includes('finesse');
             const mod = (isFinesse && mods.dex > mods.str) ? mods.dex : mods.str;
             const atkBonus = mod + (isProf ? profBonus : 0) + (Number(wp.attack_bonus) || 0);
             const dmgBonus = mod + (Number(wp.damage_bonus) || 0);
 
-            setField(slot.name, wp.name, 8);
-            setField(slot.atk, atkBonus >= 0 ? `+${atkBonus}` : atkBonus, 10);
-            setField(slot.dmg, `${wp.Damage || wp.damage || '1d6'}${dmgBonus >= 0 ? '+' : ''}${dmgBonus}`, 8);
+            const atkStr = atkBonus >= 0 ? `+${atkBonus}` : atkBonus.toString();
+            const dmgStr = `${wp.Damage || wp.damage || '1d6'}${dmgBonus >= 0 ? '+' : ''}${dmgBonus}`;
+
+            if (slotIdx < 3) {
+                const slot = weaponSlots[slotIdx++];
+                setField(slot.name, wp.name, 8);
+                setField(slot.atk, atkStr, 10);
+                setField(slot.dmg, dmgStr, 8);
+            } else {
+                overflowLines.push(`${wp.name}: ${atkStr} (${dmgStr})`);
+            }
         });
 
-        // Fill remaining slots with cantrips
-        attackCantrips.forEach(cName => {
-            if (slotIdx >= 3) return;
-            const slot = weaponSlots[slotIdx++];
-            const cData = ATTACK_CANTRIPS[cName];
-            const atkBonus = profBonus + mods[charClass?.spellcasting?.ability || 'int'];
-            setField(slot.name, cName, 8);
-            setField(slot.atk, `+${atkBonus}`, 10);
-            setField(slot.dmg, cData.damage, 8);
+        // Fill remaining slots or overflow with cantrips
+        attackCantrips.forEach(canObj => {
+            const cData = ATTACK_CANTRIPS[canObj.name];
+            let atkStr = "";
+            let dmgStr = "";
+            
+            if (cData.type.startsWith('Save')) {
+                const dc = 8 + profBonus + mods[canObj.ability || 'int'];
+                atkStr = `DC ${dc}`;
+                const saveType = cData.type.includes('(') ? cData.type.split('(')[1].replace(')', '') : '';
+                dmgStr = `${cData.damage}${saveType ? ' (' + saveType + ')' : ''}`;
+            } else {
+                const atkBonus = profBonus + mods[canObj.ability || 'int'];
+                atkStr = `+${atkBonus}`;
+                dmgStr = cData.damage;
+            }
+
+            if (slotIdx < 3) {
+                const slot = weaponSlots[slotIdx++];
+                setField(slot.name, canObj.name, 8);
+                setField(slot.atk, atkStr, 10);
+                setField(slot.dmg, dmgStr, 8);
+            } else {
+                overflowLines.push(`${canObj.name}: ${atkStr} (${dmgStr})`);
+            }
         });
+
+        if (overflowLines.length > 0) {
+            setField('AttacksSpellcasting', overflowLines.join('\n'), 8);
+        }
 
         // Inventory Mapping (Treasure field)
         let inventoryList = inventory.map(i => `- ${i.name}${i.isEquipped ? ' (E)' : ''}${i.isAttuned ? ' (A)' : ''}`);
@@ -247,37 +376,40 @@ export async function generateCharacterPDF(characterData) {
 
         traitList.push("");
 
-        // Base Class Features
-        if (charClass?.features) {
-            const level = Number(characterData.level) || 1;
-            const features = Object.entries(charClass.features)
-                .filter(([lvl]) => parseInt(lvl) <= level)
-                .flatMap(([_, feats]) => feats);
+        // Class & Subclass Features
+        allClasses.forEach(c => {
+            const classObj = CLASSES[c.class];
+            if (classObj?.features) {
+                const level = Number(c.level) || 1;
+                const features = Object.entries(classObj.features)
+                    .filter(([lvl]) => parseInt(lvl) <= level)
+                    .flatMap(([_, feats]) => feats);
 
-            if (features.length > 0) {
-                traitList.push(`Class Features: ${features.join(', ')}`);
+                if (features.length > 0) {
+                    traitList.push(`${c.class} Features: ${features.join(', ')}`);
+                }
             }
-        }
 
-        // Subclass Features
-        if (characterData.subclass) {
-            traitList.push(`Subclass: ${characterData.subclass}`);
-            const subclassData = SUBCLASSES[characterData.class]?.[characterData.subclass];
-            if (subclassData) {
-                const level = Number(characterData.level) || 1;
+            if (c.subclass) {
+                traitList.push(`${c.class} Subclass: ${c.subclass}`);
+                const subclassData = SUBCLASSES[c.class]?.[c.subclass];
+                if (subclassData) {
+                    const level = Number(c.level) || 1;
 
-                Object.entries(subclassData)
-                    .filter(([key]) => key.startsWith('level') && parseInt(key.replace('level', '')) <= level)
-                    .forEach(([_, desc]) => {
-                        const lines = desc.split('\n');
-                        lines.forEach(line => {
-                            if (!line.includes('Bonus Proficiency:') && !line.includes('Spells:')) {
-                                traitList.push(`- ${line}`);
-                            }
+                    Object.entries(subclassData)
+                        .filter(([key]) => key.startsWith('level') && parseInt(key.replace('level', '')) <= level)
+                        .forEach(([_, desc]) => {
+                            const lines = desc.split('\n');
+                            lines.forEach(line => {
+                                if (!line.includes('Bonus Proficiency:') && !line.includes('Spells:')) {
+                                    traitList.push(`- ${line}`);
+                                }
+                            });
                         });
-                    });
+                }
             }
-        }
+            traitList.push(""); // Add extra line between classes
+        });
 
         const traits = traitList.join('\n');
         setField('Features and Traits', traits, 8);

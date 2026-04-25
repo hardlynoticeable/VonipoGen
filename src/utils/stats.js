@@ -1,5 +1,37 @@
-import { CLASSES, SUBCLASSES } from '../data/rules5e';
+import { CLASSES, SUBCLASSES, MULTICLASS_PROFICIENCIES } from '../data/rules5e';
 import { SPECIES } from '../data/species5e';
+
+export function getProficiencies(characterData) {
+    const armor = new Set();
+    const weapon = new Set();
+
+    const addProfs = (cData, isPrimary) => {
+        if (!cData || !cData.class || !CLASSES[cData.class]) return;
+        const charClass = CLASSES[cData.class];
+        const subclass = cData.subclass && SUBCLASSES[cData.class]?.[cData.subclass];
+        
+        if (isPrimary) {
+            (charClass.armorProficiencies || []).forEach(p => armor.add(p));
+            (charClass.weaponProficiencies || []).forEach(p => weapon.add(p));
+        } else {
+            const mcProfs = MULTICLASS_PROFICIENCIES[cData.class];
+            if (mcProfs) {
+                (mcProfs.armor || []).forEach(p => armor.add(p));
+                (mcProfs.weapons || []).forEach(p => weapon.add(p));
+            }
+        }
+
+        if (subclass) {
+            (subclass.armorProficiencies || []).forEach(p => armor.add(p));
+            (subclass.weaponProficiencies || []).forEach(p => weapon.add(p));
+        }
+    };
+
+    addProfs(characterData, true);
+    (characterData.multiClasses || []).forEach(mc => addProfs(mc, false));
+
+    return { armor, weapon };
+}
 
 /**
  * Infers the body slot for an item based on its properties.
@@ -69,10 +101,7 @@ export function calculateStats(characterData) {
     const equippedItems = inventory.filter(item => item.isEquipped);
 
     // Get all proficiencies (Class + Subclass)
-    const profs = new Set([
-        ...(charClass?.armorProficiencies || []),
-        ...(SUBCLASSES[characterData.class]?.[characterData.subclass]?.armorProficiencies || [])
-    ]);
+    const profs = getProficiencies(characterData).armor;
 
     // Attunement & Utility check: 
     // - Items that REQUIRE attunement only give benefits if attuned
@@ -274,17 +303,9 @@ export function getAttunementLimit(characterData) {
  */
 export function checkProficiency(characterData, item) {
     if (!item) return null;
-    const charClass = characterData.class ? CLASSES[characterData.class] : null;
-    const subclass = characterData.subclass && SUBCLASSES[characterData.class]?.[characterData.subclass];
-
-    const armorProfs = Array.from(new Set([
-        ...(charClass?.armorProficiencies || []),
-        ...(subclass?.armorProficiencies || [])
-    ]));
-    const weaponProfs = Array.from(new Set([
-        ...(charClass?.weaponProficiencies || []),
-        ...(subclass?.weaponProficiencies || [])
-    ]));
+    const profs = getProficiencies(characterData);
+    const armorProfs = Array.from(profs.armor);
+    const weaponProfs = Array.from(profs.weapon);
 
     const type = (item.Type || item.type || '').toLowerCase();
     const name = (item.Item || item.name || '').toLowerCase();

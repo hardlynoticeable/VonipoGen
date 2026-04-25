@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CLASSES, BACKGROUNDS, LANGUAGES } from '../data/rules5e';
+import { CLASSES, BACKGROUNDS, LANGUAGES, MULTICLASS_PROFICIENCIES } from '../data/rules5e';
 import { APPEARANCES, SPECIES } from '../data/species5e';
 
 export default function CoreStats({ data, updateData }) {
@@ -43,7 +43,8 @@ export default function CoreStats({ data, updateData }) {
             equippedWeapons: ['', '', ''],
             inventory: '',
             abilityBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
-            abilityTokens: { t1: '', t2: '', t3: '' }
+            abilityTokens: { t1: '', t2: '', t3: '' },
+            multiClasses: []
         });
     };
 
@@ -71,20 +72,88 @@ export default function CoreStats({ data, updateData }) {
         updateData(updates);
     };
 
+    const getTotalSkillChoices = () => {
+        if (!data.class || !CLASSES[data.class]) return 0;
+        let limit = CLASSES[data.class].skillChoices;
+        (data.multiClasses || []).forEach(mc => {
+            if (mc.class && MULTICLASS_PROFICIENCIES[mc.class]) {
+                limit += MULTICLASS_PROFICIENCIES[mc.class].skills || 0;
+            }
+        });
+        return limit;
+    };
+
+    const getAllSkillOptions = () => {
+        if (!data.class || !CLASSES[data.class]) return [];
+        let options = new Set(CLASSES[data.class].skillOptions);
+        (data.multiClasses || []).forEach(mc => {
+            if (mc.class && CLASSES[mc.class]) {
+                CLASSES[mc.class].skillOptions.forEach(s => options.add(s));
+            }
+        });
+        return Array.from(options).sort();
+    };
+
     const handleClassSkillChange = (skill) => {
         const current = data.selectedClassSkills || [];
         if (current.includes(skill)) {
             updateData({ selectedClassSkills: current.filter(s => s !== skill) });
         } else {
-            const limit = CLASSES[data.class].skillChoices;
+            const limit = getTotalSkillChoices();
             if (current.length < limit) {
                 updateData({ selectedClassSkills: [...current, skill] });
             }
         }
     };
 
-    const getSynergyNotes = (className) => {
-        return `A ${data.species || 'character'} ${className} is a fantastic choice for your adventure!`;
+
+
+    const handleMultiClassChange = (index, field, value) => {
+        const newMulti = [...(data.multiClasses || [])];
+        if (field === 'class') {
+            newMulti[index] = { class: value, level: 1, subclass: '', subclassOption: '', selectedCantrips: [], selectedSpells: {} };
+        } else if (field === 'level') {
+            const newLevel = parseInt(value) || 1;
+            const oldLevel = newMulti[index].level || 1;
+            newMulti[index].level = newLevel;
+            const requiredLevel = CLASSES[newMulti[index].class]?.subclassLevel || 3;
+            if (newLevel < requiredLevel) {
+                newMulti[index].subclass = '';
+                newMulti[index].subclassOption = '';
+            }
+            if (newLevel < oldLevel) {
+                newMulti[index].selectedCantrips = [];
+                newMulti[index].selectedSpells = {};
+            }
+        }
+        updateData({ multiClasses: newMulti });
+    };
+
+    const addMultiClass = () => {
+        const newMulti = [...(data.multiClasses || []), { class: '', level: 1 }];
+        updateData({ multiClasses: newMulti });
+    };
+
+    const removeMultiClass = (index) => {
+        const newMulti = [...(data.multiClasses || [])];
+        newMulti.splice(index, 1);
+        updateData({ multiClasses: newMulti });
+    };
+
+    const removePrimaryClass = () => {
+        const newMulti = [...(data.multiClasses || [])];
+        if (newMulti.length > 0) {
+            const nextPrimary = newMulti.shift();
+            updateData({
+                class: nextPrimary.class,
+                level: nextPrimary.level,
+                subclass: nextPrimary.subclass || '',
+                subclassOption: nextPrimary.subclassOption || '',
+                selectedCantrips: nextPrimary.selectedCantrips || [],
+                selectedSpells: nextPrimary.selectedSpells || {},
+                multiClasses: newMulti
+            });
+        }
     };
 
     const currentClass = data.class ? CLASSES[data.class] : null;
@@ -165,14 +234,62 @@ export default function CoreStats({ data, updateData }) {
                                 className="w-full bg-gray-900 border border-gray-600 rounded px-4 py-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-white text-center"
                             />
                         </div>
+                        {data.multiClasses && data.multiClasses.length > 0 && (
+                            <div className="flex items-end">
+                                <button
+                                    onClick={removePrimaryClass}
+                                    className="px-3 py-3 rounded bg-red-900/30 text-red-400 border border-red-800 hover:bg-red-800 hover:text-white transition-colors h-[46px]"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )}
                     </div>
 
-                    {data.class && (
-                        <div className="mt-4 p-4 rounded bg-brand-900/30 border border-brand-800 text-sm italic opacity-90">
-                            <span className="font-bold mr-2 text-brand-300">Synergy Note:</span>
-                            {getSynergyNotes(data.class)}
+                    {data.multiClasses && data.multiClasses.map((mc, idx) => (
+                        <div key={idx} className="flex gap-4 items-end mt-4">
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-bold text-brand-400 tracking-wide uppercase">Additional Class</label>
+                                <select
+                                    value={mc.class}
+                                    onChange={(e) => handleMultiClassChange(idx, 'class', e.target.value)}
+                                    className="w-full bg-gray-900 border border-gray-600 rounded px-4 py-3 pr-10 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-white"
+                                >
+                                    <option value="" disabled>Select a Class</option>
+                                    {classes.filter(c => c !== data.class && !(data.multiClasses||[]).some((m, i) => i !== idx && m.class === c)).map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
+                            </div>
+                            <div className="w-24 space-y-2">
+                                <label className="block text-sm font-bold text-brand-400 tracking-wide uppercase">Level</label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="20"
+                                    value={mc.level || 1}
+                                    onChange={(e) => handleMultiClassChange(idx, 'level', e.target.value)}
+                                    className="w-full bg-gray-900 border border-gray-600 rounded px-4 py-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-white text-center"
+                                />
+                            </div>
+                            <button
+                                onClick={() => removeMultiClass(idx)}
+                                className="px-3 py-3 rounded bg-red-900/30 text-red-400 border border-red-800 hover:bg-red-800 hover:text-white transition-colors h-[46px]"
+                            >
+                                Delete
+                            </button>
                         </div>
-                    )}
+                    ))}
+
+                    <div className="mt-4">
+                        <button
+                            onClick={addMultiClass}
+                            disabled={!data.class || (data.multiClasses||[]).some(mc => !mc.class)}
+                            className="text-sm bg-gray-800 border border-gray-700 hover:border-brand-500 text-gray-300 hover:text-white px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            + Add another Class
+                        </button>
+                    </div>
+
+
 
                     {/* Class Image Nest */}
                     {data.class && data.species === 'Tabaxi' && (
@@ -191,15 +308,15 @@ export default function CoreStats({ data, updateData }) {
                     {currentClass && (
                         <div className="mt-6">
                             <label className="block text-sm font-bold text-brand-400 tracking-wide uppercase mb-3">
-                                Class Skills (Choose {currentClass.skillChoices})
+                                Class Skills (Choose {getTotalSkillChoices()})
                             </label>
                             <div className="grid grid-cols-2 gap-2">
-                                {currentClass.skillOptions.map(skill => {
+                                {getAllSkillOptions().map(skill => {
                                     // Disable if they have it from somewhere else, or if they hit the cap and this isn't checked
                                     const isFromSpecies = (data.speciesSkills || []).includes(skill);
                                     const isFromBg = (data.backgroundSkills || []).includes(skill);
                                     const isChecked = (data.selectedClassSkills || []).includes(skill);
-                                    const hitCap = (data.selectedClassSkills || []).length >= currentClass.skillChoices;
+                                    const hitCap = (data.selectedClassSkills || []).length >= getTotalSkillChoices();
 
                                     const isDisabled = (isFromSpecies || isFromBg) || (hitCap && !isChecked);
 

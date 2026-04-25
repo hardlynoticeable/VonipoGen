@@ -22,6 +22,9 @@ export default function Review({ data }) {
         }
     };
 
+    const allClasses = [data, ...(data.multiClasses || [])].filter(c => c && c.class && CLASSES[c.class]);
+    const totalLevel = allClasses.reduce((sum, c) => sum + (Number(c.level) || 1), 0);
+
     return (
         <div className="space-y-6 animate-fade-in text-[var(--color-brand-100)]">
             <div className="flex justify-between items-center mb-6">
@@ -76,15 +79,19 @@ export default function Review({ data }) {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Class</p>
-                            <p className="text-lg text-white">
-                                {data.class || 'Unknown'}
-                                {data.subclass && <span className="text-brand-300 ml-2 text-base">({data.subclass})</span>}
-                            </p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Class(es)</p>
+                            <div className="space-y-1 mt-1">
+                                {allClasses.map((c, i) => (
+                                    <p key={i} className="text-sm text-white">
+                                        {c.class} Lvl {c.level}
+                                        {c.subclass && <span className="text-brand-300 ml-1 text-xs">({c.subclass})</span>}
+                                    </p>
+                                ))}
+                            </div>
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Level</p>
-                            <p className="text-lg text-white">{data.level}</p>
+                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider">Total Level</p>
+                            <p className="text-lg text-white">{totalLevel}</p>
                         </div>
                     </div>
 
@@ -142,73 +149,119 @@ export default function Review({ data }) {
 
                 {/* Right Column: Stats & Traits */}
                 <div className="space-y-4 relative z-10 pl-0 md:pl-6 md:border-l border-gray-700">
-                    {/* Base Class Features */}
-                    {CLASSES[data.class]?.features && (
-                        <div>
-                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
-                                Class Features
-                            </p>
-                            <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
-                                {Object.entries(CLASSES[data.class].features)
-                                    .filter(([level]) => parseInt(level) <= data.level)
-                                    .flatMap(([_, featuresArray]) => featuresArray)
-                                    .map((feature, idx) => (
-                                        <li key={`base-feature-${idx}`} className="text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
-                                            {feature}
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-                    )}
+                    {/* Class Features */}
+                    {allClasses.map((cData, i) => {
+                        const hasBaseFeatures = CLASSES[cData.class]?.features;
+                        const hasSubclassFeatures = cData.subclass && SUBCLASSES[cData.class]?.[cData.subclass];
+                        
+                        if (!hasBaseFeatures && !hasSubclassFeatures) return null;
 
-                    {/* Subclass Features */}
-                    {data.subclass && SUBCLASSES[data.class]?.[data.subclass] && (
-                        <div>
-                            <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
-                                {CLASSES[data.class]?.subclassTitle || "Subclass"} Features ({data.subclass}{data.subclassOption ? `: ${data.subclassOption}` : ''})
-                            </p>
-                            <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
-                                {Object.entries(SUBCLASSES[data.class][data.subclass])
-                                    .filter(([key]) => key.startsWith('level') && parseInt(key.replace('level', '')) <= data.level)
-                                    .flatMap(([key, feature]) => {
-                                        const lines = feature.split('\n');
-                                        const options = SUBCLASSES[data.class][data.subclass].subclassOptions;
-
-                                        return lines.map((line, idx) => {
-                                            if (line.includes('Bonus Proficiency:') || line.includes('Spells:')) return null;
-
-                                            let content = line;
-                                            if (options && data.subclassOption && line.startsWith(`${options.title}:`)) {
-                                                const benefit = options.choices[data.subclassOption];
-                                                content = `${options.title} (${data.subclassOption}): ${benefit}`;
+                        return (
+                            <div key={i} className="mb-4">
+                                {hasBaseFeatures && (
+                                    <div>
+                                        <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
+                                            {cData.class} Features
+                                        </p>
+                                        <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                                            {Object.entries(CLASSES[cData.class].features)
+                                                .filter(([level]) => parseInt(level) <= cData.level)
+                                                .flatMap(([_, featuresArray]) => featuresArray)
+                                                .map((feature, idx) => (
+                                                    <li key={`base-feature-${idx}`} className="text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
+                                                        {feature}
+                                                    </li>
+                                                ))
                                             }
+                                        </ul>
+                                    </div>
+                                )}
 
-                                            return (
-                                                <li key={`${key}-${idx}`} className="whitespace-pre-line text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
-                                                    {content}
-                                                </li>
-                                            );
-                                        });
-                                    })
-                                }
-                            </ul>
-                        </div>
-                    )}
+                                {hasSubclassFeatures && (
+                                    <div>
+                                        <p className="text-sm font-bold text-brand-500 uppercase tracking-wider mt-4 mb-2">
+                                            {CLASSES[cData.class]?.subclassTitle || "Subclass"} Features ({cData.subclass}{cData.subclassOption ? `: ${cData.subclassOption}` : ''})
+                                        </p>
+                                        <ul className="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                                            {Object.entries(SUBCLASSES[cData.class][cData.subclass])
+                                                .filter(([key]) => key.startsWith('level') && parseInt(key.replace('level', '')) <= cData.level)
+                                                .flatMap(([key, feature]) => {
+                                                    const lines = feature.split('\n');
+                                                    const options = SUBCLASSES[cData.class][cData.subclass].subclassOptions;
+
+                                                    return lines.map((line, idx) => {
+                                                        if (line.includes('Bonus Proficiency:') || line.includes('Spells:')) return null;
+
+                                                        let content = line;
+                                                        if (options && cData.subclassOption && line.startsWith(`${options.title}:`)) {
+                                                            const benefit = options.choices[cData.subclassOption];
+                                                            content = `${options.title} (${cData.subclassOption}): ${benefit}`;
+                                                        }
+
+                                                        return (
+                                                            <li key={`${key}-${idx}`} className="whitespace-pre-line text-xs italic opacity-80 border-l-2 border-brand-800 pl-2 ml-1">
+                                                                {content}
+                                                            </li>
+                                                        );
+                                                    });
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
 
                     {/* Spells */}
                     {(() => {
-                        const subclassSpellsObj = (data.class && data.subclass && SUBCLASSES[data.class]?.[data.subclass]?.spells) || {};
-                        const subclassCantrips = subclassSpellsObj[0] || [];
-                        const subclassLeveledSpells = Object.entries(subclassSpellsObj)
-                            .filter(([lvl]) => lvl !== '0')
-                            .flatMap(([_, spells]) => spells);
+                        let totalCantrips = [];
+                        let totalSpells = [];
 
-                        const selectedCantrips = data.selectedCantrips || [];
-                        const selectedLeveledSpells = Object.values(data.selectedSpells || {}).flat();
+                        const spellcastingClasses = allClasses.filter(c => CLASSES[c.class]?.spellcasting || SUBCLASSES[c.class]?.[c.subclass]?.spellcasting);
+                        const isMultiCaster = spellcastingClasses.length > 1;
 
-                        const allCantrips = [...new Set([...subclassCantrips, ...selectedCantrips])];
-                        const allLeveledSpells = [...new Set([...subclassLeveledSpells, ...selectedLeveledSpells])];
+                        allClasses.forEach(cData => {
+                            const sc = CLASSES[cData.class]?.spellcasting || SUBCLASSES[cData.class]?.[cData.subclass]?.spellcasting;
+                            if (!sc) return;
+
+                            const subclassSpellsObj = (cData.class && cData.subclass && SUBCLASSES[cData.class]?.[cData.subclass]?.spells) || {};
+                            const subclassCantrips = subclassSpellsObj[0] || [];
+                            const selectedCantrips = cData.selectedCantrips || [];
+
+                            [...new Set([...subclassCantrips, ...selectedCantrips])].forEach(spell => {
+                                totalCantrips.push(isMultiCaster ? `${spell} (${cData.class})` : spell);
+                            });
+
+                            let availableLevels = [];
+                            if (sc.progression === 'warlock') {
+                                // For Review display, we only use their actual spell slots.
+                                // Actually, Review is for the whole character, but spells are tracked by class.
+                                // We can just look at what they selected + subclass spells up to what they can cast.
+                                // Warlock slots are max 5th level
+                                const wSlots = [1,2,3,4,5].filter(l => cData.level >= l * 2 - 1); 
+                                availableLevels = wSlots; 
+                            } else {
+                                // other progressions
+                                const effectiveLvl = sc.progression === 'full' ? cData.level : 
+                                                    sc.progression === 'half' ? Math.floor(cData.level/2) : 
+                                                    sc.progression === 'artificer' ? Math.ceil(cData.level/2) :
+                                                    Math.floor(cData.level/3);
+                                const maxSpellLevel = Math.ceil(effectiveLvl / 2);
+                                availableLevels = [1,2,3,4,5,6,7,8,9].filter(l => l <= maxSpellLevel);
+                            }
+
+                            availableLevels.forEach(l => {
+                                const subclassLeveled = subclassSpellsObj[l] || [];
+                                const selectedLeveled = cData.selectedSpells?.[l] || [];
+                                [...new Set([...subclassLeveled, ...selectedLeveled])].forEach(spell => {
+                                    totalSpells.push(isMultiCaster ? `${spell} (${cData.class})` : spell);
+                                });
+                            });
+                        });
+
+                        const allCantrips = [...new Set(totalCantrips)];
+                        const allLeveledSpells = [...new Set(totalSpells)];
 
                         if (allCantrips.length === 0 && allLeveledSpells.length === 0) return null;
 

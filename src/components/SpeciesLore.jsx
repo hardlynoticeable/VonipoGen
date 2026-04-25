@@ -181,7 +181,7 @@ export default function SpeciesLore({ data, updateData }) {
                         <textarea
                             value={data.ideals || ''}
                             onChange={(e) => updateData({ ideals: e.target.value })}
-                            rows="2"
+                            rows="4"
                             className="w-full bg-gray-800/50 border border-gray-600 rounded px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all text-white text-sm resize-none"
                         />
                     </div>
@@ -190,7 +190,7 @@ export default function SpeciesLore({ data, updateData }) {
                         <textarea
                             value={data.bonds || ''}
                             onChange={(e) => updateData({ bonds: e.target.value })}
-                            rows="2"
+                            rows="4"
                             className="w-full bg-gray-800/50 border border-gray-600 rounded px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all text-white text-sm resize-none"
                         />
                     </div>
@@ -199,7 +199,7 @@ export default function SpeciesLore({ data, updateData }) {
                         <textarea
                             value={data.flaws || ''}
                             onChange={(e) => updateData({ flaws: e.target.value })}
-                            rows="2"
+                            rows="4"
                             className="w-full bg-gray-800/50 border border-gray-600 rounded px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all text-white text-sm resize-none"
                         />
                     </div>

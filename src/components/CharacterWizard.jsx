@@ -19,6 +19,7 @@ export const DEFAULT_CHARACTER = {
     size: 'Medium', // Default size
     abilityScores: { str: '', dex: '', con: '', int: '', wis: '', cha: '' },
     abilityBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
+    multiClasses: [],
     speciesSkills: [],
     selectedClassSkills: [],
     backgroundSkills: [],
@@ -48,6 +49,7 @@ export default function CharacterWizard() {
     useEffect(() => {
         const saved = loadCharacter();
         if (saved) {
+            if (!saved.multiClasses) saved.multiClasses = [];
             setCharacterData(saved);
         }
     }, []);
@@ -142,6 +144,7 @@ export default function CharacterWizard() {
                 const loadedData = JSON.parse(event.target.result);
                 // Simple validation check: ensure it has basic keys
                 if (loadedData.abilityScores && loadedData.level) {
+                    if (!loadedData.multiClasses) loadedData.multiClasses = [];
                     setCharacterData(loadedData);
                     saveCharacter(loadedData);
                     alert(`Character "${loadedData.name || 'Unnamed'}" loaded successfully!`);

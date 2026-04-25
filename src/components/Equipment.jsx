@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { EQUIPMENT_DB } from '../data/equipment';
 import { STARTING_PACKS } from '../data/startingPacks';
 import { CLASSES, SUBCLASSES } from '../data/rules5e';
-import { calculateStats, getAttunementLimit, inferEquippedSlot, checkProficiency } from '../utils/stats';
+import { calculateStats, getAttunementLimit, inferEquippedSlot, checkProficiency, getProficiencies } from '../utils/stats';
 import { Shield, Sword, Eye, Footprints, Hand, User, Star, Trash2, Info, CheckCircle2, AlertCircle, X } from 'lucide-react';
 
 export default function Equipment({ data, updateData }) {
@@ -118,8 +118,9 @@ export default function Equipment({ data, updateData }) {
         return inventory.filter(i => i.isEquipped && (i.equipped_slot === slotId || inferEquippedSlot(i) === slotId));
     };
 
-    const armorProfs = Array.from(new Set([...(charClass?.armorProficiencies || []), ...(SUBCLASSES[data.class]?.[data.subclass]?.armorProficiencies || [])])).sort();
-    const weaponProfs = Array.from(new Set([...(charClass?.weaponProficiencies || []), ...(SUBCLASSES[data.class]?.[data.subclass]?.weaponProficiencies || [])])).sort();
+    const profs = getProficiencies(data);
+    const armorProfs = Array.from(profs.armor).sort();
+    const weaponProfs = Array.from(profs.weapon).sort();
 
 
     return (
