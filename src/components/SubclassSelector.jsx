@@ -177,8 +177,8 @@ export default function SubclassSelector({ data, updateData }) {
                                                             onChange={() => handleOptionSelect(idx, choice)}
                                                         />
                                                         <div className="flex items-center gap-2">
-                                                            <div className={`w-4 h-4 rounded-full border border-gray-500 flex items-center justify-center ${selectedSubclassOption === choice ? 'border-brand-400' : ''}`}>
-                                                                {selectedSubclassOption === choice && <div className="w-1.5 h-1.5 rounded-full bg-brand-600"></div>}
+                                                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${selectedSubclassOption === choice ? 'border-brand-400 bg-brand-500/20' : 'border-gray-600'}`}>
+                                                                {selectedSubclassOption === choice && <div className="w-2.5 h-2.5 rounded-full bg-brand-400 shadow-[0_0_8px_rgba(var(--color-brand-rgb),0.6)]"></div>}
                                                             </div>
                                                             <span className={`font-bold transition-colors ${selectedSubclassOption === choice ? 'text-white' : 'group-hover:text-gray-300'}`}>{choice}</span>
                                                         </div>
