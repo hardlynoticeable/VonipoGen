@@ -34,15 +34,16 @@ export default function Equipment({ data, updateData }) {
 
     // Auto-equip Unarmed Strike logic
     React.useEffect(() => {
-        const equippedWeapons = inventory.filter(i => i.isEquipped && (i.equipped_slot === 'Weapon' || inferEquippedSlot(i) === 'Weapon'));
         const isMonk = data.class === 'Monk' || (data.multiClasses || []).some(mc => mc.class === 'Monk');
         
         if (data.unarmedStrikeEquipped === undefined) {
-            if (isMonk || equippedWeapons.length === 0) {
+            if (isMonk) {
                 updateData({ unarmedStrikeEquipped: true });
+            } else {
+                updateData({ unarmedStrikeEquipped: false });
             }
         }
-    }, [data.class, data.multiClasses, inventory.filter(i => i.isEquipped).length]);
+    }, [data.class, data.multiClasses]);
 
     const toggleEquip = (itemId) => {
         const item = inventory.find(i => i.id === itemId);
