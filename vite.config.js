@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'assets/*.pdf', 'assets/*.png'],
       manifest: {
-        name: 'Vonipo Character Generator',
-        short_name: 'VonipoGen',
+        name: 'D&D 5e Character Generator',
+        short_name: 'D&D 5e Gen',
         description: 'A comprehensive, multi-species character construction tool for D&D 5th Edition.',
         theme_color: '#d946ef',
         icons: [
