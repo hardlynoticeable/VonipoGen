@@ -152,6 +152,10 @@ h6 {
   animation: fade-in 0.3s ease-out forwards;
 }
 
+.animate-fade-in-slow {
+  animation: fade-in 1s ease-out forwards;
+}
+
 .animate-slide-up {
   animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

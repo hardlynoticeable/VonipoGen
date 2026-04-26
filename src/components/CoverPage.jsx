@@ -2,8 +2,15 @@ import React from 'react';
 import { Sword, Sparkles, Save, WifiOff } from 'lucide-react';
 
 const CoverPage = ({ onGetStarted }) => {
+    const [isExiting, setIsExiting] = React.useState(false);
+
+    const handleStart = () => {
+        setIsExiting(true);
+        setTimeout(onGetStarted, 800);
+    };
+
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0a0a] px-6 py-12 relative overflow-hidden">
+        <div className={`min-h-screen flex flex-col items-center justify-center bg-[#0a0a0a] px-6 py-12 relative overflow-hidden transition-all duration-1000 ease-in-out ${isExiting ? 'opacity-0 scale-110 blur-2xl' : 'opacity-100 scale-100'}`}>
             {/* Background Decorative Elements */}
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-500/10 rounded-full blur-[120px] animate-pulse"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-fuchsia-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -19,9 +26,9 @@ const CoverPage = ({ onGetStarted }) => {
 
                 {/* Hero Image Section */}
                 <div className="relative group w-full max-w-2xl aspect-[16/9] mb-12 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                    <img 
-                        src="/coverart1.png" 
-                        alt="D&D Cover Art" 
+                    <img
+                        src="/coverart1.png"
+                        alt="D&D Cover Art"
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60"></div>
@@ -32,7 +39,7 @@ const CoverPage = ({ onGetStarted }) => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-bold uppercase tracking-widest text-gray-400">
                         <div className="flex flex-col items-center gap-2">
                             <Sparkles size={20} className="text-brand-400" />
-                            <span>Many Species</span>
+                            <span>Many Species and Classes</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
                             <Sword size={20} className="text-fuchsia-400" />
@@ -48,19 +55,21 @@ const CoverPage = ({ onGetStarted }) => {
                         </div>
                     </div>
 
+                    <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed italic">
+                        Made by fans, for the love of the game.
+                    </p>
+
                     <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed">
-                        Made by fans, for fans. Generate professional PDF character sheets with ease. 
-                        Our generator supports all official classes and species, handling the complex math 
-                        so you can focus on the roleplay.
+                        Craft your character sheet with ease.
+                        Our generator supports all official classes and species, handling the fiddly details so you can focus on developing your character's story and personality.
                     </p>
 
                     <blockquote className="italic text-brand-300 font-serif text-xl border-l-4 border-brand-500 pl-6 py-2">
-                        "Every legend begins with a single sheet. Forge your path, write your story, 
-                        and embark on an adventure that will echo through the ages."
+                        "There is a great horror beneath the manor, a crawling chaos that must be destroyed."
                     </blockquote>
 
                     <button
-                        onClick={onGetStarted}
+                        onClick={handleStart}
                         className="group relative px-12 py-5 bg-gradient-to-r from-brand-600 to-fuchsia-600 rounded-2xl font-black uppercase tracking-tighter text-xl shadow-[0_0_30px_rgba(217,70,239,0.3)] hover:shadow-[0_0_50px_rgba(217,70,239,0.5)] transition-all transform hover:-translate-y-1 active:scale-95"
                     >
                         <span className="relative z-10 flex items-center gap-3">
@@ -71,7 +80,7 @@ const CoverPage = ({ onGetStarted }) => {
                     </button>
                 </div>
             </div>
-            
+
             {/* Attribution */}
             <div className="absolute bottom-8 text-gray-600 text-xs font-medium uppercase tracking-[0.2em]">
                 Vonipo Character Generator • v1.2
