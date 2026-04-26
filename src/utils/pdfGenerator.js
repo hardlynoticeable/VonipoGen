@@ -258,11 +258,55 @@ export async function generateCharacterPDF(characterData) {
 
         // Weapons and Attacks
         const inventory = characterData.inventory || [];
-        const equippedWeapons = inventory.filter(i =>
+        const weaponInventory = inventory.filter(i =>
             i.isEquipped &&
             i.equipped_slot === 'Weapon' &&
             i.Damage && i.Damage.trim() !== ""
         );
+
+        const equippedWeapons = [];
+        
+        // 1. Unarmed Strike (If enabled)
+        if (characterData.unarmedStrikeEquipped) {
+            const monkClass = allClasses.find(c => c.class === 'Monk');
+            const monkLevel = monkClass ? Number(monkClass.level) : 0;
+            
+            let die = "1";
+            let useDex = false;
+            
+            if (monkLevel > 0) {
+                useDex = true;
+                if (monkLevel >= 17) die = "1d10";
+                else if (monkLevel >= 11) die = "1d8";
+                else if (monkLevel >= 5) die = "1d6";
+                else die = "1d4";
+            }
+            
+            const mod = (useDex && mods.dex > mods.str) ? mods.dex : mods.str;
+            const atkBonus = mod + profBonus;
+            const dmgBonus = mod;
+            
+            equippedWeapons.push({
+                name: "Unarmed Strike",
+                atkStr: atkBonus >= 0 ? `+${atkBonus}` : atkBonus.toString(),
+                dmgStr: `${die}${dmgBonus >= 0 ? '+' : ''}${dmgBonus}`
+            });
+        }
+
+        // 2. Add other weapons
+        weaponInventory.forEach(wp => {
+            const isProf = charClass?.weaponProficiencies?.some(p => wp.type?.includes(p)) || wp.type === 'Any' || (wp.name === "Cat's Claws");
+            const isFinesse = (wp.Properties || wp.properties || '').toLowerCase().includes('finesse');
+            const mod = (isFinesse && mods.dex > mods.str) ? mods.dex : mods.str;
+            const atkBonus = mod + (isProf ? profBonus : 0) + (Number(wp.attack_bonus) || 0);
+            const dmgBonus = mod + (Number(wp.damage_bonus) || 0);
+
+            equippedWeapons.push({
+                name: wp.name,
+                atkStr: atkBonus >= 0 ? `+${atkBonus}` : atkBonus.toString(),
+                dmgStr: `${wp.Damage || wp.damage || '1d6'}${dmgBonus >= 0 ? '+' : ''}${dmgBonus}`
+            });
+        });
         
         // Gather attack cantrips from all classes
         const attackCantrips = [];
@@ -291,22 +335,13 @@ export async function generateCharacterPDF(characterData) {
         const overflowLines = [];
 
         equippedWeapons.forEach(wp => {
-            const isProf = charClass?.weaponProficiencies?.some(p => wp.type?.includes(p)) || wp.type === 'Any' || (wp.name === "Cat's Claws");
-            const isFinesse = (wp.Properties || wp.properties || '').toLowerCase().includes('finesse');
-            const mod = (isFinesse && mods.dex > mods.str) ? mods.dex : mods.str;
-            const atkBonus = mod + (isProf ? profBonus : 0) + (Number(wp.attack_bonus) || 0);
-            const dmgBonus = mod + (Number(wp.damage_bonus) || 0);
-
-            const atkStr = atkBonus >= 0 ? `+${atkBonus}` : atkBonus.toString();
-            const dmgStr = `${wp.Damage || wp.damage || '1d6'}${dmgBonus >= 0 ? '+' : ''}${dmgBonus}`;
-
             if (slotIdx < 3) {
                 const slot = weaponSlots[slotIdx++];
                 setField(slot.name, wp.name, 8);
-                setField(slot.atk, atkStr, 10);
-                setField(slot.dmg, dmgStr, 8);
+                setField(slot.atk, wp.atkStr, 10);
+                setField(slot.dmg, wp.dmgStr, 8);
             } else {
-                overflowLines.push(`${wp.name}: ${atkStr} (${dmgStr})`);
+                overflowLines.push(`${wp.name}: ${wp.atkStr} (${wp.dmgStr})`);
             }
         });
 

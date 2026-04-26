@@ -380,9 +380,21 @@ export default function Review({ data }) {
 
                             {/* Individual Inventory Items */}
                             <div className="space-y-2">
-                                {data.inventory?.length > 0 ? (
+                                {(data.inventory?.length > 0 || data.unarmedStrikeEquipped) ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                        {data.inventory.map((item, idx) => (
+                                        {data.unarmedStrikeEquipped && (
+                                            <div className="bg-brand-900/20 border border-brand-500/30 p-2 rounded text-xs text-gray-300 flex items-center justify-between gap-2">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-brand-400">•</span>
+                                                    <div className="flex flex-col">
+                                                        <span className="font-bold text-brand-100">Unarmed Strike</span>
+                                                        <span className="text-[10px] text-gray-500">Natural Weapon</span>
+                                                    </div>
+                                                </div>
+                                                <span className="text-[9px] font-black text-brand-500/60 uppercase">Proficient</span>
+                                            </div>
+                                        )}
+                                        {(data.inventory || []).map((item, idx) => (
                                             <div key={idx} className="bg-black/20 border border-white/5 p-2 rounded text-xs text-gray-300 flex items-center justify-between gap-2">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-brand-500/50">•</span>

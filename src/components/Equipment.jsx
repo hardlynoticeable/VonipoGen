@@ -32,6 +32,18 @@ export default function Equipment({ data, updateData }) {
         { id: 'Weapon', label: 'Active Weapons (Max 3)', icon: Sword }
     ];
 
+    // Auto-equip Unarmed Strike logic
+    React.useEffect(() => {
+        const equippedWeapons = inventory.filter(i => i.isEquipped && (i.equipped_slot === 'Weapon' || inferEquippedSlot(i) === 'Weapon'));
+        const isMonk = data.class === 'Monk' || (data.multiClasses || []).some(mc => mc.class === 'Monk');
+        
+        if (data.unarmedStrikeEquipped === undefined) {
+            if (isMonk || equippedWeapons.length === 0) {
+                updateData({ unarmedStrikeEquipped: true });
+            }
+        }
+    }, [data.class, data.multiClasses, inventory.filter(i => i.isEquipped).length]);
+
     const toggleEquip = (itemId) => {
         const item = inventory.find(i => i.id === itemId);
         if (!item) return;
@@ -364,14 +376,25 @@ export default function Equipment({ data, updateData }) {
                                     Note: Your character can only be attuned to a maximum of {attunementLimit} items.
                                 </p>
                             </div>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-brand-500"></div>
-                                    <span className="text-[10px] font-bold text-brand-400 uppercase">Equipped</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-fuchsia-400 text-xs">★</span>
-                                    <span className="text-[10px] font-bold text-fuchsia-400 uppercase">Attuned</span>
+                            <div className="flex gap-6 items-center">
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input 
+                                        type="checkbox"
+                                        checked={!!data.unarmedStrikeEquipped}
+                                        onChange={(e) => updateData({ unarmedStrikeEquipped: e.target.checked })}
+                                        className="w-4 h-4 rounded border-gray-700 bg-gray-900 text-brand-500 focus:ring-brand-500 focus:ring-offset-gray-900"
+                                    />
+                                    <span className="text-[10px] font-black text-brand-400 uppercase tracking-widest group-hover:text-brand-300 transition-colors">Equip Unarmed Strike</span>
+                                </label>
+                                <div className="flex gap-4 border-l border-gray-800 pl-6">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-brand-500"></div>
+                                        <span className="text-[10px] font-bold text-brand-400 uppercase">Equipped</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-fuchsia-400 text-xs">★</span>
+                                        <span className="text-[10px] font-bold text-fuchsia-400 uppercase">Attuned</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
