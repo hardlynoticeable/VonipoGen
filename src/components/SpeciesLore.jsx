@@ -102,8 +102,8 @@ export default function SpeciesLore({ data, updateData }) {
                                             onChange={(e) => updateData({ size: e.target.value })}
                                             className="hidden"
                                         />
-                                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center mr-1 ${data.size === size ? 'border-brand-400' : 'border-gray-500'}`}>
-                                            {data.size === size && <div className="w-2 h-2 rounded-full bg-brand-400 shadow-[0_0_5px_rgba(var(--color-brand-rgb),0.5)]"></div>}
+                                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center mr-1 ${data.size === size ? 'border-brand-400 bg-brand-500/10' : 'border-gray-500'}`}>
+                                            {data.size === size && <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.4)]"></div>}
                                         </div>
                                         <span className="font-bold text-sm flex-1 text-center pr-4">{size}</span>
                                     </label>
