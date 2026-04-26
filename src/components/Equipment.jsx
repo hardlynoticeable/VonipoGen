@@ -13,7 +13,7 @@ export default function Equipment({ data, updateData }) {
     const attunedCount = inventory.filter(i => i.isAttuned).length;
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('weapons');
+    const [selectedCategory, setSelectedCategory] = useState('weapons_melee');
     const [showDatabaseModal, setShowDatabaseModal] = useState(false);
     const [addedItemId, setAddedItemId] = useState(null);
 
@@ -120,11 +120,47 @@ export default function Equipment({ data, updateData }) {
     };
 
     const filteredDbItems = useMemo(() => {
-        const categoryData = EQUIPMENT_DB[selectedCategory] || [];
-        const filtered = !searchTerm ? categoryData : categoryData.filter(item =>
+        let baseItems = [];
+        
+        // Handle split categories
+        if (selectedCategory === 'weapons_melee') {
+            baseItems = (EQUIPMENT_DB.weapons || []).filter(w => (w.Type || '').toLowerCase().includes('melee'));
+        } else if (selectedCategory === 'weapons_ranged') {
+            baseItems = (EQUIPMENT_DB.weapons || []).filter(w => (w.Type || '').toLowerCase().includes('ranged'));
+        } else if (selectedCategory === 'magic_weapons') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                return cat.includes('weapon') || type.includes('weapon');
+            });
+        } else if (selectedCategory === 'magic_armor') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                return (cat.includes('armor') || cat.includes('shield')) && !cat.includes('weapon');
+            });
+        } else if (selectedCategory === 'magic_rsw') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                return cat.includes('rod') || cat.includes('staff') || cat.includes('wand');
+            });
+        } else if (selectedCategory === 'magic_other') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                const isWeapon = cat.includes('weapon') || type.includes('weapon');
+                const isArmor = cat.includes('armor') || cat.includes('shield');
+                const isRSW = cat.includes('rod') || cat.includes('staff') || cat.includes('wand');
+                return !isWeapon && !isArmor && !isRSW;
+            });
+        } else {
+            baseItems = EQUIPMENT_DB[selectedCategory] || [];
+        }
+
+        const filtered = !searchTerm ? baseItems : baseItems.filter(item =>
             (item.Item || item.name || '').toLowerCase().includes(searchTerm.toLowerCase())
         );
-        return [...filtered].sort((a, b) => (a.Item || a.name || '').localeCompare(b.Item || b.name || '')).slice(0, 50);
+        return [...filtered].sort((a, b) => (a.Item || a.name || '').localeCompare(b.Item || b.name || '')).slice(0, 100);
     }, [selectedCategory, searchTerm]);
 
     const getEquippedInSlot = (slotId) => {
@@ -501,43 +537,51 @@ export default function Equipment({ data, updateData }) {
             {showDatabaseModal && createPortal(
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
                     <div className="bg-gray-900 border border-brand-500/30 rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-[0_0_50px_rgba(217,70,239,0.1)] overflow-hidden relative">
-                        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-black/40">
-                            <div>
+                        <div className="p-6 border-b border-gray-800 flex flex-col md:flex-row justify-between items-center bg-black/40 gap-4">
+                            <div className="flex-1">
                                 <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-fuchsia-300 uppercase tracking-tighter">
                                     Equipment Database
                                 </h3>
-                                <p className="text-sm text-gray-400">Browse and add items to your character's inventory.</p>
+                                <div className="flex flex-col md:flex-row gap-4 mt-4">
+                                    <div className="flex-1 relative">
+                                        <input
+                                            type="text"
+                                            placeholder="Search artifacts and gear..."
+                                            value={searchTerm}
+                                            onChange={e => setSearchTerm(e.target.value)}
+                                            className="w-full bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none pl-10"
+                                        />
+                                        <Sword size={16} className="absolute left-3 top-3.5 text-gray-600" />
+                                    </div>
+                                    <select
+                                        value={selectedCategory}
+                                        onChange={e => setSelectedCategory(e.target.value)}
+                                        className="bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none min-w-[200px]"
+                                    >
+                                        <optgroup label="Basic Gear">
+                                            <option value="weapons_melee">Melee Weapons</option>
+                                            <option value="weapons_ranged">Ranged Weapons</option>
+                                            <option value="armor">Armor & Shields</option>
+                                            <option value="gear">Adventuring Gear</option>
+                                        </optgroup>
+                                        <optgroup label="Magic Items">
+                                            <option value="magic_weapons">Magic Weapons</option>
+                                            <option value="magic_armor">Magic Armor</option>
+                                            <option value="magic_rsw">Rods, Staves & Wands</option>
+                                            <option value="magic_other">Other Magic Items</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
                             </div>
                             <button
                                 onClick={() => setShowDatabaseModal(false)}
-                                className="text-gray-500 hover:text-white transition-colors bg-gray-800/50 hover:bg-gray-800 p-2 rounded-full"
+                                className="text-gray-500 hover:text-white transition-colors bg-gray-800/50 hover:bg-gray-800 p-2 rounded-full self-start md:self-center"
                             >
                                 <X size={20} />
                             </button>
                         </div>
                         <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4">
-                            <div className="flex flex-col md:flex-row gap-4">
-                                <div className="flex-1 relative">
-                                    <input
-                                        type="text"
-                                        placeholder="Search artifacts and gear..."
-                                        value={searchTerm}
-                                        onChange={e => setSearchTerm(e.target.value)}
-                                        className="w-full bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none pl-10"
-                                    />
-                                    <Sword size={16} className="absolute left-3 top-3.5 text-gray-600" />
-                                </div>
-                                <select
-                                    value={selectedCategory}
-                                    onChange={e => setSelectedCategory(e.target.value)}
-                                    className="bg-black/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:border-brand-500 focus:outline-none"
-                                >
-                                    <option value="weapons">Weapons</option>
-                                    <option value="magicItems">Magic Items</option>
-                                    <option value="armor">Armor</option>
-                                    <option value="gear">Adventuring Gear</option>
-                                </select>
-                            </div>
+
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-1">
                                 {filteredDbItems.map((item, i) => (
