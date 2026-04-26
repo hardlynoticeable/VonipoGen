@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CLASSES, BACKGROUNDS, LANGUAGES, MULTICLASS_PROFICIENCIES } from '../data/rules5e';
 import { APPEARANCES, SPECIES } from '../data/species5e';
 
 export default function CoreStats({ data, updateData }) {
+    const [imageError, setImageError] = useState(false);
     const classes = Object.keys(CLASSES);
     const backgrounds = Object.keys(BACKGROUNDS);
 
@@ -26,6 +27,11 @@ export default function CoreStats({ data, updateData }) {
             updateData({ backgroundSkills: [] });
         }
     }, [data.background]);
+
+    // Reset image error when class or species changes
+    useEffect(() => {
+        setImageError(false);
+    }, [data.class, data.parentSpecies]);
 
     // Clear class skills and other dependent state if class changes to prevent invalid selection
     const handleClassChange = (newClass) => {
@@ -292,14 +298,14 @@ export default function CoreStats({ data, updateData }) {
 
 
                     {/* Class Image Nest */}
-                    {data.class && data.species === 'Tabaxi' && (
+                    {data.class && data.parentSpecies && !imageError && (
                         <div className="mt-6 flex justify-center">
                             <div className="relative w-full max-w-sm aspect-[3/4] rounded-lg overflow-hidden border border-gray-700 shadow-lg">
                                 <img
-                                    src={`/classes/${data.class.toLowerCase()}.png`}
-                                    alt={`Tabaxi ${data.class}`}
+                                    src={`/classes/${data.parentSpecies.toLowerCase()}-${data.class.toLowerCase()}.png`}
+                                    alt={`${data.parentSpecies} ${data.class}`}
                                     className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500"
-                                    onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.png' }}
+                                    onError={() => setImageError(true)}
                                 />
                             </div>
                         </div>
