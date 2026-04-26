@@ -1,6 +1,6 @@
 # Vonipo Character Generator
 
-A comprehensive, multi-species character construction tool for Dungeons & Dragons 5th Edition. Designed with a premium "Amethyst Purple" aesthetic, this tool streamlines the journey from concept to a professional, table-ready PDF character sheet.
+A comprehensive, multi-species character construction tool for Dungeons & Dragons 5th Edition. This tool streamlines the journey from concept to a well-developed, table-ready PDF character sheet.
 
 **Try it out:** [charactergenerator.vonipo.com](https://charactergenerator.vonipo.com)
 
