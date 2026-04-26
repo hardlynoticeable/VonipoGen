@@ -188,7 +188,7 @@ export default function CharacterWizard() {
                 ))}
             </div>
 
-            <div className="min-h-[400px] relative z-10">
+            <div key={step} className="min-h-[400px] relative z-10 animate-fade-in-medium">
                 {step === 1 && <SpeciesLore data={characterData} updateData={updateData} />}
                 {step === 2 && <CoreStats data={characterData} updateData={updateData} />}
                 {step === 3 && <AbilityScores data={characterData} updateData={updateData} />}

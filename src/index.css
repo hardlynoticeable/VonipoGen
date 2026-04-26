@@ -152,6 +152,10 @@ h6 {
   animation: fade-in 0.3s ease-out forwards;
 }
 
+.animate-fade-in-medium {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
 .animate-fade-in-slow {
   animation: fade-in 1s ease-out forwards;
 }
