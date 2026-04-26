@@ -5831,5 +5831,338 @@ export const EQUIPMENT_DB = {
         "equipped_slot": "Shield",
         "AC": "+2"
 }
+    ,
+        {
+        "category": "Potions",
+        "name": "Potion of Healing",
+        "rarity": "Common",
+        "attunement": false,
+        "stat_impact": "Utility: Regain 2d4 + 2 HP.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Healing (Greater)",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Regain 4d4 + 4 HP.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Healing (Superior)",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Regain 8d4 + 8 HP.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Healing (Supreme)",
+        "rarity": "Very Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Regain 10d4 + 20 HP.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Animal Friendship",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Cast Animal Friendship.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Clairvoyance",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Cast Clairvoyance.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Climbing",
+        "rarity": "Common",
+        "attunement": false,
+        "stat_impact": "Utility: Advantage on Athletics checks to climb.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Diminution",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Reduce size for 1d4 hours.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Flying",
+        "rarity": "Very Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Fly speed equal to walking speed for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Gaseous Form",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Transform into mist for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Giant Strength (Hill)",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Stat: STR becomes 21 for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Giant Strength (Frost/Stone)",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Stat: STR becomes 23 for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Giant Strength (Fire)",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Stat: STR becomes 25 for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Giant Strength (Cloud)",
+        "rarity": "Very Rare",
+        "attunement": false,
+        "stat_impact": "Stat: STR becomes 27 for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Giant Strength (Storm)",
+        "rarity": "Legendary",
+        "attunement": false,
+        "stat_impact": "Stat: STR becomes 29 for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Growth",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Increase size for 1d4 hours.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Invisibility",
+        "rarity": "Very Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Become invisible for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Mind Reading",
+        "rarity": "Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Cast Detect Thoughts.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Poison",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Deals poison damage (trapped potion).",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Resistance",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Resistance to one damage type for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Speed",
+        "rarity": "Very Rare",
+        "attunement": false,
+        "stat_impact": "Utility: Haste effect for 1 minute.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Potions",
+        "name": "Potion of Water Breathing",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Breathe underwater for 1 hour.",
+        "source": "DMG",
+        "type": "Potion",
+        "equipped_slot": "Wondrous"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Protection",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "+1 bonus to AC and Saving Throws.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring",
+        "ac_bonus": 1,
+        "save_bonus": 1
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Evasion",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Can succeed on failed Dex saves.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Resistance",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Resistance to one damage type.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Spell Storing",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Store up to 5 levels of spells.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Invisibility",
+        "rarity": "Legendary",
+        "attunement": true,
+        "stat_impact": "Utility: Turn invisible at will.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Shooting Stars",
+        "rarity": "Very Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Fire lighting or light balls.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Telekinesis",
+        "rarity": "Very Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Cast Telekinesis at will.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Three Wishes",
+        "rarity": "Legendary",
+        "attunement": false,
+        "stat_impact": "Utility: Cast Wish up to 3 times.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of Water Walking",
+        "rarity": "Uncommon",
+        "attunement": false,
+        "stat_impact": "Utility: Walk on liquid.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of X-Ray Vision",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "Utility: See through solid objects.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+},
+        {
+        "category": "Rings",
+        "name": "Ring of the Ram",
+        "rarity": "Rare",
+        "attunement": true,
+        "stat_impact": "Utility: Spectral ram attack.",
+        "source": "DMG",
+        "type": "Ring",
+        "equipped_slot": "Ring"
+}
     ]
 };

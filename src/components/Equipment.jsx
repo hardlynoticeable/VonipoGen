@@ -144,14 +144,29 @@ export default function Equipment({ data, updateData }) {
                 const cat = (item.category || '').toLowerCase();
                 return cat.includes('rod') || cat.includes('staff') || cat.includes('wand');
             });
+        } else if (selectedCategory === 'magic_potions') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                return cat.includes('potion') || type.includes('potion');
+            });
+        } else if (selectedCategory === 'magic_rings') {
+            baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                return cat.includes('ring') || type.includes('ring');
+            });
         } else if (selectedCategory === 'magic_other') {
             baseItems = (EQUIPMENT_DB.magicItems || []).filter(item => {
                 const cat = (item.category || '').toLowerCase();
                 const type = (item.type || '').toLowerCase();
+                const name = (item.name || '').toLowerCase();
                 const isWeapon = cat.includes('weapon') || type.includes('weapon');
                 const isArmor = cat.includes('armor') || cat.includes('shield');
                 const isRSW = cat.includes('rod') || cat.includes('staff') || cat.includes('wand');
-                return !isWeapon && !isArmor && !isRSW;
+                const isPotion = cat.includes('potion') || type.includes('potion');
+                const isRing = cat.includes('ring') || type.includes('ring');
+                return !isWeapon && !isArmor && !isRSW && !isPotion && !isRing;
             });
         } else {
             baseItems = EQUIPMENT_DB[selectedCategory] || [];
@@ -568,6 +583,8 @@ export default function Equipment({ data, updateData }) {
                                             <option value="magic_weapons">Magic Weapons</option>
                                             <option value="magic_armor">Magic Armor</option>
                                             <option value="magic_rsw">Rods, Staves & Wands</option>
+                                            <option value="magic_rings">Rings</option>
+                                            <option value="magic_potions">Potions</option>
                                             <option value="magic_other">Other Magic Items</option>
                                         </optgroup>
                                     </select>
