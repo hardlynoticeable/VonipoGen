@@ -2,8 +2,11 @@
 
 :root {
   --color-brand-100: #fae8ff;
+  --color-brand-400: #e879f9;
   --color-brand-500: #d946ef;
+  --color-brand-600: #c026d3;
   --color-brand-900: #701a75;
+  --color-brand-rgb: 217, 70, 239;
   --color-dark-bg: #12181b;
   --color-dark-card: #1f2937;
   --color-dark-border: #374151;
