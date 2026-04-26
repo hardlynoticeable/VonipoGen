@@ -12,10 +12,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'assets/*.pdf', 'assets/*.png'],
       manifest: {
-        name: 'Tabaxi Character Generator',
-        short_name: 'TabaxiGen',
-        description: 'A dedicated D&D 5e character generator for the Tabaxi race.',
-        theme_color: '#10b981',
+        name: 'Vonipo Character Generator',
+        short_name: 'VonipoGen',
+        description: 'A comprehensive, multi-species character construction tool for D&D 5th Edition.',
+        theme_color: '#d946ef',
         icons: [
           {
             src: 'icon-192.png',
