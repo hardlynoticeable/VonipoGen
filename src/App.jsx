@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CharacterWizard from './components/CharacterWizard';
+import CoverPage from './components/CoverPage';
 import { RotateCcw } from 'lucide-react';
 
 function App() {
+  const [showCover, setShowCover] = useState(true);
+
+  if (showCover) {
+    return <CoverPage onGetStarted={() => setShowCover(false)} />;
+  }
+
   return (
     <div className="min-h-screen text-white relative">
       <header className="fixed top-0 w-full z-50 bg-[#12181b]/95 backdrop-blur-xl border-b border-dark-border py-4 px-8 flex justify-between items-center shadow-2xl">
