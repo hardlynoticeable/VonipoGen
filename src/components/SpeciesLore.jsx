@@ -168,7 +168,9 @@ export default function SpeciesLore({ data, updateData }) {
                                 <button
                                     onClick={() => {
                                         const names = namesData[data.parentSpecies];
-                                        updateData({ name: names[Math.floor(Math.random() * names.length)] });
+                                        const otherNames = names.filter(n => n !== data.name);
+                                        const pool = otherNames.length > 0 ? otherNames : names;
+                                        updateData({ name: pool[Math.floor(Math.random() * pool.length)] });
                                     }}
                                     className="text-[10px] bg-brand-600/20 hover:bg-brand-600/40 text-brand-400 border border-brand-500/30 px-2 py-1 rounded transition-colors uppercase font-black"
                                 >
