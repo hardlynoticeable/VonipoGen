@@ -178,7 +178,14 @@ export default function CoreStats({ data, updateData }) {
 
     const randomizeAppearance = () => {
         const pb = getPhysicalBounds();
-        const age = 18 + Math.floor(Math.random() * 23);
+        const speciesInfo = data.species ? SPECIES[data.species] : null;
+        const adultAge = speciesInfo?.adultAge || 18;
+        const maxAge = speciesInfo?.maxAge || 100;
+        
+        // Wizards can be very old; other classes generally retire or die younger
+        const isWizard = data.class === 'Wizard' || (data.multiClasses || []).some(mc => mc.class === 'Wizard');
+        const randomMax = isWizard ? maxAge : Math.floor(maxAge * 0.66);
+        const age = adultAge + Math.floor(Math.random() * (Math.max(0, randomMax - adultAge) + 1));
         const totalInches = pb.minIn + Math.floor(Math.random() * (pb.maxIn - pb.minIn + 1));
         const totalWeight = pb.minW + Math.floor(Math.random() * (pb.maxW - pb.minW + 1));
             
@@ -448,7 +455,9 @@ export default function CoreStats({ data, updateData }) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <label className="block text-xs font-medium text-gray-400 uppercase">
-                                    Age <span className="text-[10px] text-gray-500 lowercase ml-1">(18 to 40 years)</span>
+                                    Age <span className="text-[10px] text-gray-500 lowercase ml-1">
+                                        ({data.species && SPECIES[data.species] ? `${SPECIES[data.species].adultAge} to ${SPECIES[data.species].maxAge}` : '18 to 40'} years)
+                                    </span>
                                 </label>
                                 <input
                                     type="text"

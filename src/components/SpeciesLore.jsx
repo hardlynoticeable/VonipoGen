@@ -38,7 +38,9 @@ export default function SpeciesLore({ data, updateData }) {
                                         updateData({
                                             parentSpecies: newParent,
                                             species: autoSelect,
-                                            size: speciesData ? (speciesData.size.includes('or') ? data.size || 'Medium' : speciesData.size) : 'Medium'
+                                            size: speciesData ? (speciesData.size.includes('or') ? data.size || 'Medium' : speciesData.size) : 'Medium',
+                                            // Clear physical traits on species change
+                                            age: '', height: '', weight: '', eyes: '', skin: '', hair: ''
                                         });
                                     }}
                                     className="w-full bg-gray-900 border border-gray-600 rounded px-4 py-3 pr-10 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all text-white appearance-none cursor-pointer"
@@ -63,7 +65,9 @@ export default function SpeciesLore({ data, updateData }) {
                                             const speciesData = SPECIES[newSpecies];
                                             updateData({
                                                 species: newSpecies,
-                                                size: speciesData.size.includes('or') ? data.size || 'Medium' : speciesData.size
+                                                size: speciesData.size.includes('or') ? data.size || 'Medium' : speciesData.size,
+                                                // Clear physical traits on sub-species change
+                                                age: '', height: '', weight: '', eyes: '', skin: '', hair: ''
                                             });
                                         }}
                                         disabled={!data.parentSpecies}

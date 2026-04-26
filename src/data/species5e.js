@@ -15,6 +15,7 @@ export const SPECIES = {
     "Black Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Black): You have resistance to Acid damage, and a Breath Weapon that shoots a 5 by 30 ft. line of Acid (Dexterity save)."
@@ -24,6 +25,7 @@ export const SPECIES = {
     "Blue Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Blue): You have resistance to Lightning damage, and a Breath Weapon that shoots a 5 by 30 ft. line of Lightning (Dexterity save)."
@@ -33,6 +35,7 @@ export const SPECIES = {
     "Brass Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Brass): You have resistance to Fire damage, and a Breath Weapon that shoots a 5 by 30 ft. line of Fire (Dexterity save)."
@@ -42,6 +45,7 @@ export const SPECIES = {
     "Bronze Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Bronze): You have resistance to Lightning damage, and a Breath Weapon that shoots a 5 by 30 ft. line of Lightning (Dexterity save)."
@@ -51,6 +55,7 @@ export const SPECIES = {
     "Copper Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Copper): You have resistance to Acid damage, and a Breath Weapon that shoots a 5 by 30 ft. line of Acid (Dexterity save)."
@@ -60,6 +65,7 @@ export const SPECIES = {
     "Gold Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Gold): You have resistance to Fire damage, and a Breath Weapon that shoots a 15 ft. cone of Fire (Dexterity save)."
@@ -69,6 +75,7 @@ export const SPECIES = {
     "Green Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Green): You have resistance to Poison damage, and a Breath Weapon that shoots a 15 ft. cone of Poison (Constitution save)."
@@ -78,6 +85,7 @@ export const SPECIES = {
     "Red Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Red): You have resistance to Fire damage, and a Breath Weapon that shoots a 15 ft. cone of Fire (Dexterity save)."
@@ -87,6 +95,7 @@ export const SPECIES = {
     "Silver Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (Silver): You have resistance to Cold damage, and a Breath Weapon that shoots a 15 ft. cone of Cold (Constitution save)."
@@ -96,6 +105,7 @@ export const SPECIES = {
     "White Dragonborn": {
         description: "Dragonborn look very much like dragons standing erect in humanoid form.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 15, maxAge: 80,
         abilityBonuses: { str: 2, cha: 1 },
         traits: [
             "Draconic Ancestry (White): You have resistance to Cold damage, and a Breath Weapon that shoots a 15 ft. cone of Cold (Constitution save)."
@@ -105,6 +115,7 @@ export const SPECIES = {
     "Hill Dwarf": {
         description: "As a hill dwarf, you have keen senses, deep intuition, and remarkable resilience.",
         size: "Medium", speed: 25, darkvision: 60,
+        adultAge: 50, maxAge: 350,
         abilityBonuses: { con: 2, wis: 1 },
         traits: [
             "Dwarven Resilience: You have advantage on saving throws against poison, and you have resistance against poison damage.",
@@ -118,6 +129,7 @@ export const SPECIES = {
     "Mountain Dwarf": {
         description: "As a mountain dwarf, you're strong and hardy, accustomed to a difficult life in rugged terrain.",
         size: "Medium", speed: 25, darkvision: 60,
+        adultAge: 50, maxAge: 350,
         abilityBonuses: { con: 2, str: 2 },
         traits: [
             "Dwarven Resilience: You have advantage on saving throws against poison, and you have resistance against poison damage.",
@@ -131,6 +143,7 @@ export const SPECIES = {
     "High Elf": {
         description: "As a high elf, you have a keen mind and a mastery of at least the basics of magic.",
         size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 100, maxAge: 750,
         abilityBonuses: { dex: 2, int: 1 },
         traits: [
             "Fey Ancestry: You have advantage on saving throws against being charmed, and magic can't put you to sleep.",
@@ -143,6 +156,7 @@ export const SPECIES = {
     "Wood Elf": {
         description: "As a wood elf, you have keen senses and intuition, and your fleet feet carry you quickly and stealthily.",
         size: "Medium", speed: 35, darkvision: 60,
+        adultAge: 100, maxAge: 750,
         abilityBonuses: { dex: 2, wis: 1 },
         traits: [
             "Fey Ancestry: You have advantage on saving throws against being charmed, and magic can't put you to sleep.",
@@ -156,6 +170,7 @@ export const SPECIES = {
     "Dark Elf (Drow)": {
         description: "Descended from an earlier subrace of dark-skinned elves, the drow were banished to the Underdark.",
         size: "Medium", speed: 30, darkvision: 120,    
+        adultAge: 100, maxAge: 750,
         abilityBonuses: { dex: 2, cha: 1 },
         traits: [
             "Fey Ancestry: You have advantage on saving throws against being charmed, and magic can't put you to sleep.",
@@ -169,6 +184,7 @@ export const SPECIES = {
     "Forest Gnome": {
         description: "As a forest gnome, you have a natural knack for illusion and inherent quickness and stealth.",
         size: "Small", speed: 25, darkvision: 60,
+        adultAge: 40, maxAge: 425,
         abilityBonuses: { int: 2, dex: 1 },
         traits: [
             "Gnome Cunning: You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic.",
@@ -180,6 +196,7 @@ export const SPECIES = {
     "Rock Gnome": {
         description: "As a rock gnome, you have a natural inventiveness and hardiness beyond that of other gnomes.",
         size: "Small", speed: 25, darkvision: 60,
+        adultAge: 40, maxAge: 425,
         abilityBonuses: { int: 2, con: 1 },
         traits: [
             "Gnome Cunning: You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic.",
@@ -191,6 +208,7 @@ export const SPECIES = {
     "Half-Elf": {
         description: "Half-elves combine what some say are the best qualities of their elf and human parents.",
         size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 20, maxAge: 180,
         abilityBonuses: { cha: 2 },
         traits: [
             "Ability Score Increase: Your Charisma score increases by 2, and two other ability scores of your choice increase by 1.",
@@ -202,6 +220,7 @@ export const SPECIES = {
     "Lightfoot Halfling": {
         description: "As a lightfoot halfling, you can easily hide from notice, even using other people as cover.",
         size: "Small", speed: 25, darkvision: 0,
+        adultAge: 20, maxAge: 150,
         abilityBonuses: { dex: 2, cha: 1 },
         traits: [
             "Lucky: When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll.",
@@ -214,6 +233,7 @@ export const SPECIES = {
     "Stout Halfling": {
         description: "As a stout halfling, you're hardier than average and have some resistance to poison.",
         size: "Small", speed: 25, darkvision: 0,
+        adultAge: 20, maxAge: 150,
         abilityBonuses: { dex: 2, con: 1 },
         traits: [
             "Lucky: When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll.",
@@ -226,6 +246,7 @@ export const SPECIES = {
     "Half-Orc": {
         description: "Half-orcs reflect both elements of their parentage, possessing physical might and endurance.",
         size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 14, maxAge: 75,
         abilityBonuses: { str: 2, con: 1 },
         traits: [
             "Relentless Endurance: When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest.",
@@ -236,6 +257,7 @@ export const SPECIES = {
     "Human": {
         description: "Humans are the most adaptable, flexible, and ambitious people among the common races.",
         size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 18, maxAge: 100,
         abilityBonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 },
         traits: [
             "Extra Language: You can speak, read, and write one extra language of your choice."
@@ -245,6 +267,7 @@ export const SPECIES = {
     "Tiefling": {
         description: "Tieflings are derived from human bloodlines, their infernal heritage leaving a clear imprint on their appearance.",
         size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 18, maxAge: 100,
         abilityBonuses: { cha: 2, int: 1 },
         traits: [
             "Hellish Resistance: You have resistance to fire damage.",
@@ -255,6 +278,7 @@ export const SPECIES = {
     "Tabaxi": {
         description: "Hailing from a strange and distant land, wandering tabaxi are catlike humanoids driven by curiosity.",
         size: "Medium", speed: 30, climbSpeed: 30, darkvision: 60,
+        adultAge: 18, maxAge: 100,
         abilityBonuses: { dex: 2, cha: 1 },
         traits: [
             "Cat's Claws: You have a climbing speed equal to your walking speed. In addition, your claws are natural weapons, dealing 1d6 + STR slashing damage.",
