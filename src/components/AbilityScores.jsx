@@ -178,7 +178,7 @@ export default function AbilityScores({ data, updateData }) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isGenerating ? 'animate-spin' : ''}>
                         <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.28l5.67-5.67" />
                     </svg>
-                    {isGenerating ? 'Randomizing...' : 'Randomize'}
+                    {isGenerating ? 'Rolling...' : 'Roll Ability Scores'}
                 </button>
             </div>
 
