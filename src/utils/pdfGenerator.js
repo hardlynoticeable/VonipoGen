@@ -48,7 +48,7 @@ export async function generateCharacterPDF(characterData) {
             const shieldBonusValue = 2 + (Number(shieldItem?.ac_bonus) || 0);
             const acWithoutShield = ac - shieldBonusValue;
             acDisplay = `${acWithoutShield}/${ac}`;
-            acFontSize = 12; // Revert to smaller size if showing dual AC
+            acFontSize = 11; // Further reduced for better fit
         }
         setField('AC', acDisplay, acFontSize);
         
