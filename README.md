@@ -12,10 +12,16 @@ Includes all standard Player's Handbook species with detailed sub-species mechan
 ### Progressive Web App (PWA)
 Installable on desktop and mobile for a premium, app-like experience. Features full offline support via service workers, ensuring your character data is always accessible at the table.
 
+### Robust Multiclassing Engine
+Build complex, multi-faceted characters with a seamless multiclassing interface.
+- **Combined Spellcasting**: Automatically calculates multiclass spell slots and maintains separate spellcasting abilities, save DCs, and attack bonuses.
+- **Level Management**: Handles XP/Level distribution across multiple classes with live validation of requirements.
+- **Smart PDF Export**: Exports multiclass levels (e.g., "Fighter 3 / Rogue 2") and intelligently maps multiple attack options and spellbooks.
+
 ### Comprehensive Subclass Expansion
 Access over **50+ official subclasses** from *Xanathar's Guide to Everything* and *Tasha's Cauldron of Everything*.
 - **Full Coverage**: Every class (from Artificer to Wizard) includes its most popular official specializations.
-- **Smart UI**: Dynamic transitions for additional choices (like the Warlock's **Genie Kind**).
+- **Smart UI**: Dynamic transitions for additional choices (like the Warlock's **Genie Kind** or Artificer's **Armor Model**).
 
 ### Real-Time Build Validation
 Integrated warning system that provides live feedback on your build:
