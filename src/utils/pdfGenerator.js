@@ -37,9 +37,22 @@ export async function generateCharacterPDF(characterData) {
         setField('Race ', characterData.species || '', 10);
         setField('Alignment', characterData.alignment || '', 10);
         setField('ProfBonus', `+${profBonus}`, 10);
-        setField('Initiative', mods.dex >= 0 ? `+${mods.dex}` : mods.dex, 10);
-        setField('AC', ac.toString(), 12);
-        setField('Speed', `${stats.speed} ft.`, 10);
+        setField('Initiative', mods.dex >= 0 ? `+${mods.dex}` : mods.dex, 15);
+        
+        let acDisplay = ac.toString();
+        let acFontSize = 18;
+        if (stats.hasShield) {
+            // Find the specific item bonus for the shield to calculate accurate "without shield" AC
+            const inventory = Array.isArray(characterData.inventory) ? characterData.inventory : [];
+            const shieldItem = inventory.find(item => item.isEquipped && (item.equipped_slot === 'Shield' || (item.name || item.Item || '').toLowerCase().includes('shield')));
+            const shieldBonusValue = 2 + (Number(shieldItem?.ac_bonus) || 0);
+            const acWithoutShield = ac - shieldBonusValue;
+            acDisplay = `${acWithoutShield}/${ac}`;
+            acFontSize = 12; // Revert to smaller size if showing dual AC
+        }
+        setField('AC', acDisplay, acFontSize);
+        
+        setField('Speed', `${stats.speed} ft.`, 15);
         setField('Size', characterData.size || 'Medium', 10);
 
         // Character Lore & Personality
