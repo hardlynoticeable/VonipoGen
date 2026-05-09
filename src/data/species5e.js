@@ -1,14 +1,18 @@
 export const PARENT_SPECIES = {
+    "Aasimar": ["Protector Aasimar", "Scourge Aasimar", "Fallen Aasimar"],
     "Dragonborn": ["Black Dragonborn", "Blue Dragonborn", "Brass Dragonborn", "Bronze Dragonborn", "Copper Dragonborn", "Gold Dragonborn", "Green Dragonborn", "Red Dragonborn", "Silver Dragonborn", "White Dragonborn"],
     "Dwarf": ["Hill Dwarf", "Mountain Dwarf"],
     "Elf": ["High Elf", "Wood Elf", "Dark Elf (Drow)"],
+    "Faerie": ["Faerie"],
     "Gnome": ["Forest Gnome", "Rock Gnome"],
+    "Goliath": ["Goliath"],
     "Half-Elf": ["Half-Elf"],
-    "Halfling": ["Lightfoot Halfling", "Stout Halfling"],
     "Half-Orc": ["Half-Orc"],
+    "Halfling": ["Lightfoot Halfling", "Stout Halfling"],
     "Human": ["Human"],
-    "Tiefling": ["Tiefling"],
-    "Tabaxi": ["Tabaxi"]
+    "Orc": ["Orc"],
+    "Tabaxi": ["Tabaxi"],
+    "Tiefling": ["Tiefling"]
 };
 
 export const SPECIES = {
@@ -286,6 +290,82 @@ export const SPECIES = {
             "Feline Agility: When you move on your turn in combat, you can double your speed until the end of the turn. Recharge: 0 movement turn."
         ],
         skills: ["Perception", "Stealth"], languages: ["Common"]
+    },
+    "Protector Aasimar": {
+        description: "Aasimars bear within their souls the light of the heavens. Protector aasimars are charged by the powers of good to guard the weak.",
+        size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 18, maxAge: 160,
+        abilityBonuses: { cha: 2, wis: 1 },
+        traits: [
+            "Celestial Resistance: You have resistance to necrotic damage and radiant damage.",
+            "Healing Hands: As an action, you can touch a creature and cause it to regain a number of hit points equal to your level. Once you use this trait, you can't use it again until you finish a long rest.",
+            "Light Bearer: You know the Light cantrip. Charisma is your spellcasting ability for it.",
+            "Radiant Soul: Starting at 3rd level, you can use your action to unleash the divine energy within yourself, causing your eyes to glimmer and two luminous, incorporeal wings to sprout from your back. Your transformation lasts for 1 minute or until you end it as a bonus action."
+        ],
+        skills: [], languages: ["Common", "Celestial"]
+    },
+    "Scourge Aasimar": {
+        description: "Aasimars bear within their souls the light of the heavens. Scourge aasimars are imbued with a divine energy that blazes intensely within them.",
+        size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 18, maxAge: 160,
+        abilityBonuses: { cha: 2, con: 1 },
+        traits: [
+            "Celestial Resistance: You have resistance to necrotic damage and radiant damage.",
+            "Healing Hands: As an action, you can touch a creature and cause it to regain a number of hit points equal to your level. Once you use this trait, you can't use it again until you finish a long rest.",
+            "Light Bearer: You know the Light cantrip. Charisma is your spellcasting ability for it.",
+            "Radiant Consumption: Starting at 3rd level, you can use your action to unleash the divine energy within yourself, causing a searing light to radiate from you, pour out of your eyes and mouth, and threaten to char you."
+        ],
+        skills: [], languages: ["Common", "Celestial"]
+    },
+    "Fallen Aasimar": {
+        description: "Aasimars bear within their souls the light of the heavens. An aasimar who was touched by dark powers as a youth or who turns to evil in early adulthood can become one of the fallen.",
+        size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 18, maxAge: 160,
+        abilityBonuses: { cha: 2, str: 1 },
+        traits: [
+            "Celestial Resistance: You have resistance to necrotic damage and radiant damage.",
+            "Healing Hands: As an action, you can touch a creature and cause it to regain a number of hit points equal to your level. Once you use this trait, you can't use it again until you finish a long rest.",
+            "Light Bearer: You know the Light cantrip. Charisma is your spellcasting ability for it.",
+            "Necrotic Shroud: Starting at 3rd level, you can use your action to unleash the divine energy within yourself, causing your eyes to turn into pools of darkness and two skeletal, ghostly, flightless wings to sprout from your back."
+        ],
+        skills: [], languages: ["Common", "Celestial"]
+    },
+    "Goliath": {
+        description: "Goliaths are massive humanoids who live on the highest mountain peaks, wandering among the clouds and howling winds.",
+        size: "Medium", speed: 30, darkvision: 0,
+        adultAge: 18, maxAge: 100,
+        abilityBonuses: { str: 2, con: 1 },
+        traits: [
+            "Natural Athlete: You have proficiency in the Athletics skill.",
+            "Stone's Endurance: You can focus yourself to occasionally shrug off injury. When you take damage, you can use your reaction to roll a d12. Add your Constitution modifier to the number rolled, and reduce the damage by that total. You can use this trait once per short or long rest.",
+            "Powerful Build: You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.",
+            "Mountain Born: You have resistance to cold damage. You're also acclimated to high altitude, including elevations above 20,000 feet."
+        ],
+        skills: ["Athletics"], languages: ["Common", "Giant"]
+    },
+    "Orc": {
+        description: "Orcs are fierce humanoids who survive in the harsh wilds by hunting and raiding.",
+        size: "Medium", speed: 30, darkvision: 60,
+        adultAge: 12, maxAge: 50,
+        abilityBonuses: { str: 2, con: 1 },
+        traits: [
+            "Adrenaline Rush: You can take the Dash action as a bonus action. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest. Whenever you use this trait, you gain temporary hit points equal to your proficiency bonus.",
+            "Powerful Build: You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.",
+            "Relentless Endurance: When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest."
+        ],
+        skills: ["Intimidation"], languages: ["Common", "Orc"]
+    },
+    "Faerie": {
+        description: "Faeries are magical people who hail from the Feywild, carrying its wild magic with them.",
+        size: "Small", speed: 30, flySpeed: 30, darkvision: 0,
+        adultAge: 18, maxAge: 100,
+        abilityBonuses: { dex: 2, cha: 1 },
+        traits: [
+            "Fairy Magic: You know the Druidcraft cantrip. Starting at 3rd level, you can cast the Faerie Fire spell with this trait. Starting at 5th level, you can also cast the Enlarge/Reduce spell with this trait.",
+            "Flight: Because of your wings, you have a flying speed equal to your walking speed. You can't use this flying speed if you're wearing medium or heavy armor.",
+            "Fey: Your creature type is fey, rather than humanoid."
+        ],
+        skills: [], languages: ["Common", "Sylvan"]
     }
 };
 
@@ -389,5 +469,25 @@ export const APPEARANCES = {
         eyes: ["Green", "Yellow", "Gold", "Blue"],
         skin: ["Spotted coat", "Striped coat", "Black fur", "Tawny fur", "Snow leopard fur"],
         hair: ["Tufted ears", "Mane", "Sleek fur"]
+    },
+    "Aasimar": {
+        eyes: ["Glowing White", "Glowing Gold", "Silver", "Solid Black"],
+        skin: ["Flawless Pale", "Golden", "Metallic", "Obsidian"],
+        hair: ["Lustrous Blonde", "Silver", "White", "Feathered"]
+    },
+    "Goliath": {
+        eyes: ["Blue", "Green", "Grey"],
+        skin: ["Grey", "Mottled Grey", "Brown", "Ashen"],
+        hair: ["Bald", "Braided Black", "Shaved"]
+    },
+    "Orc": {
+        eyes: ["Red", "Yellow", "Black"],
+        skin: ["Green", "Grey", "Brown", "Dark Green"],
+        hair: ["Black", "Dark Brown", "Braided Black", "Topknot"]
+    },
+    "Faerie": {
+        eyes: ["Sparkling Blue", "Emerald Green", "Violet", "Amber"],
+        skin: ["Pale", "Greenish", "Blue-tinted", "Golden"],
+        hair: ["Bright Pink", "Electric Blue", "Silver", "Leaves and Twigs", "Translucent Wings"]
     }
 };

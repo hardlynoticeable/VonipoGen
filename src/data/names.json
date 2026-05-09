@@ -174,5 +174,51 @@
     "Blossom in the Desert",
     "Bite of the Spider",
     "Flame of the Hearth"
+  ],
+  "Aasimar": [
+    "Aritian",
+    "Beltin",
+    "Cael",
+    "Lir",
+    "Erion",
+    "Trevina",
+    "Ilanis",
+    "Eran"
+  ],
+  "Goliath": [
+    "Aukan",
+    "Eglath",
+    "Gae-Al",
+    "Ilikan",
+    "Keothi",
+    "Lo-Kag",
+    "Maveith",
+    "Nalla",
+    "Orilo",
+    "Paavu"
+  ],
+  "Orc": [
+    "Dench",
+    "Feng",
+    "Gell",
+    "Henk",
+    "Holg",
+    "Baggi",
+    "Emen",
+    "Engong",
+    "Kansif",
+    "Myev"
+  ],
+  "Faerie": [
+    "Amaryllis",
+    "Bramble",
+    "Cobweb",
+    "Dewdrop",
+    "Frost",
+    "Glimmer",
+    "Moth",
+    "Puck",
+    "Thistle",
+    "Willow"
   ]
 }
